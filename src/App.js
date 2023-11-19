@@ -1,15 +1,15 @@
 import Navigation from './components/Navigation/Navigation';
-import Logo from './components/Logo/Logo';
 import ImageForm from './components/ImageForm/ImageForm';
 import Rank from './components/Rank/Rank';
+import Background from './components/Background/Background';
 
 import './App.css';
 
 function App() {
   return (
     <div className="App">
+      <Background />
       <Navigation />
-      <Logo />
       <Rank />
       <ImageForm />
       {/* <FaceRecognition /> */}
