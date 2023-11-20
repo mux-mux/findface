@@ -3,6 +3,7 @@ import { Component } from 'react';
 import Navigation from './components/Navigation/Navigation';
 import ImageForm from './components/ImageForm/ImageForm';
 import Rank from './components/Rank/Rank';
+import FindFace from './components/FindFace/FindFace';
 import Background from './components/Background/Background';
 
 import './App.css';
@@ -12,15 +13,16 @@ class App extends Component {
     super();
     this.state = {
       input: '',
+      imageUrl: '',
     };
   }
 
   onInputChange = (e) => {
-    console.log(e.target.value);
+    this.setState({ input: e.target.value });
   };
 
   onButtonSubmit = () => {
-    console.log('click');
+    this.setState({ imageUrl: this.state.input });
   };
 
   render() {
@@ -30,7 +32,7 @@ class App extends Component {
         <Navigation />
         <Rank />
         <ImageForm onInputChange={this.onInputChange} onButtonSubmit={this.onButtonSubmit} />
-        {/* <FaceRecognition /> */}
+        <FindFace imageUrl={this.state.imageUrl} />
       </div>
     );
   }
