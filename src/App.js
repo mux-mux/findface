@@ -13,11 +13,11 @@ const App = () => {
   const [imageUrl, setImageUrl] = useState('');
 
   const onInputChange = (e) => {
-    setImageUrl(e.target.value);
+    setInput(e.target.value);
   };
 
   const onButtonSubmit = () => {
-    setInput(input);
+    setImageUrl(input);
   };
 
   return (
@@ -26,7 +26,7 @@ const App = () => {
       <Navigation />
       <Rank />
       <ImageForm onInputChange={onInputChange} onButtonSubmit={onButtonSubmit} />
-      {imageUrl} !== '' ? <FindFace imageUrl={imageUrl} /> : null;
+      {imageUrl !== '' ? <FindFace imageUrl={imageUrl} /> : null}
     </div>
   );
 };

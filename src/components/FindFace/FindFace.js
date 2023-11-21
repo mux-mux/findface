@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import './FindFace.css';
 
 const FindFace = ({ imageUrl }) => {
   const [area, setFaceArea] = useState({});
@@ -49,14 +50,27 @@ const FindFace = ({ imageUrl }) => {
     body: raw,
   };
 
-  fetch('https://api.clarifai.com/v2/models/' + MODEL_ID + '/outputs', requestOptions)
-    .then((response) => response.json())
-    .then((result) => setFaceArea(getFaceArea(result)))
-    .catch((error) => console.log('error', error));
+  useEffect(() => {
+    fetch('https://api.clarifai.com/v2/models/' + MODEL_ID + '/outputs', requestOptions)
+      .then((response) => response.json())
+      .then((result) => setFaceArea(getFaceArea(result)))
+      .catch((error) => console.log('error', error));
+  }, [imageUrl]);
 
   return (
     <div className="center mt4">
-      <img src={imageUrl} id="inputImage" alt="faces" width="500" height="auto" />
+      <div className="relative">
+        <img src={imageUrl} id="inputImage" alt="faces" width="500" height="auto" />
+        <div
+          className="face-area"
+          style={{
+            top: area.topRow,
+            right: area.rightCol,
+            bottom: area.bottomRow,
+            left: area.leftCol,
+          }}
+        ></div>
+      </div>
     </div>
   );
 };
