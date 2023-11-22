@@ -14,6 +14,7 @@ const App = () => {
   const [input, setInput] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const [route, setRoute] = useState('signin');
+  const [isSignedIn, setIsSignedIn] = useState(false);
 
   const onInputChange = (e) => {
     setInput(e.target.value);
@@ -24,24 +25,35 @@ const App = () => {
   };
 
   const onRouteChange = (route) => {
+    if (route === 'signout') {
+      setIsSignedIn(false);
+    } else if (route === 'home') {
+      setIsSignedIn(true);
+    }
     setRoute(route);
   };
 
-  return (
-    <div className="App">
-      <Background />
-      <Navigation onRouteChange={onRouteChange} />
-      {route === 'home' ? (
+  const showHomeOrForm = () => {
+    if (route === 'home') {
+      return (
         <div>
           <Rank />
           <ImageForm onInputChange={onInputChange} onButtonSubmit={onButtonSubmit} />
           {imageUrl !== '' ? <FindFace imageUrl={imageUrl} /> : null}
         </div>
-      ) : route === 'signin' ? (
-        <Signin onRouteChange={onRouteChange} />
-      ) : (
-        <Register onRouteChange={onRouteChange} />
-      )}
+      );
+    } else if (route === 'signin') {
+      return <Signin onRouteChange={onRouteChange} />;
+    } else {
+      return <Register onRouteChange={onRouteChange} />;
+    }
+  };
+
+  return (
+    <div className="App">
+      <Background />
+      <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange} />
+      {showHomeOrForm()}
     </div>
   );
 };

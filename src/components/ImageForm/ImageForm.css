@@ -5,6 +5,7 @@
     radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%) 8px 9px;
   background-color: #28282809;
   background-size: 6px 6px;
+  width: min(600px, 95%);
 }
 
 .search-button {
