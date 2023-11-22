@@ -1,11 +1,16 @@
 import React from 'react';
 import Logo from '../Logo/Logo';
 
-const Navigation = () => {
+const Navigation = ({ onRouteChange }) => {
   return (
     <nav className="flex justify-between items-center">
       <Logo />
-      <p className="f3 link dim black underline pa3 pointer">Sign Out</p>
+      <p
+        className="f3 link dim black underline pa3 pointer"
+        onClick={() => onRouteChange('signin')}
+      >
+        Sign Out
+      </p>
     </nav>
   );
 };
