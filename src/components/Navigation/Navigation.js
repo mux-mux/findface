@@ -1,5 +1,6 @@
 import React from 'react';
 import Logo from '../Logo/Logo';
+import Themes from '../Themes/Themes';
 
 const Navigation = ({ onRouteChange, isSignedIn }) => {
   if (isSignedIn) {
@@ -12,6 +13,7 @@ const Navigation = ({ onRouteChange, isSignedIn }) => {
         >
           Sign Out
         </p>
+        <Themes />
       </nav>
     );
   } else {
@@ -32,6 +34,7 @@ const Navigation = ({ onRouteChange, isSignedIn }) => {
             Register
           </p>
         </div>
+        <Themes />
       </nav>
     );
   }
