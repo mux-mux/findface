@@ -36,7 +36,7 @@ const App = () => {
   const showHomeOrForm = () => {
     if (route === 'home') {
       return (
-        <div>
+        <div className="tc">
           <Rank />
           <ImageForm onInputChange={onInputChange} onButtonSubmit={onButtonSubmit} />
           {imageUrl !== '' ? <FindFace imageUrl={imageUrl} /> : null}
