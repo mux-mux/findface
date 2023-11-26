@@ -3,9 +3,14 @@ body {
   font-family: 'Ubuntu', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #6190e8;
-  background: -webkit-linear-gradient(to right, #6190e8, #a7bfe8);
-  background: linear-gradient(to right, #6190e8, #a7bfe8);
+  background: var(--background-color-1);
+  background: -webkit-linear-gradient(
+    to right,
+    var(--background-color-1),
+    var(--background-color-2)
+  );
+  background: linear-gradient(to right, var(--background-color-1), var(--background-color-2));
+  color: var(--text-color);
 }
 
 button {
