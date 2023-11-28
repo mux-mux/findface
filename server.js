@@ -7,7 +7,7 @@ app.use(bodyParser.json());
 const database = {
   users: [
     {
-      id: '0001',
+      id: 1,
       name: 'John',
       email: 'john@gmail.com',
       password: 'word0fPath',
@@ -15,10 +15,18 @@ const database = {
       joined: new Date(),
     },
     {
-      id: '0002',
+      id: 2,
       name: 'Gordon',
       email: 'gordon@gmail.com',
       password: 'at@We1n',
+      entries: 0,
+      joined: new Date(),
+    },
+    {
+      id: 3,
+      name: 'Ruby',
+      email: 'ruby@gmail.com',
+      password: 'RRUU88YY',
       entries: 0,
       joined: new Date(),
     },
@@ -43,7 +51,7 @@ app.post('/signin', (req, res) => {
 app.post('/register', (req, res) => {
   const { name, email, password } = req.body;
   database.users.push({
-    id: '0004',
+    id: database.users.length + 1,
     name: name,
     email: email,
     password: password,
@@ -51,6 +59,37 @@ app.post('/register', (req, res) => {
     joined: new Date(),
   });
   res.json(database.users);
+});
+
+app.get('/profile/:id', (req, res) => {
+  const { id } = req.params;
+  let found = false;
+
+  database.users.forEach((user) => {
+    if (user.id === Number(id)) {
+      found = true;
+      return res.json(user);
+    }
+  });
+  if (!found) {
+    return res.status(400).json('not found');
+  }
+});
+
+app.put('/image', (req, res) => {
+  const { id } = req.body;
+  let found = false;
+
+  database.users.forEach((user) => {
+    if (user.id === Number(id)) {
+      found = true;
+      user.entries++;
+      return res.json(user.entries);
+    }
+  });
+  if (!found) {
+    return res.status(400).json('not found');
+  }
 });
 
 app.listen(3000, () => {
