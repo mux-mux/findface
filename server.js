@@ -1,9 +1,11 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import cors from 'cors';
 import bcrypt from 'bcrypt';
 
 const app = express();
 app.use(bodyParser.json());
+app.use(cors());
 
 const database = {
   users: [
@@ -115,6 +117,6 @@ app.put('/image', (req, res) => {
   }
 });
 
-app.listen(3000, () => {
-  console.log('app is running on port 3000');
+app.listen(3001, () => {
+  console.log('app is running on port 3001');
 });
