@@ -1,5 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import bcrypt from 'bcrypt';
 
 const app = express();
 app.use(bodyParser.json());
@@ -38,6 +39,21 @@ app.get('/', (req, res) => {
 });
 
 app.post('/signin', (req, res) => {
+  bcrypt.compare(
+    '12@98ooo',
+    '$2b$10$yLyWHgr6/Euf5ahkI/KC0.FVTOlpgJBUxdJLGsQu70zxkj7cGCJnW',
+    function (err, result) {
+      console.log('correct', result);
+    }
+  );
+  bcrypt.compare(
+    'ruby',
+    '$2b$10$yLyWHgr6/Euf5ahkI/KC0.FVTOlpgJBUxdJLGsQu70zxkj7cGCJnW',
+    function (err, result) {
+      console.log('wrong', result);
+    }
+  );
+
   if (
     req.body.email === database.users[0].email &&
     req.body.password === database.users[0].password
@@ -50,6 +66,13 @@ app.post('/signin', (req, res) => {
 
 app.post('/register', (req, res) => {
   const { name, email, password } = req.body;
+
+  bcrypt.genSalt(10, function (err, salt) {
+    bcrypt.hash(password, salt, function (err, hash) {
+      console.log(hash);
+    });
+  });
+
   database.users.push({
     id: database.users.length + 1,
     name: name,
