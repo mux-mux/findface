@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 
-import Navigation from './components/Navigation/Navigation';
-import ImageForm from './components/ImageForm/ImageForm';
-import Signin from './components/Signin/Signin';
-import Register from './components/Register/Register';
-import Rank from './components/Rank/Rank';
-import FindFace from './components/FindFace/FindFace';
-import Background from './components/Background/Background';
+import Navigation from './components/Navigation/Navigation.js';
+import ImageForm from './components/ImageForm/ImageForm.js';
+import Signin from './components/Signin/Signin.js';
+import Register from './components/Register/Register.js';
+import Rank from './components/Rank/Rank.js';
+import FindFace from './components/FindFace/FindFace.js';
+import Background from './components/Background/Background.js';
 
 import './App.css';
 

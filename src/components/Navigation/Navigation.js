@@ -1,6 +1,6 @@
 import React from 'react';
-import Logo from '../Logo/Logo';
-import Themes from '../Themes/Themes';
+import Logo from '../Logo/Logo.js';
+import Themes from '../Themes/Themes.js';
 
 const Navigation = ({ onRouteChange, isSignedIn }) => {
   if (isSignedIn) {
