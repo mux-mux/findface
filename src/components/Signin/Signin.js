@@ -57,7 +57,7 @@ const Signin = ({ onRouteChange }) => {
               className="b ph3 pv2 input-reset ba bg-transparent grow pointer f6 dib button"
               type="submit"
               value="Sign in"
-              onClick={() => onSubmitSignIn()}
+              onClick={onSubmitSignIn}
             />
           </div>
           <div className="lh-copy mt3 button">

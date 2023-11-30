@@ -17,6 +17,8 @@ const Themes = () => {
         document.documentElement.className = currentTheme;
 
         currentTheme === 'theme-dark' ? (themeSlider.checked = true) : setTheme('theme-light');
+      } else {
+        setTheme('theme-light');
       }
     };
     getTheme();
