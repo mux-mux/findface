@@ -23,13 +23,13 @@ const App = () => {
     joined: '',
   });
 
-  const loadUser = (newUser) => {
+  const loadUser = (userProfile) => {
     setUser({
-      id: newUser.id,
-      name: newUser.name,
-      email: newUser.email,
-      entries: newUser.entries,
-      joined: newUser.joined,
+      id: userProfile.id,
+      name: userProfile.name,
+      email: userProfile.email,
+      entries: userProfile.entries,
+      joined: userProfile.joined,
     });
   };
 
@@ -37,7 +37,7 @@ const App = () => {
     setInput(e.target.value);
   };
 
-  const onButtonSubmit = () => {
+  const onImageSubmit = () => {
     setImageUrl(input);
   };
 
@@ -54,13 +54,15 @@ const App = () => {
     if (route === 'home') {
       return (
         <div className="tc">
-          <Rank />
-          <ImageForm onInputChange={onInputChange} onButtonSubmit={onButtonSubmit} />
-          {imageUrl !== '' ? <FindFace imageUrl={imageUrl} /> : null}
+          <Rank userName={user.name} userEntries={user.entries} />
+          <ImageForm onInputChange={onInputChange} onImageSubmit={onImageSubmit} />
+          {imageUrl !== '' ? (
+            <FindFace imageUrl={imageUrl} userID={user.id} setUser={setUser} user={user} />
+          ) : null}
         </div>
       );
     } else if (route === 'signin') {
-      return <Signin onRouteChange={onRouteChange} />;
+      return <Signin loadUser={loadUser} onRouteChange={onRouteChange} />;
     } else {
       return <Register loadUser={loadUser} onRouteChange={onRouteChange} />;
     }
