@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './FindFace.css';
 
-const FindFace = ({ imageUrl }) => {
+const FindFace = ({ imageUrl, userID }) => {
   const [area, setFaceArea] = useState({});
 
   const getFaceArea = (data) => {
@@ -53,7 +53,17 @@ const FindFace = ({ imageUrl }) => {
   useEffect(() => {
     fetch('https://api.clarifai.com/v2/models/' + MODEL_ID + '/outputs', requestOptions)
       .then((response) => response.json())
-      .then((result) => setFaceArea(getFaceArea(result)))
+      .then((result) => {
+        if (result) {
+          fetch('http://localhost:3001/image', {
+            method: 'put',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: userID }),
+          });
+        }
+        setFaceArea(getFaceArea(result));
+      })
+      .then((count) => {})
       .catch((error) => console.log('error', error));
   }, [imageUrl]);
 
