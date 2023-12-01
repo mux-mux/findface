@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './FindFace.css';
 
-const FindFace = ({ imageUrl, userID }) => {
+const FindFace = ({ imageUrl, userID, setUser, user }) => {
   const [area, setFaceArea] = useState({});
 
   const getFaceArea = (data) => {
@@ -9,7 +9,6 @@ const FindFace = ({ imageUrl, userID }) => {
     const image = document.getElementById('inputImage');
     const width = Number(image.width);
     const height = Number(image.height);
-    console.log(width, height);
 
     return {
       topRow: clarifaiFace.top_row * height,
@@ -54,16 +53,18 @@ const FindFace = ({ imageUrl, userID }) => {
     fetch('https://api.clarifai.com/v2/models/' + MODEL_ID + '/outputs', requestOptions)
       .then((response) => response.json())
       .then((result) => {
+        // console.log(result);
         if (result) {
           fetch('http://localhost:3001/image', {
             method: 'put',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id: userID }),
-          });
+          })
+            .then((response) => response.json())
+            .then((count) => setUser(Object.assign(user, { entries: count })));
         }
         setFaceArea(getFaceArea(result));
       })
-      .then((count) => {})
       .catch((error) => console.log('error', error));
   }, [imageUrl]);
 

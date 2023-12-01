@@ -56,11 +56,13 @@ const App = () => {
         <div className="tc">
           <Rank userName={user.name} userEntries={user.entries} />
           <ImageForm onInputChange={onInputChange} onImageSubmit={onImageSubmit} />
-          {imageUrl !== '' ? <FindFace imageUrl={imageUrl} userID={user.id} /> : null}
+          {imageUrl !== '' ? (
+            <FindFace imageUrl={imageUrl} userID={user.id} setUser={setUser} user={user} />
+          ) : null}
         </div>
       );
     } else if (route === 'signin') {
-      return <Signin onRouteChange={onRouteChange} />;
+      return <Signin loadUser={loadUser} onRouteChange={onRouteChange} />;
     } else {
       return <Register loadUser={loadUser} onRouteChange={onRouteChange} />;
     }

@@ -10,7 +10,7 @@ app.use(cors());
 const database = {
   users: [
     {
-      id: 1,
+      id: 0,
       name: 'John',
       email: 'john@gmail.com',
       password: 'word0fPath',
@@ -18,7 +18,7 @@ const database = {
       joined: new Date(),
     },
     {
-      id: 2,
+      id: 1,
       name: 'Gordon',
       email: 'gordon@gmail.com',
       password: 'at@We1n',
@@ -26,7 +26,7 @@ const database = {
       joined: new Date(),
     },
     {
-      id: 3,
+      id: 2,
       name: 'Ruby',
       email: 'ruby@gmail.com',
       password: 'RRUU88YY',
@@ -87,12 +87,14 @@ app.post('/register', (req, res) => {
 });
 
 app.get('/profile/:id', (req, res) => {
-  const { id } = req.params;
+  const { id } = req.body;
+
   let found = false;
 
   database.users.forEach((user) => {
     if (user.id === Number(id)) {
       found = true;
+      console.log(res.json(user));
       return res.json(user);
     }
   });
