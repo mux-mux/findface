@@ -33,6 +33,8 @@ const App = () => {
     });
   };
 
+  console.log(user);
+
   const onInputChange = (e) => {
     setInput(e.target.value);
   };
@@ -57,7 +59,11 @@ const App = () => {
           <Rank userName={user.name} userEntries={user.entries} />
           <ImageForm onInputChange={onInputChange} onImageSubmit={onImageSubmit} />
           {imageUrl !== '' ? (
-            <FindFace imageUrl={imageUrl} userID={user.id} setUser={setUser} user={user} />
+            <FindFace
+              imageUrl={imageUrl}
+              onUserDataChange={(userData) => setUser(userData)}
+              user={user}
+            />
           ) : null}
         </div>
       );
