@@ -101,24 +101,25 @@ app.post('/register', (req, res) => {
       joined: new Date(),
     })
     .then((user) => res.json(user[0]))
-    .catch((err) => res.status(400).json('unable to register'));
+    .catch(() => res.status(400).json('unable to register'));
 });
 
 app.get('/profile/:id', (req, res) => {
   const { id } = req.body;
 
-  let found = false;
-
-  database.users.forEach((user) => {
-    if (user.id === Number(id)) {
-      found = true;
-      console.log(res.json(user));
-      return res.json(user);
-    }
-  });
-  if (!found) {
-    return res.status(400).json('not found');
-  }
+  db.select('*')
+    .from('users')
+    .where({
+      id: id,
+    })
+    .then((user) => {
+      if (user.length) {
+        res.json(user[0]);
+      } else {
+        res.status(400).json('Not found');
+      }
+    })
+    .catch(() => res.status(400).json('DB Request error'));
 });
 
 app.put('/image', (req, res) => {
