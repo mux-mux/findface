@@ -124,18 +124,13 @@ app.get('/profile/:id', (req, res) => {
 
 app.put('/image', (req, res) => {
   const { id } = req.body;
-  let found = false;
 
-  database.users.forEach((user) => {
-    if (user.id === Number(id)) {
-      found = true;
-      user.entries++;
-      return res.json(user.entries);
-    }
-  });
-  if (!found) {
-    return res.status(400).json('not found');
-  }
+  db('users')
+    .where('id', '=', id)
+    .increment('entries', 1)
+    .returning('entries')
+    .then((entriesArray) => res.json(entriesArray[0].entries))
+    .catch(() => res.status(400).json('unable to get tries count'));
 });
 
 app.listen(3001, () => {
