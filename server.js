@@ -53,29 +53,25 @@ app.get('/', (req, res) => {
 });
 
 app.post('/signin', (req, res) => {
-  bcrypt.compare(
-    '12@98ooo',
-    '$2b$10$yLyWHgr6/Euf5ahkI/KC0.FVTOlpgJBUxdJLGsQu70zxkj7cGCJnW',
-    function (err, result) {
-      console.log('correct', result);
-    }
-  );
-  bcrypt.compare(
-    'ruby',
-    '$2b$10$yLyWHgr6/Euf5ahkI/KC0.FVTOlpgJBUxdJLGsQu70zxkj7cGCJnW',
-    function (err, result) {
-      console.log('wrong', result);
-    }
-  );
-
-  if (
-    req.body.email === database.users[0].email &&
-    req.body.password === database.users[0].password
-  ) {
-    res.json(database.users[0]);
-  } else {
-    res.status(400).json('error logging in');
-  }
+  db.select('email', 'hash')
+    .from('login')
+    .where('email', '=', req.body.email)
+    .then((loginData) => {
+      const isValid = bcrypt.compareSync(req.body.password, loginData[0].hash);
+      if (isValid) {
+        return db
+          .select('*')
+          .from('users')
+          .where('email', '=', req.body.email)
+          .then((user) => {
+            res.json(user[0]);
+          })
+          .catch(() => res.status(400).json('unable to get user'));
+      } else {
+        res.status(400).json('wrong credentials');
+      }
+    })
+    .catch(() => res.status(400).json('wrong credentials'));
 });
 
 app.post('/register', (req, res) => {
@@ -97,7 +93,7 @@ app.post('/register', (req, res) => {
           .returning('*')
           .insert({
             name: name,
-            email: loginEmail,
+            email: loginEmail[0].email,
             joined: new Date(),
           })
           .then((user) => res.json(user[0]));
