@@ -24,6 +24,7 @@ const App = () => {
   });
 
   const loadUser = (userProfile) => {
+    setImageUrl('');
     setUser({
       id: userProfile.id,
       name: userProfile.name,
