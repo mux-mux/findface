@@ -60,11 +60,12 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
             body: JSON.stringify({ id: user.id }),
           })
             .then((response) => response.json())
-            .then((count) => onUserDataChange(Object.assign({ ...user }, { entries: count })));
+            .then((count) => onUserDataChange(Object.assign({ ...user }, { entries: count })))
+            .catch(console.log);
         }
         setFaceArea(getFaceArea(result));
       })
-      .catch((error) => console.log('error', error));
+      .catch(console.log);
   }, [imageUrl]);
 
   return (

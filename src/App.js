@@ -34,8 +34,6 @@ const App = () => {
     });
   };
 
-  console.log(user);
-
   const onInputChange = (e) => {
     setInput(e.target.value);
   };

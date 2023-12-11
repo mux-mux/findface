@@ -19,7 +19,8 @@ const Signin = ({ onRouteChange, loadUser }) => {
           loadUser(user);
           onRouteChange('home');
         }
-      });
+      })
+      .catch(console.log);
   };
 
   return (
