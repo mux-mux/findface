@@ -12,10 +12,10 @@ import handleImage from './src/controllers/image.js';
 const db = knex({
   client: 'pg',
   connection: {
-    host: '127.0.0.1',
-    port: 5432,
-    user: 'postgres',
-    password: 'admin',
+    host: process.env.REACT_APP_DB_HOST,
+    port: process.env.REACT_APP_DB_PORT,
+    user: process.env.REACT_APP_DB_USER,
+    password: process.env.REACT_APP_DB_PASS,
     database: 'find-face',
   },
 });
