@@ -18,9 +18,9 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
     };
   };
 
-  const PAT = 'f84586df8fdd422dbfb6682190576da4';
-  const USER_ID = 'mux-mux';
-  const APP_ID = 'findface-app';
+  const PAT = process.env.REACT_APP_CLARIFY_API;
+  const USER_ID = process.env.REACT_APP_USER_ID;
+  const APP_ID = process.env.REACT_APP_APP_ID;
   const MODEL_ID = 'face-detection';
   const IMAGE_URL = imageUrl;
 

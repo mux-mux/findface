@@ -1,6 +1,8 @@
 const handleRegister = (req, res, db, bcrypt) => {
-  console.log(req.body);
   const { name, email, password } = req.body;
+  if (!name || !email || !password) {
+    return res.status(400).json('incorrect form data');
+  }
 
   const salt = bcrypt.genSaltSync(10);
   const hash = bcrypt.hashSync(password, salt);

@@ -30,5 +30,5 @@ app.get('/profile/:id', (req, resp) => handleProfile(req, resp, db));
 app.put('/image', (req, resp) => handleImage(req, resp, db));
 
 app.listen(3001, () => {
-  console.log('app is running on port 3001');
+  console.log(`Server is listening on port 3001`);
 });
