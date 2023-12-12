@@ -24,11 +24,12 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
+app.post('/', (req, resp) => resp.send('server is working'));
 app.post('/signin', (req, resp) => handleSignin(req, resp, db, bcrypt));
 app.post('/register', (req, resp) => handleRegister(req, resp, db, bcrypt));
 app.get('/profile/:id', (req, resp) => handleProfile(req, resp, db));
 app.put('/image', (req, resp) => handleImage(req, resp, db));
 
-app.listen(3001, () => {
-  console.log(`Server is listening on port 3001`);
+app.listen(process.env.PORT || 3000, () => {
+  console.log(`Server is listening on port ${process.env.PORT}`);
 });
