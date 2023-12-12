@@ -10,7 +10,7 @@ const Register = ({ onRouteChange, loadUser }) => {
   const onNameChange = (e) => setName(e.target.value);
 
   const onSubmitRegister = () => {
-    fetch('http://localhost:3001/register', {
+    fetch('http://findface.vercel.app/register', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name: name, email: email, password: password }),

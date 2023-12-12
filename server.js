@@ -30,6 +30,6 @@ app.post('/register', (req, resp) => handleRegister(req, resp, db, bcrypt));
 app.get('/profile/:id', (req, resp) => handleProfile(req, resp, db));
 app.put('/image', (req, resp) => handleImage(req, resp, db));
 
-app.listen(process.env.PORT || 3000, () => {
+app.listen(process.env.PORT || 3001, () => {
   console.log(`Server is listening on port ${process.env.PORT}`);
 });
