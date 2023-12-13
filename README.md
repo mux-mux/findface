@@ -2,7 +2,7 @@
 
 ## With :arrow_right_hook:SignIn :leftwards_arrow_with_hook:SignOut :crystal_ball:AI face Detect
 
-## [Live Link](https://jsgo.pro/findface) :link:
+## [Live Link](https://findface.vercel.app) :link:
 
 ## How To Use :closed_lock_with_key:
 
