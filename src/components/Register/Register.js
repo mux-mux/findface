@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import './Register.css';
+
 const Register = ({ onRouteChange, loadUser }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -36,7 +38,7 @@ const Register = ({ onRouteChange, loadUser }) => {
                 Name
               </label>
               <input
-                className="pa2 input-reset ba bg-transparent hover-bg-white hover-black w-100 input"
+                className="pa2 input-reset ba bg-transparent hover-bg-white hover-black w-100 input form-input"
                 type="text"
                 name="name"
                 id="name"
@@ -48,7 +50,7 @@ const Register = ({ onRouteChange, loadUser }) => {
                 Email
               </label>
               <input
-                className="pa2 input-reset ba bg-transparent hover-bg-white hover-black w-100 input"
+                className="pa2 input-reset ba bg-transparent hover-bg-white hover-black w-100 input form-input"
                 type="email"
                 name="email-address"
                 id="email-address"
@@ -60,7 +62,7 @@ const Register = ({ onRouteChange, loadUser }) => {
                 Password
               </label>
               <input
-                className="b pa2 input-reset ba bg-transparent hover-bg-white hover-black w-100 input"
+                className="b pa2 input-reset ba bg-transparent hover-bg-white hover-black w-100 input form-input"
                 type="password"
                 name="password"
                 id="password"

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import './Signin.css';
+
 const Signin = ({ onRouteChange, loadUser }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -34,7 +36,7 @@ const Signin = ({ onRouteChange, loadUser }) => {
                 Email
               </label>
               <input
-                className="pa2 input-reset ba bg-transparent hover-bg-white hover-black w-100 input"
+                className="pa2 input-reset ba bg-transparent hover-bg-white hover-black w-100 input form-input"
                 type="email"
                 name="email-address"
                 id="email-address"
@@ -46,7 +48,7 @@ const Signin = ({ onRouteChange, loadUser }) => {
                 Password
               </label>
               <input
-                className="b pa2 input-reset ba bg-transparent hover-bg-white hover-black w-100 input"
+                className="b pa2 input-reset ba bg-transparent hover-bg-white hover-black w-100 input form-input"
                 type="password"
                 name="password"
                 id="password"
