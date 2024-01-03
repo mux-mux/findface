@@ -12,11 +12,7 @@ import handleImage from './src/controllers/image.js';
 const db = knex({
   client: 'pg',
   connection: {
-    host: process.env.REACT_APP_DB_HOST,
-    port: process.env.REACT_APP_DB_PORT,
-    user: process.env.REACT_APP_DB_USER,
-    password: process.env.REACT_APP_DB_PASS,
-    database: 'find-face',
+    connectionString: process.env.DATABASE_URL + '?sslmode=require',
   },
 });
 
