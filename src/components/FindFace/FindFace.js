@@ -54,7 +54,7 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
       .then((response) => response.json())
       .then((result) => {
         if (result) {
-          fetch('http://http://findface.vercel.app/image', {
+          fetch('https://findface.vercel.app/image', {
             method: 'put',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id: user.id }),
