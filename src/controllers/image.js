@@ -1,4 +1,4 @@
-const handelImage = (req, res, db) => {
+const handleImage = (req, res, db) => {
   const { id } = req.body;
 
   db('users')
@@ -9,4 +9,4 @@ const handelImage = (req, res, db) => {
     .catch(() => res.status(400).json('unable to get tries count'));
 };
 
-export default handelImage;
+export default handleImage;

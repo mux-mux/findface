@@ -18,39 +18,12 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
     };
   };
 
-  const PAT = process.env.REACT_APP_CLARIFY_API;
-  const USER_ID = process.env.REACT_APP_USER_ID;
-  const APP_ID = process.env.REACT_APP_APP_ID;
-  const MODEL_ID = 'face-detection';
-  const IMAGE_URL = imageUrl;
-
-  const raw = JSON.stringify({
-    user_app_id: {
-      user_id: USER_ID,
-      app_id: APP_ID,
-    },
-    inputs: [
-      {
-        data: {
-          image: {
-            url: IMAGE_URL,
-          },
-        },
-      },
-    ],
-  });
-
-  const requestOptions = {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      Authorization: 'Key ' + PAT,
-    },
-    body: raw,
-  };
-
   useEffect(() => {
-    fetch('https://api.clarifai.com/v2/models/' + MODEL_ID + '/outputs', requestOptions)
+    fetch('https://findface.vercel.app/apicall', {
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ input: imageUrl }),
+    })
       .then((response) => response.json())
       .then((result) => {
         if (result) {
