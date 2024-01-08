@@ -66,7 +66,7 @@ const App = () => {
           ) : null}
         </div>
       );
-    } else if (route === 'signin') {
+    } else if (route === 'signin' || route === 'signout') {
       return <Signin loadUser={loadUser} onRouteChange={onRouteChange} />;
     } else {
       return <Register loadUser={loadUser} onRouteChange={onRouteChange} />;
