@@ -42,7 +42,7 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
   }, [imageUrl]);
 
   return (
-    <div className="center mt4">
+    <div className="flex justify-center mt-4">
       <div className="relative">
         <img src={imageUrl} id="inputImage" alt="faces" width="500" height="auto" />
         <div

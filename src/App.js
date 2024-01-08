@@ -54,7 +54,7 @@ const App = () => {
   const showHomeOrForm = () => {
     if (route === 'home') {
       return (
-        <div className="tc">
+        <div className="text-center">
           <Rank userName={user.name} userEntries={user.entries} />
           <ImageForm onInputChange={onInputChange} onImageSubmit={onImageSubmit} />
           {imageUrl !== '' ? (
