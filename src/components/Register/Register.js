@@ -11,7 +11,8 @@ const Register = ({ onRouteChange, loadUser }) => {
   const onPasswordChange = (e) => setPassword(e.target.value);
   const onNameChange = (e) => setName(e.target.value);
 
-  const onSubmitRegister = () => {
+  const onSubmitRegister = (e) => {
+    e.preventDefault();
     fetch('https://findface.vercel.app/register', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
@@ -35,7 +36,7 @@ const Register = ({ onRouteChange, loadUser }) => {
           src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
           alt="Your Company"
         />
-        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight">
           Register your account
         </h2>
       </div>
@@ -43,7 +44,7 @@ const Register = ({ onRouteChange, loadUser }) => {
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form className="space-y-6" action="#" method="POST">
           <div>
-            <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
+            <label htmlFor="name" className="block text-sm font-medium leading-6">
               Name
             </label>
             <div className="mt-2">
@@ -60,7 +61,7 @@ const Register = ({ onRouteChange, loadUser }) => {
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+            <label htmlFor="email" className="block text-sm font-medium leading-6">
               Email address
             </label>
             <div className="mt-2">
@@ -78,10 +79,7 @@ const Register = ({ onRouteChange, loadUser }) => {
 
           <div>
             <div className="flex items-center justify-between">
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
+              <label htmlFor="password" className="block text-sm font-medium leading-6">
                 Password
               </label>
             </div>
@@ -109,11 +107,11 @@ const Register = ({ onRouteChange, loadUser }) => {
           </div>
         </form>
 
-        <p className="mt-10 text-center text-sm text-gray-500">
-          Already member?
+        <p className="mt-10 text-center text-sm">
+          Already a member?
           <a
             href="##"
-            className="ml-1 font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+            className="ml-1 font-semibold leading-6 hover:text-blue-500"
             onClick={() => onRouteChange('signin')}
           >
             Signin

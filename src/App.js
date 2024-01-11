@@ -38,7 +38,8 @@ const App = () => {
     setInput(e.target.value);
   };
 
-  const onImageSubmit = () => {
+  const onImageSubmit = (e) => {
+    e.preventDefault();
     setImageUrl(input);
   };
 

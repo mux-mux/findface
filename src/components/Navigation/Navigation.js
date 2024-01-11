@@ -8,7 +8,7 @@ const Navigation = ({ onRouteChange, isSignedIn }) => {
       <nav className="flex justify-around items-center">
         <Logo />
         <p
-          className="f3 link dim underline pa3 absolute pointer"
+          className="text-xl transition duration-200 hover:text-gray-300 underline pa3 absolute cursor-pointer"
           onClick={() => onRouteChange('signout')}
         >
           Sign Out
