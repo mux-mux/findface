@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
+import { Tilt } from 'react-tilt';
 
 import './Register.css';
+import spinner from '../../assets/spinner.gif';
 
 const Register = ({ onRouteChange, loadUser }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const onEmailChange = (e) => setEmail(e.target.value);
   const onPasswordChange = (e) => setPassword(e.target.value);
@@ -13,6 +16,7 @@ const Register = ({ onRouteChange, loadUser }) => {
 
   const onSubmitRegister = (e) => {
     e.preventDefault();
+    setLoading(true);
     fetch('https://findface.vercel.app/register', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
@@ -23,6 +27,8 @@ const Register = ({ onRouteChange, loadUser }) => {
         if (user.id) {
           loadUser(user);
           onRouteChange('home');
+        } else {
+          setLoading(false);
         }
       })
       .catch(console.log);
@@ -31,11 +37,13 @@ const Register = ({ onRouteChange, loadUser }) => {
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <img
-          className="mx-auto h-10 w-auto"
-          src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-          alt="Your Company"
-        />
+        <Tilt>
+          <img
+            className="mx-auto h-10 w-auto"
+            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+            alt="Your Company"
+          />
+        </Tilt>
         <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight">
           Register your account
         </h2>
@@ -106,6 +114,8 @@ const Register = ({ onRouteChange, loadUser }) => {
             </button>
           </div>
         </form>
+
+        {loading ? <img src={spinner} alt="loading catos" /> : null}
 
         <p className="mt-10 text-center text-sm">
           Already a member?
