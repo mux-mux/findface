@@ -4,6 +4,13 @@
 
 ## [Live Link](https://jsgo.pro/findface/) :link:
 
+<br/>
+
+<div align="center">
+  <img src="https://jsgo.pro/media/gif/findface.gif" alt="FindFace Demo" width="100%" />
+  <br>
+</div>
+
 ## How To Use :closed_lock_with_key:
 
 ```bash
