@@ -42,6 +42,9 @@ $ cd findface
 # Install dependencies
 $ npm install
 
-# Open browser & listen to js changes
+# 1 Terminal: Start Express server
+$ npm start-server
+
+# 2 Terminal: Open browser & listen to changes
 $ npm start
 ```
