@@ -23,6 +23,13 @@
 8. Bcrypt Password Storage
 9. Vercel Deployment
 
+## Folder structure :open_file_folder:
+
+<div align="center">
+  <img src="https://jsgo.pro/media/structure/findface_project_structure.png" alt="Findface Folder structure" width="100%" />
+  <br>
+</div>
+
 ## How To Use :closed_lock_with_key:
 
 ```bash
