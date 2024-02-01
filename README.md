@@ -43,7 +43,7 @@ $ cd findface
 $ npm install
 
 # 1 Terminal: Start Express server
-$ npm start-server
+$ PORT=3001 node server.js
 
 # 2 Terminal: Open browser & listen to changes
 $ npm start
