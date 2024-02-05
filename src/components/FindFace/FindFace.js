@@ -2,20 +2,22 @@ import React, { useState, useEffect } from 'react';
 import './FindFace.css';
 
 const FindFace = ({ imageUrl, onUserDataChange, user }) => {
-  const [area, setFaceArea] = useState({});
+  const [areas, setFaceAreas] = useState([]);
 
-  const getFaceArea = (data) => {
-    const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
-    const image = document.getElementById('inputImage');
-    const width = Number(image.width);
-    const height = Number(image.height);
+  const getFaceAreas = (data) => {
+    return data.outputs[0].data.regions.map((face) => {
+      const clarifaiFace = face.region_info.bounding_box;
+      const image = document.getElementById('inputImage');
+      const width = Number(image.width);
+      const height = Number(image.height);
 
-    return {
-      topRow: clarifaiFace.top_row * height,
-      rightCol: width - clarifaiFace.right_col * width,
-      bottomRow: height - clarifaiFace.bottom_row * height,
-      leftCol: clarifaiFace.left_col * width,
-    };
+      return {
+        topRow: clarifaiFace.top_row * height,
+        rightCol: width - clarifaiFace.right_col * width,
+        bottomRow: height - clarifaiFace.bottom_row * height,
+        leftCol: clarifaiFace.left_col * width,
+      };
+    });
   };
 
   useEffect(() => {
@@ -36,7 +38,7 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
             .then((count) => onUserDataChange(Object.assign({ ...user }, { entries: count })))
             .catch(console.log);
         }
-        setFaceArea(getFaceArea(result));
+        setFaceAreas(getFaceAreas(result));
       })
       .catch(console.log);
   }, [imageUrl]);
@@ -45,15 +47,20 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
     <div className="flex justify-center mt-4">
       <div className="relative">
         <img src={imageUrl} id="inputImage" alt="faces" width="500" height="auto" />
-        <div
-          className="face-area"
-          style={{
-            top: area.topRow,
-            right: area.rightCol,
-            bottom: area.bottomRow,
-            left: area.leftCol,
-          }}
-        ></div>
+        {areas.map((area) => {
+          return (
+            <div
+              key={area.topRow}
+              className="face-area"
+              style={{
+                top: area.topRow,
+                right: area.rightCol,
+                bottom: area.bottomRow,
+                left: area.leftCol,
+              }}
+            ></div>
+          );
+        })}
       </div>
     </div>
   );
