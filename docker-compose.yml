@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  findface:
+    container_name: findface
+    build: ./
+    command: npm start
+    working_dir: /usr/src/findface
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./:/usr/src/findface
