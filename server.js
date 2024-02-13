@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import bcrypt from 'bcrypt';
 import knex from 'knex';
+import morgan from 'morgan';
 
 import handleRegister from './src/controllers/register.js';
 import handleSignin from './src/controllers/signin.js';
@@ -12,12 +13,11 @@ import handleAPICall from './src/controllers/apicall.js';
 
 const db = knex({
   client: 'pg',
-  connection: {
-    connectionString: process.env.DATABASE_URL + '?sslmode=require',
-  },
+  connection: process.env.DATABASE_URL,
 });
 
 const app = express();
+app.use(morgan('combined'));
 app.use(bodyParser.json());
 app.use(cors());
 
