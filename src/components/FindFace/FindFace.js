@@ -21,7 +21,7 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
   };
 
   useEffect(() => {
-    fetch('https://findface.vercel.app/apicall', {
+    fetch('http://localhost:3001/apicall', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ input: imageUrl }),
@@ -29,7 +29,7 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
       .then((response) => response.json())
       .then((result) => {
         if (result) {
-          fetch('https://findface.vercel.app/image', {
+          fetch('http://localhost:3001/image', {
             method: 'put',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id: user.id }),

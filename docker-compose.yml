@@ -1,12 +1,26 @@
 version: '3.8'
 
 services:
-  findface:
+  backend:
     container_name: findface
     build: ./
-    command: npm start
+    command: npm run start-server
     working_dir: /usr/src/findface
+    environment:
+      DATABASE_URL: postgres://postgres:admin@localhost:5432/findface-docker
+      POSTGRES_PASSWORD: admin
+      PORT: 3001
+    links:
+      - postgres
     ports:
-      - '3000:3000'
+      - '3001:3001'
     volumes:
       - ./:/usr/src/findface
+      - /usr/src/findface/node_modules
+  postgres:
+    build: ./postgres
+    environment:
+      DATABASE_URL: postgres://postgres:admin@localhost:5432/findface-docker
+      POSTGRES_PASSWORD: admin
+    ports:
+      - '5432:5432'
