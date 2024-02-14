@@ -7,8 +7,7 @@ services:
     command: npm run start-server
     working_dir: /usr/src/findface
     environment:
-      DATABASE_URL: postgres://postgres:admin@localhost:5432/findface-docker
-      POSTGRES_PASSWORD: admin
+      DATABASE_URL: postgres://postgres:admin@postgres:5432/findface-docker
       PORT: 3001
     links:
       - postgres
@@ -20,7 +19,9 @@ services:
   postgres:
     build: ./postgres
     environment:
-      DATABASE_URL: postgres://postgres:admin@localhost:5432/findface-docker
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: admin
+      POSTGRES_DB: findface-docker
+      POSTGRES_HOST: postgres
     ports:
       - '5432:5432'

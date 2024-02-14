@@ -17,9 +17,9 @@ const db = knex({
 });
 
 const app = express();
-app.use(morgan('combined'));
 app.use(bodyParser.json());
 app.use(cors());
+app.use(morgan('tiny'));
 
 app.get('/', (req, resp) => resp.send('server is working'));
 app.post('/signin', (req, resp) => handleSignin(req, resp, db, bcrypt));
