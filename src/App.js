@@ -13,8 +13,8 @@ import './App.css';
 const App = () => {
   const [input, setInput] = useState('');
   const [imageUrl, setImageUrl] = useState('');
-  const [route, setRoute] = useState('signin');
-  const [isSignedIn, setIsSignedIn] = useState(false);
+  const [route, setRoute] = useState('home');
+  const [isSignedIn, setIsSignedIn] = useState(true);
   const [user, setUser] = useState({
     id: 0,
     name: '',
