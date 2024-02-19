@@ -1,13 +1,20 @@
+import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Fragment } from 'react';
 import { Menu, Transition } from '@headlessui/react';
- 
+
+import Modal from '../Modal/Modal.js';
+
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
- 
-const ProfileIcon = ({ onRouteChange }) => {
+
+const Profile = ({ onRouteChange }) => {
+  const [showModal, setShowModal] = useState(false);
+
   return (
     <div className="flex justify-center">
+      {showModal && createPortal(<Modal onClose={() => setShowModal(false)} />, document.body)}
       <Menu as="div" className="relative inline-block text-left">
         <div>
           <Menu.Button className="inline-flex w-full justify-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold text-gray-900">
@@ -46,6 +53,7 @@ const ProfileIcon = ({ onRouteChange }) => {
                       active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                       'block px-4 py-2 text-sm'
                     )}
+                    onClick={() => setShowModal(true)}
                   >
                     Account settings
                   </a>
@@ -72,4 +80,4 @@ const ProfileIcon = ({ onRouteChange }) => {
     </div>
   );
 };
-export default ProfileIcon;
+export default Profile;
