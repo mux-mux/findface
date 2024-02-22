@@ -13,8 +13,8 @@ import './App.css';
 const App = () => {
   const [input, setInput] = useState('');
   const [imageUrl, setImageUrl] = useState('');
-  const [route, setRoute] = useState('home');
-  const [isSignedIn, setIsSignedIn] = useState(true);
+  const [route, setRoute] = useState('signin');
+  const [isSignedIn, setIsSignedIn] = useState(false);
   const [user, setUser] = useState({
     id: 0,
     name: '',
@@ -79,7 +79,12 @@ const App = () => {
   return (
     <div className="App">
       <Background />
-      <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange} user={user} />
+      <Navigation
+        isSignedIn={isSignedIn}
+        onRouteChange={onRouteChange}
+        user={user}
+        loadUser={loadUser}
+      />
       {showHomeOrForm()}
     </div>
   );

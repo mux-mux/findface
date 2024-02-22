@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './Modal.css';
 
-const Modal = ({ onClose, user }) => {
+const Modal = ({ onClose, user, loadUser }) => {
   const [userUpdate, setUserUpdate] = useState({
     name: user.name,
     email: user.email,
@@ -11,17 +11,30 @@ const Modal = ({ onClose, user }) => {
   const onFormChange = (event) => {
     switch (event.target.name) {
       case 'name':
-        setUserUpdate({ ...userUpdate, name: event.target.value });
+        setUserUpdate({ ...user, name: event.target.value });
         break;
       case 'age':
-        setUserUpdate({ ...userUpdate, age: event.target.value });
+        setUserUpdate({ ...user, age: event.target.value });
         break;
       case 'email':
-        setUserUpdate({ ...userUpdate, email: event.target.value });
+        setUserUpdate({ ...user, email: event.target.value });
         break;
       default:
         return;
     }
+  };
+
+  const onProfileUpdate = (data) => {
+    fetch(`http://localhost:3000/profile/${user.id}`, {
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ formInput: data }),
+    })
+      .then((res) => {
+        onClose();
+        loadUser({ ...user, ...data });
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -92,6 +105,7 @@ const Modal = ({ onClose, user }) => {
             <div className="flex justify-around">
               <button
                 type="button"
+                onClick={() => onProfileUpdate(userUpdate)}
                 className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
               >
                 Save

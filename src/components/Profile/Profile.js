@@ -4,19 +4,21 @@ import { Fragment } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 
 import Modal from '../Modal/Modal.js';
-import { useRef } from 'react';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-const Profile = ({ onRouteChange, user }) => {
+const Profile = ({ onRouteChange, user, loadUser }) => {
   const [showModal, setShowModal] = useState(false);
 
   return (
     <div className="flex justify-center">
       {showModal &&
-        createPortal(<Modal onClose={() => setShowModal(false)} user={user} />, document.body)}
+        createPortal(
+          <Modal onClose={() => setShowModal(false)} user={user} loadUser={loadUser} />,
+          document.body
+        )}
       <Menu as="div" className="relative inline-block text-left">
         <div>
           <Menu.Button className="inline-flex w-full justify-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold text-gray-900">
@@ -50,7 +52,7 @@ const Profile = ({ onRouteChange, user }) => {
               <Menu.Item>
                 {({ active }) => (
                   <a
-                    href="#"
+                    href="#1"
                     className={classNames(
                       active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                       'block px-4 py-2 text-sm'
