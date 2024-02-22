@@ -19,6 +19,7 @@ const App = () => {
     id: 0,
     name: '',
     email: '',
+    age: 0,
     entries: 0,
     joined: '',
   });
@@ -28,6 +29,7 @@ const App = () => {
     setUser({
       id: userProfile.id,
       name: userProfile.name,
+      age: userProfile.age,
       email: userProfile.email,
       entries: userProfile.entries,
       joined: userProfile.joined,
@@ -77,7 +79,7 @@ const App = () => {
   return (
     <div className="App">
       <Background />
-      <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange} />
+      <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange} user={user} />
       {showHomeOrForm()}
     </div>
   );
