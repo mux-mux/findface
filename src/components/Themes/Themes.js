@@ -3,11 +3,11 @@ import React, { useEffect } from 'react';
 import './Themes.css';
 
 const Themes = () => {
-  const switchTheme = (event) => {
-    event.currentTarget.checked ? setTheme('theme-dark') : setTheme('theme-light');
-  };
-
   useEffect(() => {
+    const switchTheme = (event) => {
+      event.currentTarget.checked ? setTheme('theme-dark') : setTheme('theme-light');
+    };
+
     const themeSlider = document.querySelector('.themeCheckbox');
 
     const getTheme = () => {
