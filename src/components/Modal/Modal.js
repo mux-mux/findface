@@ -6,16 +6,24 @@ const Modal = ({ onClose, user, loadUser }) => {
   const [newAge, setNewAge] = useState(user.age || 0);
 
   const onProfileUpdate = () => {
-    fetch(`http://localhost:3001/profile/${user.id}`, {
-      method: "post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...user, age: newAge, email: newEmail }),
-    })
-      .then((res) => {
-        onClose();
-        loadUser({ ...user, age: newAge, email: newEmail });
+    if (newEmail !== user.email || newAge !== user.age) {
+      fetch(`http://localhost:3001/profile/${user.id}`, {
+        method: "post",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...user,
+          age: newAge,
+          email: newEmail,
+          oldEmail: user.email,
+          oldAge: user.age,
+        }),
       })
-      .catch((err) => console.log(err));
+        .then((res) => {
+          onClose();
+          loadUser({ ...user, age: newAge, email: newEmail });
+        })
+        .catch((err) => console.log(err));
+    }
   };
 
   const onRemoveDisabled = (e) => {
