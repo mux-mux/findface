@@ -1,6 +1,6 @@
 .modal {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
   background-color: var(--background-modal);
   position: absolute;
@@ -9,13 +9,26 @@
   top: 0;
   left: 0;
 }
-.modal-close {
-  position: absolute;
-  top: 40px;
-  right: 50px;
-}
 .profile {
   display: grid;
-  grid-template-columns: minmax(120px, 1fr) minmax(120px, 1fr);
+  grid-template-columns: minmax(120px, 1fr) minmax(120px, 2fr);
   column-gap: 20px;
+}
+.edit-profile {
+  display: inline-block;
+  padding: 0 5px;
+  transform: translateY(-5px) rotateY(180deg);
+  cursor: pointer;
+}
+.input-profile {
+  border: 0;
+  background-color: var(--background-modal);
+  padding: 0;
+  min-width: 150px;
+}
+
+@media screen and (max-width: 576px) {
+  .profile {
+    grid-template-columns: minmax(200px, 1fr);
+  }
 }

@@ -1,17 +1,44 @@
+import { useState } from "react";
 import "./Modal.css";
 
 const Modal = ({ onClose, user, loadUser }) => {
-  const onProfileUpdate = (data) => {
-    fetch(`http://localhost:3000/profile/${user.id}`, {
-      method: "post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ formInput: data }),
-    })
-      .then((res) => {
-        onClose();
-        loadUser({ ...user, ...data });
+  const [newEmail, setNewEmail] = useState(user.email);
+  const [newAge, setNewAge] = useState(user.age || 0);
+
+  const onProfileUpdate = () => {
+    if (newEmail !== user.email || newAge !== user.age) {
+      fetch(`http://localhost:3001/profile/${user.id}`, {
+        method: "post",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...user,
+          age: newAge,
+          email: newEmail,
+          oldEmail: user.email,
+          oldAge: user.age,
+        }),
       })
-      .catch((err) => console.log(err));
+        .then((res) => {
+          onClose();
+          loadUser({ ...user, age: newAge, email: newEmail });
+        })
+        .catch((err) => console.log(err));
+    }
+  };
+
+  const onRemoveDisabled = (e) => {
+    const parent = e.currentTarget.parentNode;
+    const childInput = parent.getElementsByClassName("input-profile");
+    childInput[0].removeAttribute("disabled");
+    childInput[0].focus();
+  };
+
+  const onSetEmail = (e) => setNewEmail(e.target.value);
+  const onSetAge = (e) => setNewAge(e.target.value);
+  const onSetDisabled = (e) => {
+    if ((e.type === "keydown" && e.key === "Enter") || e.type === "blur") {
+      e.target.setAttribute("disabled", "disabled");
+    }
   };
 
   return (
@@ -34,11 +61,39 @@ const Modal = ({ onClose, user, loadUser }) => {
             {user.name}
           </h2>
           <div className="profile">
-            <span>Submitted: </span> <span>{user.entries}</span>
-            <span>Age: </span> <span> {user.age}</span>
+            <span>Submitted: </span> <span>{`${user.entries} images`}</span>
+            <span>Age: </span>{" "}
+            <div className="flex">
+              <input
+                type="number"
+                value={newAge}
+                disabled
+                className="input-profile"
+                onChange={onSetAge}
+                onBlur={onSetDisabled}
+                onKeyDown={onSetDisabled}
+              />
+              <span className="edit-profile" onClick={onRemoveDisabled}>
+                &#9998;
+              </span>
+            </div>
             <span>Memeber since: </span>
             <span>{new Date(user.joined).toLocaleDateString()}</span>
-            <span>Email: </span> <span>{user.email} </span>
+            <span>Email: </span>{" "}
+            <div className="flex">
+              <input
+                type="email"
+                value={newEmail}
+                disabled
+                className="input-profile"
+                onChange={onSetEmail}
+                onBlur={onSetDisabled}
+                onKeyDown={onSetDisabled}
+              />
+              <span className="edit-profile" onClick={onRemoveDisabled}>
+                &#9998;
+              </span>
+            </div>
           </div>
         </div>
 
@@ -55,7 +110,7 @@ const Modal = ({ onClose, user, loadUser }) => {
             onClick={onClose}
             className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
           >
-            Close
+            Cancel
           </button>
         </div>
       </div>
