@@ -3,34 +3,35 @@ import "./Modal.css";
 
 const Modal = ({ onClose, user, loadUser }) => {
   const [newEmail, setNewEmail] = useState(user.email);
-  const [newAge, setNewAge] = useState(user.age);
+  const [newAge, setNewAge] = useState(user.age || 0);
 
-  const onProfileUpdate = (data) => {
-    fetch(`http://localhost:3000/profile/${user.id}`, {
+  const onProfileUpdate = () => {
+    fetch(`http://localhost:3001/profile/${user.id}`, {
       method: "post",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ formInput: data }),
+      body: JSON.stringify({ ...user, age: newAge, email: newEmail }),
     })
       .then((res) => {
         onClose();
-        loadUser({ ...user, ...data });
+        loadUser({ ...user, age: newAge, email: newEmail });
       })
       .catch((err) => console.log(err));
   };
 
-  const onClickRemoveInputDisabled = (e) => {
+  const onRemoveDisabled = (e) => {
     const parent = e.currentTarget.parentNode;
     const childInput = parent.getElementsByClassName("input-profile");
     childInput[0].removeAttribute("disabled");
     childInput[0].focus();
   };
 
-  const onChangeSetEmail = (e) => setNewEmail(e.target.value);
-  const onChangeSetAge = (e) => setNewAge(e.target.value);
-  const onBlurSetDisabled = (e) =>
-    e.target.setAttribute("disabled", "disabled");
-  const onEnterSetDisabled = (e) =>
-    e.key === "Enter" ? e.target.setAttribute("disabled", "disabled") : null;
+  const onSetEmail = (e) => setNewEmail(e.target.value);
+  const onSetAge = (e) => setNewAge(e.target.value);
+  const onSetDisabled = (e) => {
+    if ((e.type === "keydown" && e.key === "Enter") || e.type === "blur") {
+      e.target.setAttribute("disabled", "disabled");
+    }
+  };
 
   return (
     <div className="modal">
@@ -60,14 +61,11 @@ const Modal = ({ onClose, user, loadUser }) => {
                 value={newAge}
                 disabled
                 className="input-profile"
-                onChange={onChangeSetAge}
-                onBlur={onBlurSetDisabled}
-                onKeyDown={onEnterSetDisabled}
+                onChange={onSetAge}
+                onBlur={onSetDisabled}
+                onKeyDown={onSetDisabled}
               />
-              <span
-                className="edit-profile"
-                onClick={onClickRemoveInputDisabled}
-              >
+              <span className="edit-profile" onClick={onRemoveDisabled}>
                 &#9998;
               </span>
             </div>
@@ -80,14 +78,11 @@ const Modal = ({ onClose, user, loadUser }) => {
                 value={newEmail}
                 disabled
                 className="input-profile"
-                onChange={onChangeSetEmail}
-                onBlur={onBlurSetDisabled}
-                onKeyDown={onEnterSetDisabled}
+                onChange={onSetEmail}
+                onBlur={onSetDisabled}
+                onKeyDown={onSetDisabled}
               />
-              <span
-                className="edit-profile"
-                onClick={onClickRemoveInputDisabled}
-              >
+              <span className="edit-profile" onClick={onRemoveDisabled}>
                 &#9998;
               </span>
             </div>

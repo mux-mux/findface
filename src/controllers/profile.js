@@ -1,36 +1,33 @@
 const handleProfile = (req, res, db) => {
   const { id } = req.body;
 
-  db.select('*')
-    .from('users')
-    .where({
-      id: id,
-    })
+  db.select("*")
+    .from("users")
+    .where({ id })
     .then((user) => {
       if (user.length) {
         res.json(user[0]);
       } else {
-        res.status(400).json('Not found');
+        res.status(400).json("Not found");
       }
     })
-    .catch(() => res.status(400).json('DB Request error'));
+    .catch(() => res.status(400).json("DB Request error"));
 };
 
 const handleProfileUpdate = (req, res, db) => {
-  const { id } = req.body;
-  const { name, age, email } = req.body.formInput;
+  const { id, age, email } = req.body;
 
-  db('users')
+  db("users")
     .where({ id })
-    .update({ name, age, email })
-    .then((res) => {
-      if (res) {
-        res.json('success');
+    .update({ age, email })
+    .then((result) => {
+      if (result) {
+        res.json("update success");
       } else {
-        res.status(400).json('Unable to update');
+        res.status(400).json("Unable to update");
       }
     })
-    .catch((err) => res.status(400).json('error updating user profile'));
+    .catch(() => res.status(400).json("error updating user profile"));
 };
 
 export { handleProfile, handleProfileUpdate };
