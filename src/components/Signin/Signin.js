@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import Spinner from '../Spinner/Spinner.js';
+import React, { useState } from "react";
+import Spinner from "../Spinner/Spinner.js";
 
-import './Signin.css';
+import "./Signin.css";
 
 const Signin = ({ onRouteChange, loadUser }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const onEmailChange = (e) => setEmail(e.target.value);
@@ -14,16 +14,16 @@ const Signin = ({ onRouteChange, loadUser }) => {
   const onSubmitSignIn = (e) => {
     e.preventDefault();
     setLoading(true);
-    fetch('http://localhost:3001/signin', {
-      method: 'post',
-      headers: { 'Content-Type': 'application/json' },
+    fetch("http://localhost:3001/signin", {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email: email, password: password }),
     })
       .then((response) => response.json())
-      .then((user) => {
-        if (user.id) {
-          loadUser(user);
-          onRouteChange('home');
+      .then((data) => {
+        if (data.userId) {
+          loadUser(data);
+          onRouteChange("home");
         } else {
           setLoading(false);
         }
@@ -47,7 +47,10 @@ const Signin = ({ onRouteChange, loadUser }) => {
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form className="space-y-6" action="#" method="POST">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium leading-6">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium leading-6"
+            >
               Email address
             </label>
             <div className="mt-2">
@@ -65,7 +68,10 @@ const Signin = ({ onRouteChange, loadUser }) => {
 
           <div>
             <div className="flex items-center justify-between">
-              <label htmlFor="password" className="block text-sm font-medium leading-6">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium leading-6"
+              >
                 Password
               </label>
             </div>
@@ -100,7 +106,7 @@ const Signin = ({ onRouteChange, loadUser }) => {
           <a
             href="##"
             className="ml-1 font-semibold leading-6 hover:text-blue-500"
-            onClick={() => onRouteChange('register')}
+            onClick={() => onRouteChange("register")}
           >
             Register
           </a>
