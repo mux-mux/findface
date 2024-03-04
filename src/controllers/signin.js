@@ -1,4 +1,9 @@
 import jwt from "jsonwebtoken";
+import { createClient } from "redis";
+
+const client = await createClient({ url: process.env.REDIS_URL })
+  .on("error", (err) => console.log("Redis Client Error", err))
+  .connect();
 
 const signToken = (email) => {
   const jwtPayload = { email };
