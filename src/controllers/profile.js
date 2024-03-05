@@ -1,5 +1,5 @@
 const handleProfile = (req, res, db) => {
-  const { id } = req.body;
+  const { id } = req.params;
 
   db.select("*")
     .from("users")

@@ -13,12 +13,14 @@
     "clarifai": "^2.9.1",
     "cors": "^2.8.5",
     "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
     "knex": "^3.0.1",
     "morgan": "^1.10.0",
     "pg": "^8.11.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
+    "redis": "^4.6.13",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

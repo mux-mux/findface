@@ -6,7 +6,7 @@ import morgan from "morgan";
 import "dotenv/config";
 
 import handleRegister from "./src/controllers/register.js";
-import handleSignin from "./src/controllers/signin.js";
+import signinAuthentication from "./src/controllers/signin.js";
 import { handleProfile } from "./src/controllers/profile.js";
 import { handleProfileUpdate } from "./src/controllers/profile.js";
 import handleImage from "./src/controllers/image.js";
@@ -23,7 +23,7 @@ app.use(cors());
 app.use(morgan("tiny"));
 
 app.get("/", (req, resp) => resp.send("server is working"));
-app.post("/signin", (req, resp) => handleSignin(req, resp, db, bcrypt));
+app.post("/signin", (req, resp) => signinAuthentication(req, resp, db, bcrypt));
 app.post("/register", (req, resp) => handleRegister(req, resp, db, bcrypt));
 app.get("/profile/:id", (req, resp) => handleProfile(req, resp, db));
 app.post("/profile/:id", (req, resp) => handleProfileUpdate(req, resp, db));

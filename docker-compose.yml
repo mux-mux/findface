@@ -8,9 +8,11 @@ services:
     working_dir: /usr/src/findface
     environment:
       DATABASE_URL: postgres://postgres:admin@postgres:5432/findface-docker
+      REDIS_URL: redis://redis:6379
       PORT: 3001
     links:
       - postgres
+      - redis
     ports:
       - '3001:3001'
     volumes:
@@ -25,3 +27,7 @@ services:
       POSTGRES_HOST: postgres
     ports:
       - '5432:5432'
+  redis:
+    image: redis
+    ports:
+      - '6379:6379'

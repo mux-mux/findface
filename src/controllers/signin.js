@@ -1,28 +1,73 @@
+import jwt from "jsonwebtoken";
+import { createClient } from "redis";
+
+const redisClient = await createClient({ url: process.env.REDIS_URL })
+  .on("error", (err) => console.log("Redis Client Error", err))
+  .connect();
+
+const signToken = (email) => {
+  const jwtPayload = { email };
+  return jwt.sign(jwtPayload, process.env.JWTSECRET, { expiresIn: "2 days" });
+};
+const setToken = (key, value) => {
+  return Promise.resolve(redisClient.set(key, value));
+};
+
+const createSessions = async (user) => {
+  const { email, id } = user;
+  const token = signToken(email);
+  return await setToken(token, id)
+    .then(() => {
+      return { success: "true", userId: id, token };
+    })
+    .catch(console.log);
+};
+
 const handleSignin = (req, res, db, bcrypt) => {
   const { email, password } = req.body;
   if (!email || !password) {
-    return res.status(400).json('incorrect form data');
+    return Promise.reject("incorrect form data");
   }
 
-  db.select('email', 'hash')
-    .from('login')
-    .where('email', '=', email)
+  return db
+    .select("email", "hash")
+    .from("login")
+    .where("email", "=", email)
     .then((loginData) => {
       const isValid = bcrypt.compareSync(password, loginData[0].hash);
       if (isValid) {
         return db
-          .select('*')
-          .from('users')
-          .where('email', '=', email)
-          .then((user) => {
-            res.json(user[0]);
-          })
-          .catch(() => res.status(400).json('unable to get user'));
+          .select("*")
+          .from("users")
+          .where("email", "=", email)
+          .then((user) => user[0])
+          .catch(() => Promise.reject("unable to get user"));
       } else {
-        res.status(400).json('wrong credentials');
+        Promise.reject("wrong credentials");
       }
     })
-    .catch(() => res.status(400).json('wrong credentials'));
+    .catch(() => Promise.reject("wrong credentials"));
 };
 
-export default handleSignin;
+const getAuthTokenId = async (req, res) => {
+  const { authorization } = req.headers;
+  const reply = await redisClient.get(authorization);
+  res.json({ id: reply });
+  return reply;
+};
+
+const signinAuthentication = (req, res, db, bcrypt) => {
+  const { authorization } = req.headers;
+  return authorization
+    ? getAuthTokenId(req, res)
+    : handleSignin(req, res, db, bcrypt)
+        .then((data) => {
+          return data.id && data.email
+            ? createSessions(data)
+            : Promise.reject(data);
+        })
+        .then((session) => res.json(session))
+        .catch((err) => res.status(400).json("unable to get user"));
+};
+
+export default signinAuthentication;
