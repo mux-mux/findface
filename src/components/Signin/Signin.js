@@ -11,6 +11,10 @@ const Signin = ({ onRouteChange, loadUser }) => {
   const onEmailChange = (e) => setEmail(e.target.value);
   const onPasswordChange = (e) => setPassword(e.target.value);
 
+  const saveSessionToken = (token) => {
+    window.sessionStorage.setItem("token", token);
+  };
+
   const onSubmitSignIn = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -21,9 +25,22 @@ const Signin = ({ onRouteChange, loadUser }) => {
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data.userId) {
-          loadUser(data);
-          onRouteChange("home");
+        if (data.userId && data.success === "true") {
+          saveSessionToken(data.token);
+          fetch(`http://localhost:3001/profile/${data.userId}`, {
+            method: "get",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: data.token,
+            },
+          })
+            .then((resp) => resp.json())
+            .then((user) => {
+              if (user && user.email) {
+                loadUser(user);
+                onRouteChange("home");
+              }
+            });
         } else {
           setLoading(false);
         }
