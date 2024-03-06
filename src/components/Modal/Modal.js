@@ -9,7 +9,10 @@ const Modal = ({ onClose, user, loadUser }) => {
     if (newEmail !== user.email || newAge !== user.age) {
       fetch(`http://localhost:3001/profile/${user.id}`, {
         method: "post",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: window.sessionStorage.getItem("token"),
+        },
         body: JSON.stringify({
           ...user,
           age: newAge,
