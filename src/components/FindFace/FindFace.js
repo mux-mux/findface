@@ -1,45 +1,58 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from 'react';
-import './FindFace.css';
+import React, { useState, useEffect } from "react";
+import "./FindFace.css";
 
 const FindFace = ({ imageUrl, onUserDataChange, user }) => {
   const [areas, setFaceAreas] = useState([]);
 
   const getFaceAreas = (data) => {
-    return data.outputs[0].data.regions.map((face) => {
-      const clarifaiFace = face.region_info.bounding_box;
-      const image = document.getElementById('inputImage');
-      const width = Number(image.width);
-      const height = Number(image.height);
+    if (data && data.outputs) {
+      return data.outputs[0].data.regions.map((face) => {
+        const clarifaiFace = face.region_info.bounding_box;
+        const image = document.getElementById("inputImage");
+        const width = Number(image.width);
+        const height = Number(image.height);
 
-      return {
-        topRow: clarifaiFace.top_row * height,
-        rightCol: width - clarifaiFace.right_col * width,
-        bottomRow: height - clarifaiFace.bottom_row * height,
-        leftCol: clarifaiFace.left_col * width,
-      };
-    });
+        return {
+          topRow: clarifaiFace.top_row * height,
+          rightCol: width - clarifaiFace.right_col * width,
+          bottomRow: height - clarifaiFace.bottom_row * height,
+          leftCol: clarifaiFace.left_col * width,
+        };
+      });
+    }
+    return;
   };
 
   useEffect(() => {
-    fetch('http://localhost:3001/apicall', {
-      method: 'post',
-      headers: { 'Content-Type': 'application/json' },
+    fetch("http://localhost:3001/apicall", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: window.sessionStorage.getItem("token"),
+      },
       body: JSON.stringify({ input: imageUrl }),
     })
       .then((response) => response.json())
       .then((result) => {
         if (result) {
-          fetch('http://localhost:3001/image', {
-            method: 'put',
-            headers: { 'Content-Type': 'application/json' },
+          fetch("http://localhost:3001/image", {
+            method: "put",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: window.sessionStorage.getItem("token"),
+            },
             body: JSON.stringify({ id: user.id }),
           })
             .then((response) => response.json())
-            .then((count) => onUserDataChange(Object.assign({ ...user }, { entries: count })))
+            .then((count) =>
+              onUserDataChange(Object.assign({ ...user }, { entries: count })),
+            )
             .catch(console.log);
         }
-        setFaceAreas(getFaceAreas(result));
+        if (result && result !== "Unauthorized") {
+          setFaceAreas(getFaceAreas(result));
+        }
       })
       .catch(console.log);
   }, [imageUrl]);
@@ -47,7 +60,13 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
   return (
     <div className="flex justify-center mt-4">
       <div className="relative">
-        <img src={imageUrl} id="inputImage" alt="faces" width="500" height="auto" />
+        <img
+          src={imageUrl}
+          id="inputImage"
+          alt="faces"
+          width="500"
+          height="auto"
+        />
         {areas.map((area) => {
           return (
             <div
