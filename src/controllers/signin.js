@@ -70,4 +70,4 @@ const signinAuthentication = (req, res, db, bcrypt) => {
         .catch((err) => res.status(400).json("unable to get user"));
 };
 
-export { redisClient, signinAuthentication };
+export { redisClient, createSessions, signinAuthentication };

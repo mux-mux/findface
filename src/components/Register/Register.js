@@ -1,36 +1,49 @@
-import React, { useState } from 'react';
-import Spinner from '../Spinner/Spinner.js';
+import React, { useState } from "react";
+import Spinner from "../Spinner/Spinner.js";
+import Alert from "../Alert/Alert.js";
 
-import './Register.css';
+import "./Register.css";
 
 const Register = ({ onRouteChange, loadUser }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   const onEmailChange = (e) => setEmail(e.target.value);
   const onPasswordChange = (e) => setPassword(e.target.value);
   const onNameChange = (e) => setName(e.target.value);
 
+  const saveSessionToken = (token) => {
+    window.sessionStorage.setItem("token", token);
+  };
+
   const onSubmitRegister = (e) => {
     e.preventDefault();
     setLoading(true);
-    fetch('http://localhost:3001/register', {
-      method: 'post',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: name, email: email, password: password }),
+    fetch("http://localhost:3001/register", {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, password }),
     })
       .then((response) => response.json())
-      .then((user) => {
+      .then(({ user, data }) => {
         if (user.id) {
+          saveSessionToken(data.token);
           loadUser(user);
-          onRouteChange('home');
-        } else {
+          onRouteChange("home");
           setLoading(false);
         }
       })
-      .catch(console.log);
+      .catch((error) => {
+        setError(true);
+        setTimeout(() => {
+          setError(false);
+          setLoading(false);
+        }, 10000);
+        console.log(error);
+      });
   };
 
   return (
@@ -49,7 +62,10 @@ const Register = ({ onRouteChange, loadUser }) => {
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form className="space-y-6" action="#" method="POST">
           <div>
-            <label htmlFor="name" className="block text-sm font-medium leading-6">
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium leading-6"
+            >
               Name
             </label>
             <div className="mt-2">
@@ -66,7 +82,10 @@ const Register = ({ onRouteChange, loadUser }) => {
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-sm font-medium leading-6">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium leading-6"
+            >
               Email address
             </label>
             <div className="mt-2">
@@ -84,7 +103,10 @@ const Register = ({ onRouteChange, loadUser }) => {
 
           <div>
             <div className="flex items-center justify-between">
-              <label htmlFor="password" className="block text-sm font-medium leading-6">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium leading-6"
+              >
                 Password
               </label>
             </div>
@@ -112,19 +134,19 @@ const Register = ({ onRouteChange, loadUser }) => {
           </div>
         </form>
 
-        {loading ? <Spinner /> : null}
-
         <p className="mt-10 text-center text-sm">
           Already a member?
           <a
             href="##"
             className="ml-1 font-semibold leading-6 hover:text-blue-500"
-            onClick={() => onRouteChange('signin')}
+            onClick={() => onRouteChange("signin")}
           >
             Signin
           </a>
         </p>
       </div>
+      {loading ? <Spinner /> : null}
+      {error ? <Alert onClose={() => setError(false)} /> : null}
     </div>
   );
 };

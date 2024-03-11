@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Spinner from "../Spinner/Spinner.js";
+import Alert from "../Alert/Alert.js";
 
 import "./Signin.css";
 
@@ -7,6 +8,7 @@ const Signin = ({ onRouteChange, loadUser }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   const onEmailChange = (e) => setEmail(e.target.value);
   const onPasswordChange = (e) => setPassword(e.target.value);
@@ -39,13 +41,19 @@ const Signin = ({ onRouteChange, loadUser }) => {
               if (user && user.email) {
                 loadUser(user);
                 onRouteChange("home");
+                setLoading(false);
               }
             });
-        } else {
-          setLoading(false);
         }
       })
-      .catch(console.log);
+      .catch((error) => {
+        setError(true);
+        setTimeout(() => {
+          setError(false);
+          setLoading(false);
+        }, 10000);
+        console.log(error);
+      });
   };
 
   return (
@@ -116,8 +124,6 @@ const Signin = ({ onRouteChange, loadUser }) => {
           </div>
         </form>
 
-        {loading ? <Spinner /> : null}
-
         <p className="mt-10 text-center text-sm">
           Not a member?
           <a
@@ -129,6 +135,8 @@ const Signin = ({ onRouteChange, loadUser }) => {
           </a>
         </p>
       </div>
+      {loading ? <Spinner /> : null}
+      {error ? <Alert onClose={() => setError(false)} /> : null}
     </div>
   );
 };
