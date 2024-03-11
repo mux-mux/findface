@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Spinner from "../Spinner/Spinner.js";
+import Alert from "../Alert/Alert.js";
 
 import "./Register.css";
 
@@ -8,6 +9,7 @@ const Register = ({ onRouteChange, loadUser }) => {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   const onEmailChange = (e) => setEmail(e.target.value);
   const onPasswordChange = (e) => setPassword(e.target.value);
@@ -31,11 +33,17 @@ const Register = ({ onRouteChange, loadUser }) => {
           saveSessionToken(data.token);
           loadUser(user);
           onRouteChange("home");
-        } else {
           setLoading(false);
         }
       })
-      .catch(console.log);
+      .catch((error) => {
+        setError(true);
+        setTimeout(() => {
+          setError(false);
+          setLoading(false);
+        }, 10000);
+        console.log(error);
+      });
   };
 
   return (
@@ -126,8 +134,6 @@ const Register = ({ onRouteChange, loadUser }) => {
           </div>
         </form>
 
-        {loading ? <Spinner /> : null}
-
         <p className="mt-10 text-center text-sm">
           Already a member?
           <a
@@ -139,6 +145,8 @@ const Register = ({ onRouteChange, loadUser }) => {
           </a>
         </p>
       </div>
+      {loading ? <Spinner /> : null}
+      {error ? <Alert onClose={() => setError(false)} /> : null}
     </div>
   );
 };

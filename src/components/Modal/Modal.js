@@ -1,12 +1,18 @@
 import { useState } from "react";
+import Alert from "../Alert/Alert.js";
+import Spinner from "../Spinner/Spinner.js";
 import "./Modal.css";
 
 const Modal = ({ onClose, user, loadUser }) => {
   const [newEmail, setNewEmail] = useState(user.email);
   const [newAge, setNewAge] = useState(user.age || 0);
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const onProfileUpdate = () => {
     if (newEmail !== user.email || newAge !== user.age) {
+      setLoading(true);
       fetch(`http://localhost:3001/profile/${user.id}`, {
         method: "post",
         headers: {
@@ -21,11 +27,25 @@ const Modal = ({ onClose, user, loadUser }) => {
           oldAge: user.age,
         }),
       })
-        .then((res) => {
-          onClose();
-          loadUser({ ...user, age: newAge, email: newEmail });
+        .then((resp) => {
+          if (resp.status === 200) {
+            setSuccess(true);
+            setLoading(false);
+            setTimeout(() => {
+              setSuccess(false);
+              onClose();
+              loadUser({ ...user, age: newAge, email: newEmail });
+            }, 2000);
+          }
         })
-        .catch((err) => console.log(err));
+        .catch((error) => {
+          setError(true);
+          setTimeout(() => {
+            setError(false);
+            setLoading(false);
+          }, 10000);
+          console.log(error);
+        });
     }
   };
 
@@ -46,7 +66,7 @@ const Modal = ({ onClose, user, loadUser }) => {
 
   return (
     <div className="modal">
-      <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+      <div className="w-min mx-auto min-h-full px-6 py-12 lg:px-8">
         <div className="mx-auto my-8 text-slate-600">
           <svg
             className="w-14 h-14 text-gray-400 -left-1 m-auto"
@@ -116,6 +136,11 @@ const Modal = ({ onClose, user, loadUser }) => {
             Cancel
           </button>
         </div>
+        {loading ? <Spinner /> : null}
+        {error ? <Alert onClose={() => setError(false)} /> : null}
+        {success ? (
+          <Alert status="success" onClose={() => setSuccess(false)} />
+        ) : null}
       </div>
     </div>
   );
