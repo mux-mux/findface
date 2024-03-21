@@ -19,6 +19,14 @@ const Register = ({ onRouteChange, loadUser }) => {
     window.sessionStorage.setItem("token", token);
   };
 
+  const showError = () => {
+    setError(true);
+    setTimeout(() => {
+      setError(false);
+      setLoading(false);
+    }, 10000);
+  };
+
   const onSubmitRegister = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -34,14 +42,12 @@ const Register = ({ onRouteChange, loadUser }) => {
           loadUser(user);
           onRouteChange("home");
           setLoading(false);
+        } else {
+          showError();
         }
       })
       .catch((error) => {
-        setError(true);
-        setTimeout(() => {
-          setError(false);
-          setLoading(false);
-        }, 10000);
+        showError();
         console.log(error);
       });
   };

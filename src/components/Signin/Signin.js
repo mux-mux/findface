@@ -17,6 +17,14 @@ const Signin = ({ onRouteChange, loadUser }) => {
     window.sessionStorage.setItem("token", token);
   };
 
+  const showError = () => {
+    setError(true);
+    setTimeout(() => {
+      setError(false);
+      setLoading(false);
+    }, 10000);
+  };
+
   const onSubmitSignIn = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -44,14 +52,12 @@ const Signin = ({ onRouteChange, loadUser }) => {
                 setLoading(false);
               }
             });
+        } else {
+          showError();
         }
       })
       .catch((error) => {
-        setError(true);
-        setTimeout(() => {
-          setError(false);
-          setLoading(false);
-        }, 10000);
+        showError();
         console.log(error);
       });
   };
