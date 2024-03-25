@@ -10,19 +10,21 @@ import Background from "./components/Background/Background.js";
 
 import "./App.css";
 
+const initialUserState = {
+  id: 0,
+  name: "",
+  email: "",
+  age: 0,
+  entries: 0,
+  joined: "",
+};
+
 const App = () => {
   const [input, setInput] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [route, setRoute] = useState("signin");
   const [isSignedIn, setIsSignedIn] = useState(false);
-  const [user, setUser] = useState({
-    id: 0,
-    name: "",
-    email: "",
-    age: 0,
-    entries: 0,
-    joined: "",
-  });
+  const [user, setUser] = useState(initialUserState);
 
   useEffect(() => {
     const token = window.sessionStorage.getItem("token");
@@ -81,6 +83,7 @@ const App = () => {
   const onRouteChange = (route) => {
     if (route === "signout") {
       setIsSignedIn(false);
+      setUser(initialUserState);
       window.sessionStorage.removeItem("token");
     } else if (route === "home") {
       setIsSignedIn(true);
