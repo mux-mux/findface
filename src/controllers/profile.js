@@ -15,9 +15,9 @@ const handleProfile = (req, res, db) => {
 };
 
 const handleProfileUpdate = (req, res, db) => {
-  const { id, age, email, oldEmail, oldAge } = req.body;
+  const { id, age, email, prevEmail, prevAge } = req.body;
 
-  if (age !== oldAge && email === oldEmail) {
+  if (age !== prevAge && email === prevEmail) {
     db("users")
       .where({ id })
       .update({ age })
@@ -32,7 +32,7 @@ const handleProfileUpdate = (req, res, db) => {
   } else {
     db.transaction((trx) => {
       trx("login")
-        .where({ email: oldEmail })
+        .where({ email: prevEmail })
         .update({ email })
         .returning("email")
         .then((loginEmail) => {

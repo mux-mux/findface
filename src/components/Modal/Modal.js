@@ -23,8 +23,8 @@ const Modal = ({ onClose, user, loadUser }) => {
           ...user,
           age: newAge,
           email: newEmail,
-          oldEmail: user.email,
-          oldAge: user.age,
+          prevEmail: user.email,
+          prevAge: user.age,
         }),
       })
         .then((resp) => {
