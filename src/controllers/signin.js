@@ -13,6 +13,13 @@ const setToken = (key, value) => {
   return Promise.resolve(redisClient.set(key, value));
 };
 
+const getToken = async (req, res) => {
+  const { authorization } = req.headers;
+  const reply = await redisClient.get(authorization);
+  res.json({ id: reply });
+  return reply;
+};
+
 const createSessions = async (user) => {
   const { email, id } = user;
   const token = signToken(email);
@@ -22,6 +29,7 @@ const createSessions = async (user) => {
     })
     .catch(console.log);
 };
+
 
 const handleSignin = (req, res, db, bcrypt) => {
   const { email, password } = req.body;
@@ -49,17 +57,11 @@ const handleSignin = (req, res, db, bcrypt) => {
     .catch(() => Promise.reject("wrong credentials"));
 };
 
-const getAuthTokenId = async (req, res) => {
-  const { authorization } = req.headers;
-  const reply = await redisClient.get(authorization);
-  res.json({ id: reply });
-  return reply;
-};
 
-const signinAuthentication = (req, res, db, bcrypt) => {
+const signinAuth = (req, res, db, bcrypt) => {
   const { authorization } = req.headers;
   return authorization
-    ? getAuthTokenId(req, res)
+    ? getToken(req, res)
     : handleSignin(req, res, db, bcrypt)
         .then((data) => {
           return data.id && data.email
@@ -70,4 +72,4 @@ const signinAuthentication = (req, res, db, bcrypt) => {
         .catch((err) => res.status(400).json("unable to get user"));
 };
 
-export { redisClient, createSessions, signinAuthentication };
+export { redisClient, createSessions, signinAuth };
