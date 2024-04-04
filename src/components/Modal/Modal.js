@@ -13,7 +13,7 @@ const Modal = ({ onClose, user, loadUser }) => {
   const onProfileUpdate = () => {
     if (newEmail !== user.email || newAge !== user.age) {
       setLoading(true);
-      fetch(`http://localhost:3001/profile/${user.id}`, {
+      fetch(`https://findface.vercel.app/profile/${user.id}`, {
         method: "post",
         headers: {
           "Content-Type": "application/json",

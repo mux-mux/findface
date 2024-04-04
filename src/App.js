@@ -29,7 +29,7 @@ const App = () => {
   useEffect(() => {
     const token = window.sessionStorage.getItem("token");
     if (token) {
-      fetch("http://localhost:3001/signin", {
+      fetch("https://findface.vercel.app/signin", {
         method: "post",
         headers: {
           "Content-Type": "application/json",
@@ -39,7 +39,7 @@ const App = () => {
         .then((resp) => resp.json())
         .then((data) => {
           if (data && data.id) {
-            fetch(`http://localhost:3001/profile/${data.id}`, {
+            fetch(`https://findface.vercel.app/profile/${data.id}`, {
               method: "get",
               headers: {
                 "Content-Type": "application/json",

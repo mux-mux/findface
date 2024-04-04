@@ -20,7 +20,7 @@ const Signin = ({ onRouteChange, loadUser }) => {
   const onSubmitSignIn = (e) => {
     e.preventDefault();
     setLoading(true);
-    fetch("http://localhost:3001/signin", {
+    fetch("https://findface.vercel.app/signin", {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email: email, password: password }),
@@ -29,7 +29,7 @@ const Signin = ({ onRouteChange, loadUser }) => {
       .then((data) => {
         if (data.userId && data.success === "true") {
           saveSessionToken(data.token);
-          fetch(`http://localhost:3001/profile/${data.userId}`, {
+          fetch(`https://findface.vercel.app/profile/${data.userId}`, {
             method: "get",
             headers: {
               "Content-Type": "application/json",
