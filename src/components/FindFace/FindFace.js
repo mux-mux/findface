@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from "react";
-import "./FindFace.css";
+import React, { useState, useEffect } from 'react';
+import './FindFace.css';
 
 const FindFace = ({ imageUrl, onUserDataChange, user }) => {
   const [areas, setFaceAreas] = useState([]);
@@ -9,7 +9,7 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
     if (data && data.outputs) {
       return data.outputs[0].data.regions.map((face) => {
         const clarifaiFace = face.region_info.bounding_box;
-        const image = document.getElementById("inputImage");
+        const image = document.getElementById('inputImage');
         const width = Number(image.width);
         const height = Number(image.height);
 
@@ -25,32 +25,30 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
   };
 
   useEffect(() => {
-    fetch("https://findface.vercel.app/apicall", {
-      method: "post",
+    fetch('http://localhost:3001/apicall', {
+      method: 'post',
       headers: {
-        "Content-Type": "application/json",
-        Authorization: window.sessionStorage.getItem("token"),
+        'Content-Type': 'application/json',
+        Authorization: window.sessionStorage.getItem('token'),
       },
       body: JSON.stringify({ input: imageUrl }),
     })
       .then((response) => response.json())
       .then((result) => {
         if (result) {
-          fetch("https://findface.vercel.app/image", {
-            method: "put",
+          fetch('http://localhost:3001/image', {
+            method: 'put',
             headers: {
-              "Content-Type": "application/json",
-              Authorization: window.sessionStorage.getItem("token"),
+              'Content-Type': 'application/json',
+              Authorization: window.sessionStorage.getItem('token'),
             },
             body: JSON.stringify({ id: user.id }),
           })
             .then((response) => response.json())
-            .then((count) =>
-              onUserDataChange(Object.assign({ ...user }, { entries: count })),
-            )
+            .then((count) => onUserDataChange(Object.assign({ ...user }, { entries: count })))
             .catch(console.log);
         }
-        if (result && result !== "Unauthorized") {
+        if (result && result !== 'Unauthorized') {
           setFaceAreas(getFaceAreas(result));
         }
       })
@@ -60,13 +58,7 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
   return (
     <div className="flex justify-center mt-4">
       <div className="relative">
-        <img
-          src={imageUrl}
-          id="inputImage"
-          alt="faces"
-          width="500"
-          height="auto"
-        />
+        <img src={imageUrl} id="inputImage" alt="faces" width="500" height="auto" />
         {areas.map((area) => {
           return (
             <div

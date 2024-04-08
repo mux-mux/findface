@@ -1,7 +1,7 @@
-import { useState } from "react";
-import Alert from "../Alert/Alert.js";
-import Spinner from "../Spinner/Spinner.js";
-import "./Modal.css";
+import { useState } from 'react';
+import Alert from '../Alert/Alert.js';
+import Spinner from '../Spinner/Spinner.js';
+import './Modal.css';
 
 const Modal = ({ onClose, user, loadUser }) => {
   const [newEmail, setNewEmail] = useState(user.email);
@@ -13,11 +13,11 @@ const Modal = ({ onClose, user, loadUser }) => {
   const onProfileUpdate = () => {
     if (newEmail !== user.email || newAge !== user.age) {
       setLoading(true);
-      fetch(`https://findface.vercel.app/profile/${user.id}`, {
-        method: "post",
+      fetch(`http://localhost:3001/profile/${user.id}`, {
+        method: 'post',
         headers: {
-          "Content-Type": "application/json",
-          Authorization: window.sessionStorage.getItem("token"),
+          'Content-Type': 'application/json',
+          Authorization: window.sessionStorage.getItem('token'),
         },
         body: JSON.stringify({
           ...user,
@@ -51,16 +51,16 @@ const Modal = ({ onClose, user, loadUser }) => {
 
   const onRemoveDisabled = (e) => {
     const parent = e.currentTarget.parentNode;
-    const childInput = parent.getElementsByClassName("input-profile");
-    childInput[0].removeAttribute("disabled");
+    const childInput = parent.getElementsByClassName('input-profile');
+    childInput[0].removeAttribute('disabled');
     childInput[0].focus();
   };
 
   const onSetEmail = (e) => setNewEmail(e.target.value);
   const onSetAge = (e) => setNewAge(e.target.value);
   const onSetDisabled = (e) => {
-    if ((e.type === "keydown" && e.key === "Enter") || e.type === "blur") {
-      e.target.setAttribute("disabled", "disabled");
+    if ((e.type === 'keydown' && e.key === 'Enter') || e.type === 'blur') {
+      e.target.setAttribute('disabled', 'disabled');
     }
   };
 
@@ -74,18 +74,12 @@ const Modal = ({ onClose, user, loadUser }) => {
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <path
-              fillRule="evenodd"
-              d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-              clipRule="evenodd"
-            ></path>
+            <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd"></path>
           </svg>
-          <h2 className="my-8 text-center text-2xl font-bold leading-9 tracking-tight">
-            {user.name}
-          </h2>
+          <h2 className="my-8 text-center text-2xl font-bold leading-9 tracking-tight">{user.name}</h2>
           <div className="profile">
             <span>Submitted: </span> <span>{`${user.entries} images`}</span>
-            <span>Age: </span>{" "}
+            <span>Age: </span>{' '}
             <div className="flex">
               <input
                 type="number"
@@ -102,7 +96,7 @@ const Modal = ({ onClose, user, loadUser }) => {
             </div>
             <span>Memeber since: </span>
             <span>{new Date(user.joined).toLocaleDateString()}</span>
-            <span>Email: </span>{" "}
+            <span>Email: </span>{' '}
             <div className="flex">
               <input
                 type="email"
@@ -138,9 +132,7 @@ const Modal = ({ onClose, user, loadUser }) => {
         </div>
         {loading ? <Spinner /> : null}
         {error ? <Alert onClose={() => setError(false)} /> : null}
-        {success ? (
-          <Alert status="success" onClose={() => setSuccess(false)} />
-        ) : null}
+        {success ? <Alert status="success" onClose={() => setSuccess(false)} /> : null}
       </div>
     </div>
   );

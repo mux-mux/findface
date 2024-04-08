@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import Spinner from "../Spinner/Spinner.js";
-import Alert from "../Alert/Alert.js";
+import React, { useState } from 'react';
+import Spinner from '../Spinner/Spinner.js';
+import Alert from '../Alert/Alert.js';
 
-import "./Signin.css";
+import './Signin.css';
 
 const Signin = ({ onRouteChange, loadUser }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
@@ -14,25 +14,25 @@ const Signin = ({ onRouteChange, loadUser }) => {
   const onPasswordChange = (e) => setPassword(e.target.value);
 
   const saveSessionToken = (token) => {
-    window.sessionStorage.setItem("token", token);
+    window.sessionStorage.setItem('token', token);
   };
 
   const onSubmitSignIn = (e) => {
     e.preventDefault();
     setLoading(true);
-    fetch("https://findface.vercel.app/signin", {
-      method: "post",
-      headers: { "Content-Type": "application/json" },
+    fetch('http://localhost:3001/signin', {
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: email, password: password }),
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data.userId && data.success === "true") {
+        if (data.userId && data.success === 'true') {
           saveSessionToken(data.token);
-          fetch(`https://findface.vercel.app/profile/${data.userId}`, {
-            method: "get",
+          fetch(`http://localhost:3001/profile/${data.userId}`, {
+            method: 'get',
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
               Authorization: data.token,
             },
           })
@@ -40,7 +40,7 @@ const Signin = ({ onRouteChange, loadUser }) => {
             .then((user) => {
               if (user && user.email) {
                 loadUser(user);
-                onRouteChange("home");
+                onRouteChange('home');
                 setLoading(false);
               }
             });
@@ -64,18 +64,13 @@ const Signin = ({ onRouteChange, loadUser }) => {
           src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
           alt="Your Company"
         />
-        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight">
-          Sign in to your account
-        </h2>
+        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight">Sign in to your account</h2>
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form className="space-y-6" action="#" method="POST">
           <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium leading-6"
-            >
+            <label htmlFor="email" className="block text-sm font-medium leading-6">
               Email address
             </label>
             <div className="mt-2">
@@ -93,10 +88,7 @@ const Signin = ({ onRouteChange, loadUser }) => {
 
           <div>
             <div className="flex items-center justify-between">
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium leading-6"
-              >
+              <label htmlFor="password" className="block text-sm font-medium leading-6">
                 Password
               </label>
             </div>
@@ -129,7 +121,7 @@ const Signin = ({ onRouteChange, loadUser }) => {
           <a
             href="##"
             className="ml-1 font-semibold leading-6 hover:text-blue-500"
-            onClick={() => onRouteChange("register")}
+            onClick={() => onRouteChange('register')}
           >
             Register
           </a>

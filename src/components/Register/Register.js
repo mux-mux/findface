@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import Spinner from "../Spinner/Spinner.js";
-import Alert from "../Alert/Alert.js";
+import React, { useState } from 'react';
+import Spinner from '../Spinner/Spinner.js';
+import Alert from '../Alert/Alert.js';
 
-import "./Register.css";
+import './Register.css';
 
 const Register = ({ onRouteChange, loadUser }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
@@ -16,15 +16,15 @@ const Register = ({ onRouteChange, loadUser }) => {
   const onNameChange = (e) => setName(e.target.value);
 
   const saveSessionToken = (token) => {
-    window.sessionStorage.setItem("token", token);
+    window.sessionStorage.setItem('token', token);
   };
 
   const onSubmitRegister = (e) => {
     e.preventDefault();
     setLoading(true);
-    fetch("https://findface.vercel.app/register", {
-      method: "post",
-      headers: { "Content-Type": "application/json" },
+    fetch('http://localhost:3001/register', {
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email, password }),
     })
       .then((response) => response.json())
@@ -32,7 +32,7 @@ const Register = ({ onRouteChange, loadUser }) => {
         if (user.id) {
           saveSessionToken(data.token);
           loadUser(user);
-          onRouteChange("home");
+          onRouteChange('home');
           setLoading(false);
         }
       })
@@ -54,18 +54,13 @@ const Register = ({ onRouteChange, loadUser }) => {
           src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
           alt="Your Company"
         />
-        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight">
-          Register your account
-        </h2>
+        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight">Register your account</h2>
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form className="space-y-6" action="#" method="POST">
           <div>
-            <label
-              htmlFor="name"
-              className="block text-sm font-medium leading-6"
-            >
+            <label htmlFor="name" className="block text-sm font-medium leading-6">
               Name
             </label>
             <div className="mt-2">
@@ -82,10 +77,7 @@ const Register = ({ onRouteChange, loadUser }) => {
           </div>
 
           <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium leading-6"
-            >
+            <label htmlFor="email" className="block text-sm font-medium leading-6">
               Email address
             </label>
             <div className="mt-2">
@@ -103,10 +95,7 @@ const Register = ({ onRouteChange, loadUser }) => {
 
           <div>
             <div className="flex items-center justify-between">
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium leading-6"
-              >
+              <label htmlFor="password" className="block text-sm font-medium leading-6">
                 Password
               </label>
             </div>
@@ -139,7 +128,7 @@ const Register = ({ onRouteChange, loadUser }) => {
           <a
             href="##"
             className="ml-1 font-semibold leading-6 hover:text-blue-500"
-            onClick={() => onRouteChange("signin")}
+            onClick={() => onRouteChange('signin')}
           >
             Signin
           </a>
