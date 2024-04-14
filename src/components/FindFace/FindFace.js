@@ -29,7 +29,7 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: window.sessionStorage.getItem('token'),
+        Authorization: window.localStorage.getItem('token'),
       },
       body: JSON.stringify({ input: imageUrl }),
     })
@@ -40,7 +40,7 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
             method: 'put',
             headers: {
               'Content-Type': 'application/json',
-              Authorization: window.sessionStorage.getItem('token'),
+              Authorization: window.localStorage.getItem('token'),
             },
             body: JSON.stringify({ id: user.id }),
           })

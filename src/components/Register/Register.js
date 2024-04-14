@@ -16,7 +16,7 @@ const Register = ({ onRouteChange, loadUser }) => {
   const onNameChange = (e) => setName(e.target.value);
 
   const saveSessionToken = (token) => {
-    window.sessionStorage.setItem('token', token);
+    window.localStorage.setItem('token', token);
   };
 
   const onSubmitRegister = (e) => {

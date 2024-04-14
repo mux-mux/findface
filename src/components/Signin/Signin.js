@@ -14,7 +14,7 @@ const Signin = ({ onRouteChange, loadUser }) => {
   const onPasswordChange = (e) => setPassword(e.target.value);
 
   const saveSessionToken = (token) => {
-    window.sessionStorage.setItem('token', token);
+    window.localStorage.setItem('token', token);
   };
 
   const onSubmitSignIn = (e) => {
@@ -23,7 +23,7 @@ const Signin = ({ onRouteChange, loadUser }) => {
     fetch('http://localhost:3001/signin', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: email, password: password }),
+      body: JSON.stringify({ email, password }),
     })
       .then((response) => response.json())
       .then((data) => {

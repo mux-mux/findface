@@ -19,7 +19,7 @@ const Modal = ({ onClose }) => {
         method: 'post',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: window.sessionStorage.getItem('token'),
+          Authorization: window.localStorage.getItem('token'),
         },
         body: JSON.stringify({
           ...user,

@@ -29,7 +29,7 @@ const App = () => {
   const [user, setUser] = useState(initialUserState);
 
   useEffect(() => {
-    const token = window.sessionStorage.getItem('token');
+    const token = window.localStorage.getItem('token');
     if (token) {
       fetch('http://localhost:3001/signin', {
         method: 'post',
@@ -86,7 +86,7 @@ const App = () => {
     if (route === 'signout') {
       setIsSignedIn(false);
       setUser(initialUserState);
-      window.sessionStorage.removeItem('token');
+      window.localStorage.removeItem('token');
     } else if (route === 'home') {
       setIsSignedIn(true);
     }
