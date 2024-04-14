@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import Alert from '../Alert/Alert.js';
 import Spinner from '../Spinner/Spinner.js';
+import { UserContext } from '../../App.js';
 import './Modal.css';
 
-const Modal = ({ onClose, user, loadUser }) => {
+const Modal = ({ onClose }) => {
+  const { user, loadUser } = useContext(UserContext);
   const [newEmail, setNewEmail] = useState(user.email);
   const [newAge, setNewAge] = useState(user.age || 0);
   const [error, setError] = useState(false);

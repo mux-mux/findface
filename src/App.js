@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createContext } from 'react';
 
 import Navigation from './components/Navigation/Navigation.js';
 import ImageForm from './components/ImageForm/ImageForm.js';
@@ -18,6 +18,8 @@ const initialUserState = {
   entries: 0,
   joined: '',
 };
+
+export const UserContext = createContext(null);
 
 const App = () => {
   const [input, setInput] = useState('');
@@ -112,7 +114,9 @@ const App = () => {
   return (
     <div className="App">
       <Background />
-      <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange} user={user} loadUser={loadUser} />
+      <UserContext.Provider value={{ user, loadUser }}>
+        <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange} />
+      </UserContext.Provider>
       {showHomeOrForm()}
     </div>
   );

@@ -9,16 +9,12 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-const Profile = ({ onRouteChange, user, loadUser }) => {
+const Profile = ({ onRouteChange }) => {
   const [showModal, setShowModal] = useState(false);
 
   return (
     <div className="flex justify-center">
-      {showModal &&
-        createPortal(
-          <Modal onClose={() => setShowModal(false)} user={user} loadUser={loadUser} />,
-          document.body
-        )}
+      {showModal && createPortal(<Modal onClose={() => setShowModal(false)} />, document.body)}
       <Menu as="div" className="relative inline-block text-left">
         <div>
           <Menu.Button className="inline-flex w-full justify-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold text-gray-900">
