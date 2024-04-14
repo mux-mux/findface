@@ -30,35 +30,45 @@ const App = () => {
 
   useEffect(() => {
     const token = window.localStorage.getItem('token');
-    if (token) {
-      fetch('http://localhost:3001/signin', {
-        method: 'post',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: token,
-        },
-      })
-        .then((resp) => resp.json())
-        .then((data) => {
+
+    const getUser = async () => {
+      if (token) {
+        try {
+          const response = await fetch('http://localhost:3001/signin', {
+            method: 'post',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: token,
+            },
+          });
+          const data = await response.json();
+
           if (data && data.id) {
-            fetch(`http://localhost:3001/profile/${data.id}`, {
-              method: 'get',
-              headers: {
-                'Content-Type': 'application/json',
-                Authorization: token,
-              },
-            })
-              .then((resp) => resp.json())
-              .then((user) => {
-                if (user && user.email) {
-                  loadUser(user);
-                  onRouteChange('home');
-                }
+            try {
+              const profile = await fetch(`http://localhost:3001/profile/${data.id}`, {
+                method: 'get',
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: token,
+                },
               });
+              const profileData = await profile.json();
+
+              if (profileData && profileData.email) {
+                loadUser(profileData);
+                onRouteChange('home');
+              }
+            } catch (error) {
+              console.log(error);
+            }
           }
-        })
-        .catch(console.log);
-    }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    };
+
+    getUser();
   }, []);
 
   const loadUser = (userProfile) => {

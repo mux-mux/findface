@@ -25,34 +25,42 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
   };
 
   useEffect(() => {
-    fetch('http://localhost:3001/apicall', {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: window.localStorage.getItem('token'),
-      },
-      body: JSON.stringify({ input: imageUrl }),
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        if (result) {
-          fetch('http://localhost:3001/image', {
-            method: 'put',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: window.localStorage.getItem('token'),
-            },
-            body: JSON.stringify({ id: user.id }),
-          })
-            .then((response) => response.json())
-            .then((count) => onUserDataChange(Object.assign({ ...user }, { entries: count })))
-            .catch(console.log);
-        }
+    const apiCallSetArea = async () => {
+      try {
+        const response = await fetch('http://localhost:3001/apicall', {
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: window.localStorage.getItem('token'),
+          },
+          body: JSON.stringify({ input: imageUrl }),
+        });
+        const result = await response.json();
+
         if (result && result !== 'Unauthorized') {
-          setFaceAreas(getFaceAreas(result));
+          try {
+            const count = await fetch('http://localhost:3001/image', {
+              method: 'put',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: window.localStorage.getItem('token'),
+              },
+              body: JSON.stringify({ id: user.id }),
+            });
+            const countData = await count.json();
+
+            onUserDataChange({ ...user, entries: countData });
+            setFaceAreas(getFaceAreas(result));
+          } catch (error) {
+            console.log(error);
+          }
         }
-      })
-      .catch(console.log);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    apiCallSetArea();
   }, [imageUrl]);
 
   return (

@@ -7,47 +7,48 @@ import './Modal.css';
 const Modal = ({ onClose }) => {
   const { user, loadUser } = useContext(UserContext);
   const [newEmail, setNewEmail] = useState(user.email);
-  const [newAge, setNewAge] = useState(user.age || 0);
+  const [newAge, setNewAge] = useState(user.age || 20);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  const onProfileUpdate = () => {
+  const onProfileUpdate = async () => {
     if (newEmail !== user.email || newAge !== user.age) {
-      setLoading(true);
-      fetch(`http://localhost:3001/profile/${user.id}`, {
-        method: 'post',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: window.localStorage.getItem('token'),
-        },
-        body: JSON.stringify({
-          ...user,
-          age: newAge,
-          email: newEmail,
-          prevEmail: user.email,
-          prevAge: user.age,
-        }),
-      })
-        .then((resp) => {
-          if (resp.status === 200) {
-            setSuccess(true);
-            setLoading(false);
-            setTimeout(() => {
-              setSuccess(false);
-              onClose();
-              loadUser({ ...user, age: newAge, email: newEmail });
-            }, 2000);
-          }
-        })
-        .catch((error) => {
-          setError(true);
-          setTimeout(() => {
-            setError(false);
-            setLoading(false);
-          }, 10000);
-          console.log(error);
+      try {
+        setLoading(true);
+
+        const response = await fetch(`http://localhost:3001/profile/${user.id}`, {
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: window.localStorage.getItem('token'),
+          },
+          body: JSON.stringify({
+            ...user,
+            age: newAge,
+            email: newEmail,
+            prevEmail: user.email,
+            prevAge: user.age,
+          }),
         });
+
+        if (response.status === 200) {
+          setSuccess(true);
+          setLoading(false);
+          setTimeout(() => {
+            setSuccess(false);
+            onClose();
+            loadUser({ ...user, age: newAge, email: newEmail });
+          }, 2000);
+        }
+      } catch (error) {
+        setError(true);
+        setTimeout(() => {
+          setError(false);
+          setLoading(false);
+        }, 10000);
+        console.log(error);
+      }
     }
   };
 

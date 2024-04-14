@@ -19,31 +19,33 @@ const Register = ({ onRouteChange, loadUser }) => {
     window.localStorage.setItem('token', token);
   };
 
-  const onSubmitRegister = (e) => {
+  const onSubmitRegister = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    fetch('http://localhost:3001/register', {
-      method: 'post',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, password }),
-    })
-      .then((response) => response.json())
-      .then(({ user, data }) => {
-        if (user.id) {
-          saveSessionToken(data.token);
-          loadUser(user);
-          onRouteChange('home');
-          setLoading(false);
-        }
-      })
-      .catch((error) => {
-        setError(true);
-        setTimeout(() => {
-          setError(false);
-          setLoading(false);
-        }, 10000);
-        console.log(error);
+
+    try {
+      setLoading(true);
+
+      const response = await fetch('http://localhost:3001/register', {
+        method: 'post',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password }),
       });
+      const { user, data } = await response.json();
+
+      if (user.id) {
+        saveSessionToken(data.token);
+        loadUser(user);
+        onRouteChange('home');
+        setLoading(false);
+      }
+    } catch (error) {
+      setError(true);
+      setTimeout(() => {
+        setError(false);
+        setLoading(false);
+      }, 10000);
+      console.log(error);
+    }
   };
 
   return (

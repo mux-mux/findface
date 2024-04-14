@@ -17,43 +17,46 @@ const Signin = ({ onRouteChange, loadUser }) => {
     window.localStorage.setItem('token', token);
   };
 
-  const onSubmitSignIn = (e) => {
+  const onSubmitSignIn = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    fetch('http://localhost:3001/signin', {
-      method: 'post',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.userId && data.success === 'true') {
-          saveSessionToken(data.token);
-          fetch(`http://localhost:3001/profile/${data.userId}`, {
+    try {
+      setLoading(true);
+      const response = await fetch('http://localhost:3001/signin', {
+        method: 'post',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await response.json();
+
+      if (data.userId && data.success === 'true') {
+        saveSessionToken(data.token);
+        try {
+          const user = await fetch(`http://localhost:3001/profile/${data.userId}`, {
             method: 'get',
             headers: {
               'Content-Type': 'application/json',
               Authorization: data.token,
             },
-          })
-            .then((resp) => resp.json())
-            .then((user) => {
-              if (user && user.email) {
-                loadUser(user);
-                onRouteChange('home');
-                setLoading(false);
-              }
-            });
+          });
+          const userData = await user.json();
+
+          if (userData && userData.email) {
+            loadUser(userData);
+            onRouteChange('home');
+            setLoading(false);
+          }
+        } catch (error) {
+          console.log(error);
         }
-      })
-      .catch((error) => {
-        setError(true);
-        setTimeout(() => {
-          setError(false);
-          setLoading(false);
-        }, 10000);
-        console.log(error);
-      });
+      }
+    } catch (error) {
+      setError(true);
+      setTimeout(() => {
+        setError(false);
+        setLoading(false);
+      }, 10000);
+      console.log(error);
+    }
   };
 
   return (
