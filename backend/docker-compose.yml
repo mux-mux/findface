@@ -4,7 +4,7 @@ services:
   backend:
     container_name: findface
     build: ./
-    command: npm run start-server
+    command: npm run start
     working_dir: /usr/src/findface
     environment:
       DATABASE_URL: postgres://postgres:admin@postgres:5432/findface-docker

@@ -5,13 +5,13 @@ import knex from 'knex';
 import morgan from 'morgan';
 import 'dotenv/config';
 
-import handleRegister from './src/controllers/register.js';
-import { signinAuth } from './src/controllers/signin.js';
-import { handleProfile } from './src/controllers/profile.js';
-import { handleProfileUpdate } from './src/controllers/profile.js';
-import handleImage from './src/controllers/image.js';
-import handleAPICall from './src/controllers/apicall.js';
-import requireAuth from './src/controllers/authorization.js';
+import handleRegister from './controllers/register.js';
+import { signinAuth } from './controllers/signin.js';
+import { handleProfile } from './controllers/profile.js';
+import { handleProfileUpdate } from './controllers/profile.js';
+import handleImage from './controllers/image.js';
+import handleAPICall from './controllers/apicall.js';
+import requireAuth from './controllers/authorization.js';
 
 const db = knex({
   client: 'pg',
