@@ -1,9 +1,9 @@
-import { createSessions } from "./signin.js";
+import { createSessions } from './signin.js';
 
 const handleRegister = (req, res, db, bcrypt) => {
   const { name, email, password } = req.body;
   if (!name || !email || !password) {
-    return res.status(400).json("incorrect form data");
+    return res.status(400).json('incorrect form data');
   }
 
   const salt = bcrypt.genSaltSync(10);
@@ -11,17 +11,14 @@ const handleRegister = (req, res, db, bcrypt) => {
 
   db.transaction((trx) => {
     trx
-      .insert({
-        email: email,
-        hash: hash,
-      })
-      .into("login")
-      .returning("email")
+      .insert({ email, hash })
+      .into('login')
+      .returning('email')
       .then((loginEmail) => {
-        return trx("users")
-          .returning("*")
+        return trx('users')
+          .returning('*')
           .insert({
-            name: name,
+            name,
             email: loginEmail[0].email,
             joined: new Date(),
           })
@@ -32,7 +29,7 @@ const handleRegister = (req, res, db, bcrypt) => {
       })
       .then(trx.commit)
       .catch(trx.rollback);
-  }).catch(() => res.status(400).json("unable to register"));
+  }).catch(() => res.status(400).json('unable to register'));
 };
 
 export default handleRegister;

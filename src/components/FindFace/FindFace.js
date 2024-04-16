@@ -50,7 +50,6 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
             const countData = await count.json();
 
             onUserDataChange({ ...user, entries: countData });
-            console.log(result);
             setFaceAreas(getFaceAreas(result));
           } catch (error) {
             console.log(error);

@@ -50,7 +50,7 @@ const handleSignin = (req, res, db, bcrypt) => {
           .then((user) => user[0])
           .catch(() => Promise.reject('unable to get user'));
       } else {
-        Promise.reject('wrong credentials');
+        throw new Error();
       }
     })
     .catch(() => Promise.reject('wrong credentials'));
@@ -65,7 +65,7 @@ const signinAuth = (req, res, db, bcrypt) => {
           return data.id && data.email ? createSessions(data) : Promise.reject(data);
         })
         .then((session) => res.json(session))
-        .catch(() => res.status(400).json('unable to get user'));
+        .catch((error) => res.status(400).json(error));
 };
 
 export { redisClient, createSessions, signinAuth };

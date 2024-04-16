@@ -37,6 +37,8 @@ const Register = ({ onRouteChange, loadUser }) => {
         loadUser(user);
         onRouteChange('home');
         setLoading(false);
+      } else {
+        throw new Error();
       }
     } catch (error) {
       setError(true);
@@ -44,7 +46,6 @@ const Register = ({ onRouteChange, loadUser }) => {
         setError(false);
         setLoading(false);
       }, 10000);
-      console.log(error);
     }
   };
 
@@ -60,7 +61,7 @@ const Register = ({ onRouteChange, loadUser }) => {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form className="space-y-6" action="#" method="POST">
+        <form className="space-y-6" action="#" method="POST" onSubmit={onSubmitRegister}>
           <div>
             <label htmlFor="name" className="block text-sm font-medium leading-6">
               Name
@@ -118,7 +119,6 @@ const Register = ({ onRouteChange, loadUser }) => {
             <button
               type="submit"
               className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              onClick={onSubmitRegister}
             >
               Register
             </button>

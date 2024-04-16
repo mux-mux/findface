@@ -48,6 +48,8 @@ const Signin = ({ onRouteChange, loadUser }) => {
         } catch (error) {
           console.log(error);
         }
+      } else {
+        throw new Error(data);
       }
     } catch (error) {
       setError(true);
@@ -55,7 +57,6 @@ const Signin = ({ onRouteChange, loadUser }) => {
         setError(false);
         setLoading(false);
       }, 10000);
-      console.log(error);
     }
   };
 
@@ -71,7 +72,7 @@ const Signin = ({ onRouteChange, loadUser }) => {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form className="space-y-6" action="#" method="POST">
+        <form className="space-y-6" action="#" method="POST" onSubmit={onSubmitSignIn}>
           <div>
             <label htmlFor="email" className="block text-sm font-medium leading-6">
               Email address
@@ -112,7 +113,6 @@ const Signin = ({ onRouteChange, loadUser }) => {
             <button
               type="submit"
               className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              onClick={onSubmitSignIn}
             >
               Sign in
             </button>
