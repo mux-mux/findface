@@ -1,8 +1,10 @@
 import { createSessions } from './signin.js';
+import { validateEmail } from '../utils/validation.js';
 
 const handleRegister = (req, res, db, bcrypt) => {
   const { name, email, password } = req.body;
-  if (!name || !email || !password) {
+
+  if (!name || !validateEmail(email) || !password) {
     return res.status(400).json('incorrect form data');
   }
 

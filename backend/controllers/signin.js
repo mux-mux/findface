@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { createClient } from 'redis';
+import { validateEmail } from '../utils/validation.js';
 
 const redisClient = await createClient({ url: process.env.REDIS_URL })
   .on('error', (err) => console.log('Redis Client Error', err))
@@ -32,7 +33,8 @@ const createSessions = async (user) => {
 
 const handleSignin = (req, res, db, bcrypt) => {
   const { email, password } = req.body;
-  if (!email || !password) {
+
+  if (!validateEmail(email) || !password) {
     return Promise.reject('incorrect form data');
   }
 
