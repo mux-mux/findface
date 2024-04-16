@@ -109,9 +109,9 @@ const App = () => {
         <div className="text-center">
           <Rank userName={user.name} userEntries={user.entries} />
           <ImageForm onInputChange={onInputChange} onImageSubmit={onImageSubmit} />
-          {imageUrl !== '' ? (
+          {imageUrl !== '' && (
             <FindFace imageUrl={imageUrl} onUserDataChange={(userData) => setUser(userData)} user={user} />
-          ) : null}
+          )}
         </div>
       );
     } else if (route === 'signin' || route === 'signout') {

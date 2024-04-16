@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Spinner from '../Spinner/Spinner.js';
 import Alert from '../Alert/Alert.js';
+import useStatus from '../../hooks/useStatus.js';
 
 import './Register.css';
 
@@ -8,8 +9,7 @@ const Register = ({ onRouteChange, loadUser }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const { status, setStatus } = useStatus('idle');
 
   const onEmailChange = (e) => setEmail(e.target.value);
   const onPasswordChange = (e) => setPassword(e.target.value);
@@ -23,7 +23,7 @@ const Register = ({ onRouteChange, loadUser }) => {
     e.preventDefault();
 
     try {
-      setLoading(true);
+      setStatus('loading');
 
       const response = await fetch('http://localhost:3001/register', {
         method: 'post',
@@ -36,16 +36,12 @@ const Register = ({ onRouteChange, loadUser }) => {
         saveSessionToken(data.token);
         loadUser(user);
         onRouteChange('home');
-        setLoading(false);
+        setStatus('success');
       } else {
         throw new Error();
       }
     } catch (error) {
-      setError(true);
-      setTimeout(() => {
-        setError(false);
-        setLoading(false);
-      }, 10000);
+      setStatus('error');
     }
   };
 
@@ -121,6 +117,7 @@ const Register = ({ onRouteChange, loadUser }) => {
           <div>
             <button
               type="submit"
+              disabled={status === 'loading'}
               className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
               Register
@@ -139,8 +136,8 @@ const Register = ({ onRouteChange, loadUser }) => {
           </a>
         </p>
       </div>
-      {loading ? <Spinner /> : null}
-      {error ? <Alert onClose={() => setError(false)} /> : null}
+      {status === 'loading' && <Spinner />}
+      {status === 'error' && <Alert onClose={() => setStatus('idle')} />}
     </div>
   );
 };

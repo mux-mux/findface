@@ -1,26 +1,20 @@
-const Alert = ({ status = "error", onClose }) => {
+const Alert = ({ status = 'error', onClose }) => {
   let classNames;
   let message;
   switch (status) {
-    case "error":
-      classNames = "bg-red-100 border-red-400 text-red-700";
+    case 'error':
+      classNames = 'bg-red-100 border-red-400 text-red-700';
       message = "We've got some error. Please, try again later";
       break;
-    case "success":
-      classNames = "bg-teal-100 border-teal-400 text-teal-700";
-      message = "Update success";
+    case 'success':
+      classNames = 'bg-teal-100 border-teal-400 text-teal-700';
+      message = 'Update success';
       break;
     default:
       break;
   }
   return (
-    <div
-      className={
-        `flex items-center order px-4 rounded relative min-w-min mx-auto ` +
-        classNames
-      }
-      role="alert"
-    >
+    <div className={`flex items-center order my-10 px-4 rounded relative min-w-min mx-auto ` + classNames} role="alert">
       <span>{message}</span>
       <span className="top-0 bottom-0 right-0 px-3 py-3" onClick={onClose}>
         <svg
