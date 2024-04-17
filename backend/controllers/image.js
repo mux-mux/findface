@@ -6,7 +6,7 @@ const handleImage = (req, res, db) => {
     .increment('entries', 1)
     .returning('entries')
     .then((entriesArray) => res.json(entriesArray[0].entries))
-    .catch(() => res.status(400).json('unable to get tries count'));
+    .catch(() => res.status(400).json('Unable to get tries count'));
 };
 
 export default handleImage;

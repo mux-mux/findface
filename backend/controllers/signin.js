@@ -35,7 +35,7 @@ const handleSignin = (req, res, db, bcrypt) => {
   const { email, password } = req.body;
 
   if (!validateEmail(email) || !password) {
-    return Promise.reject('incorrect form data');
+    return Promise.reject('Incorrect form data');
   }
 
   return db
@@ -50,12 +50,12 @@ const handleSignin = (req, res, db, bcrypt) => {
           .from('users')
           .where('email', '=', email)
           .then((user) => user[0])
-          .catch(() => Promise.reject('unable to get user'));
+          .catch(() => Promise.reject('Unable to get user'));
       } else {
         throw new Error();
       }
     })
-    .catch(() => Promise.reject('wrong credentials'));
+    .catch(() => Promise.reject('Wrong credentials'));
 };
 
 const signinAuth = (req, res, db, bcrypt) => {

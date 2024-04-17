@@ -4,7 +4,7 @@ const useStatus = (initialStatus = 'idle') => {
   const [status, setStatus] = useState(initialStatus);
 
   useEffect(() => {
-    if (status !== 'error') {
+    if (status === 'idle' || status === 'loading') {
       return;
     }
 

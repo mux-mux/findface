@@ -8,6 +8,7 @@ import './Signin.css';
 const Signin = ({ onRouteChange, loadUser }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
   const { status, setStatus } = useStatus('idle');
 
   const onEmailChange = (e) => setEmail(e.target.value);
@@ -44,12 +45,16 @@ const Signin = ({ onRouteChange, loadUser }) => {
             loadUser(userData);
             onRouteChange('home');
             setStatus('success');
+          } else {
+            setMessage(userData);
+            throw new Error();
           }
         } catch (error) {
-          console.log(error);
+          setStatus('error');
         }
       } else {
-        throw new Error(data);
+        setMessage(data);
+        throw new Error();
       }
     } catch (error) {
       setStatus('error');
@@ -130,7 +135,7 @@ const Signin = ({ onRouteChange, loadUser }) => {
         </p>
       </div>
       {status === 'loading' && <Spinner />}
-      {status === 'error' && <Alert onClose={() => setStatus('idle')} />}
+      {status === 'error' && <Alert message={message} onClose={() => setStatus('idle')} />}
     </div>
   );
 };

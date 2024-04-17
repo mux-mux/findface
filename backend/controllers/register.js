@@ -5,7 +5,7 @@ const handleRegister = (req, res, db, bcrypt) => {
   const { name, email, password } = req.body;
 
   if (!name || !validateEmail(email) || !password) {
-    return res.status(400).json('incorrect form data');
+    return res.status(400).json('Incorrect form data');
   }
 
   const salt = bcrypt.genSaltSync(10);
@@ -31,7 +31,7 @@ const handleRegister = (req, res, db, bcrypt) => {
       })
       .then(trx.commit)
       .catch(trx.rollback);
-  }).catch(() => res.status(400).json('unable to register'));
+  }).catch(() => res.status(400).json('Unable to register'));
 };
 
 export default handleRegister;

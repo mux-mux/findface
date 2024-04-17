@@ -9,6 +9,7 @@ const Register = ({ onRouteChange, loadUser }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+  const [message, setMessage] = useState('');
   const { status, setStatus } = useStatus('idle');
 
   const onEmailChange = (e) => setEmail(e.target.value);
@@ -30,14 +31,16 @@ const Register = ({ onRouteChange, loadUser }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, password }),
       });
-      const { user, data } = await response.json();
+      const json = await response.json();
+      const { user, data } = json;
 
-      if (user.id) {
+      if (user && user.id) {
         saveSessionToken(data.token);
         loadUser(user);
         onRouteChange('home');
         setStatus('success');
       } else {
+        setMessage(json);
         throw new Error();
       }
     } catch (error) {
@@ -137,7 +140,7 @@ const Register = ({ onRouteChange, loadUser }) => {
         </p>
       </div>
       {status === 'loading' && <Spinner />}
-      {status === 'error' && <Alert onClose={() => setStatus('idle')} />}
+      {status === 'error' && <Alert message={message} onClose={() => setStatus('idle')} />}
     </div>
   );
 };

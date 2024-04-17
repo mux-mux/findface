@@ -1,21 +1,21 @@
 import { useState, useContext } from 'react';
+import { UserContext } from '../../App.js';
 import Alert from '../Alert/Alert.js';
 import Spinner from '../Spinner/Spinner.js';
-import { UserContext } from '../../App.js';
+import useStatus from '../../hooks/useStatus.js';
 import './Modal.css';
 
 const Modal = ({ onClose }) => {
   const { user, loadUser } = useContext(UserContext);
   const [newEmail, setNewEmail] = useState(user.email);
   const [newAge, setNewAge] = useState(user.age || 20);
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
+  const [message, setMessage] = useState('');
+  const { status, setStatus } = useStatus('idle');
 
   const onProfileUpdate = async () => {
     if (newEmail !== user.email || newAge !== user.age) {
       try {
-        setLoading(true);
+        setStatus('loading');
 
         const response = await fetch(`http://localhost:3001/profile/${user.id}`, {
           method: 'post',
@@ -33,21 +33,12 @@ const Modal = ({ onClose }) => {
         });
 
         if (response.status === 200) {
-          setSuccess(true);
-          setLoading(false);
-          setTimeout(() => {
-            setSuccess(false);
-            onClose();
-            loadUser({ ...user, age: newAge, email: newEmail });
-          }, 2000);
+          setStatus('success');
+          setMessage('Update success');
+          loadUser({ ...user, age: newAge, email: newEmail });
         }
       } catch (error) {
-        setError(true);
-        setTimeout(() => {
-          setError(false);
-          setLoading(false);
-        }, 10000);
-        console.log(error);
+        setStatus('error');
       }
     }
   };
@@ -133,9 +124,8 @@ const Modal = ({ onClose }) => {
             Cancel
           </button>
         </div>
-        {loading ? <Spinner /> : null}
-        {error ? <Alert onClose={() => setError(false)} /> : null}
-        {success ? <Alert status="success" onClose={() => setSuccess(false)} /> : null}
+        {status === 'loading' && <Spinner />}
+        {(status === 'error' || status === 'success') && <Alert message={message} onClose={() => setStatus('idle')} />}
       </div>
     </div>
   );
