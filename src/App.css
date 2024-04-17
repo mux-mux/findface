@@ -4,10 +4,10 @@
 }
 
 .button {
-  border-color: var(--border-color);
-  color: var(--text-color);
+  border-color: var(--border-color, #ddd);
+  color: var(--text-color, #eee);
 }
 
 .input {
-  border-color: var(--border-color);
+  border-color: var(--border-color, #ddd);
 }

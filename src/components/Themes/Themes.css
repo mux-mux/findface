@@ -24,7 +24,7 @@
   justify-content: space-between;
   padding: 2rem 0;
   font-size: 2.4rem;
-  color: var(--text-color);
+  color: var(--text-color, #eee);
   line-height: 2.4rem;
 }
 .switch {
@@ -54,7 +54,7 @@
 
 .slider:before {
   position: absolute;
-  content: "";
+  content: '';
   height: 2rem;
   width: 2rem;
   left: 4px;
@@ -65,11 +65,11 @@
 }
 
 input:checked + .slider {
-  background-color: var(--background-slider);
+  background-color: var(--background-slider, #3b3b3b);
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px var(--background-slider);
+  box-shadow: 0 0 1px var(--background-slider, #3b3b3b);
 }
 
 input:checked + .slider:before {

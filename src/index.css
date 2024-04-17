@@ -7,14 +7,10 @@ body {
   font-family: 'Ubuntu', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: var(--background-color-1);
-  background: -webkit-linear-gradient(
-    to right,
-    var(--background-color-1),
-    var(--background-color-2)
-  );
-  background: linear-gradient(to right, var(--background-color-1), var(--background-color-2));
-  color: var(--text-color);
+  background: var(--background-color-1, #606c88);
+  background: -webkit-linear-gradient(to right, var(--background-color-1, #606c88), var(--background-color-2, #3f4c6b));
+  background: linear-gradient(to right, var(--background-color-1, #606c88), var(--background-color-2, #3f4c6b));
+  color: var(--text-color, #eee);
 }
 
 button {
