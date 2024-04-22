@@ -3,6 +3,7 @@ import cors from 'cors';
 import bcrypt from 'bcrypt';
 import knex from 'knex';
 import morgan from 'morgan';
+import { rateLimit } from 'express-rate-limit';
 import 'dotenv/config';
 
 import handleRegister from './controllers/register.js';
@@ -18,9 +19,17 @@ const db = knex({
   connection: { connectionString: process.env.DATABASE_URL },
 });
 
+const limiter = rateLimit({
+  windowMs: 5 * 60 * 1000,
+  limit: 100,
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+});
+
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use(limiter);
 app.use(morgan('tiny'));
 
 app.get('/', (req, resp) => resp.send('server is working'));
