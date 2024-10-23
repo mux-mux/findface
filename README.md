@@ -45,6 +45,6 @@ $ npm install
 # 1 Terminal: Start Express server
 $ PORT=3001 node server.js
 
-# 2 Terminal: Open browser & listen to changes
+# 2 Terminal: Open browser & listen for changes
 $ npm start
 ```
