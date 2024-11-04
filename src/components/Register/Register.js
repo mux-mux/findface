@@ -53,16 +53,26 @@ const Register = ({ onRouteChange, loadUser }) => {
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <img
           className="mx-auto h-10 w-auto"
-          src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-          alt="Your Company"
+          src="https://tailwindcss.com/_next/static/media/tailwindcss-mark.3c5441fc7a190fb1800d4a5c7f07ba4b1345a9c8.svg"
+          alt="Tailwind logo"
         />
-        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight">Register your account</h2>
+        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight">
+          Register your account
+        </h2>
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form className="space-y-6" action="#" method="POST" onSubmit={onSubmitRegister}>
+        <form
+          className="space-y-6"
+          action="#"
+          method="POST"
+          onSubmit={onSubmitRegister}
+        >
           <div>
-            <label htmlFor="name" className="block text-sm font-medium leading-6">
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium leading-6"
+            >
               Name
             </label>
             <div className="mt-2">
@@ -80,7 +90,10 @@ const Register = ({ onRouteChange, loadUser }) => {
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-sm font-medium leading-6">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium leading-6"
+            >
               Email address
             </label>
             <div className="mt-2">
@@ -99,7 +112,10 @@ const Register = ({ onRouteChange, loadUser }) => {
 
           <div>
             <div className="flex items-center justify-between">
-              <label htmlFor="password" className="block text-sm font-medium leading-6">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium leading-6"
+              >
                 Password
               </label>
             </div>
@@ -140,7 +156,9 @@ const Register = ({ onRouteChange, loadUser }) => {
         </p>
       </div>
       {status === 'loading' && <Spinner />}
-      {status === 'error' && <Alert message={message} onClose={() => setStatus('idle')} />}
+      {status === 'error' && (
+        <Alert message={message} onClose={() => setStatus('idle')} />
+      )}
     </div>
   );
 };
