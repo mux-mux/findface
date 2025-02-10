@@ -67,11 +67,6 @@ const Signin = ({ onRouteChange, loadUser }) => {
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <img
-          className="mx-auto h-10 w-auto"
-          src="https://tailwindcss.com/_next/static/media/tailwindcss-mark.3c5441fc7a190fb1800d4a5c7f07ba4b1345a9c8.svg"
-          alt="Tailwind logo"
-        />
         <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight">
           Sign in to your account
         </h2>
