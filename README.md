@@ -1,6 +1,4 @@
-# findface App :ok_woman:
-
-## With :arrow_right_hook:SignIn :leftwards_arrow_with_hook:SignOut :crystal_ball:AI face Detect
+# FindFace - :crystal_ball:AI powered App to Detect faces in the image:ok_woman:
 
 ## [Live Link](https://jsgo.pro/findface/) :link:
 
@@ -32,19 +30,71 @@
 
 ## How To Use :closed_lock_with_key:
 
-```bash
-# Clone this repository
-$ git clone git@github.com:mux-mux/findface.git
+### 1️⃣ Sign Up & Install Docker Desktop
 
-# Go into the repository
-$ cd findface
+Download and install Docker Desktop:  
+🔗 [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
-# Install dependencies
-$ npm install
+### 2️⃣ Clone the Repository
 
-# 1 Terminal: Start Express server
-$ PORT=3001 node server.js
+Open a terminal or command prompt and run:
 
-# 2 Terminal: Open browser & listen for changes
-$ npm start
+```sh
+git clone git@github.com:mux-mux/findface.git
+cd findface
 ```
+
+### 3️⃣ Install Dependencies
+
+Run the following command in the root directory:
+
+```sh
+npm install
+```
+
+### 4️⃣ Start Backend (Docker + Express)
+
+Open a new terminal:
+
+```sh
+cd backend
+npm install
+```
+
+🔹 Build and Start Docker Containers
+This will set up PostgreSQL, Redis, and the Express server:
+
+```sh
+docker-compose up --build
+```
+
+🔹 Start the Express Server
+
+```sh
+PORT=3001 node server.js
+```
+
+### 5️⃣ Start Frontend
+
+Open another terminal in the project root and run:
+
+```sh
+npm install
+npm start
+```
+
+### 6️⃣ Open in Browser
+
+Your app should now be running! Open:
+🔗 http://localhost:3000
+
+#### 🎯 Notes
+
+Ensure Docker Desktop is running before executing docker-compose up.
+If you encounter any issues, try running:
+
+```sh
+docker-compose down && docker-compose up --build
+```
+
+Happy coding! 🚀
