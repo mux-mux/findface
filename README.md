@@ -1,4 +1,4 @@
-# FindFace - :crystal_ball:AI powered App to Detect faces in the image:ok_woman:
+# FindFace - :crystal_ball:AI powered App to Detect faces:ok_woman:in the image:mountain_bicyclist:
 
 ## [Live Link](https://jsgo.pro/findface/) :link:
 
@@ -44,46 +44,25 @@ git clone git@github.com:mux-mux/findface.git
 cd findface
 ```
 
-### 3️⃣ Install Dependencies
+### 3️⃣ Start Backend (Docker + Express)
 
-Run the following command in the root directory:
-
-```sh
-npm install
-```
-
-### 4️⃣ Start Backend (Docker + Express)
-
-Open a new terminal:
+This will set up PostgreSQL, Redis, and the Express server:
 
 ```sh
 cd backend
 npm install
-```
-
-🔹 Build and Start Docker Containers
-This will set up PostgreSQL, Redis, and the Express server:
-
-```sh
 docker-compose up --build
 ```
 
-🔹 Start the Express Server
+### 4️⃣ Start Frontend
 
-```sh
-PORT=3001 node server.js
-```
-
-### 5️⃣ Start Frontend
-
+This will Open the browser & listen to files changes
 Open another terminal in the project root and run:
 
 ```sh
 npm install
 npm start
 ```
-
-### 6️⃣ Open in Browser
 
 Your app should now be running! Open:
 🔗 http://localhost:3000
@@ -96,5 +75,3 @@ If you encounter any issues, try running:
 ```sh
 docker-compose down && docker-compose up --build
 ```
-
-Happy coding! 🚀
