@@ -1,4 +1,4 @@
-# FindFace - :crystal_ball:AI-powered app to detect faces:ok_woman:in the image:mountain_bicyclist:
+# FindFace - An:crystal_ball:AI-powered app to detect faces:ok_woman:in the image:mountain_bicyclist:
 
 ## [Live Link](https://jsgo.pro/findface/) :link:
 

@@ -4,32 +4,58 @@ import './Themes.css';
 
 const Themes = () => {
   useEffect(() => {
-    const switchTheme = (event) => {
-      event.currentTarget.checked ? setTheme('theme-dark') : setTheme('theme-light');
-    };
+    const THEME_DARK = 'theme-dark';
+    const THEME_LIGHT = 'theme-light';
 
     const themeSlider = document.querySelector('.themeCheckbox');
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
-    const getTheme = () => {
-      const currentTheme = localStorage.getItem('theme');
+    const setTheme = (theme) => {
+      localStorage.setItem('theme', theme);
+      document.documentElement.className = theme;
+      themeSlider.checked = theme === THEME_DARK;
+    };
 
-      if (currentTheme) {
-        document.documentElement.className = currentTheme;
-
-        currentTheme === 'theme-dark' ? (themeSlider.checked = true) : setTheme('theme-light');
+    const initializeTheme = () => {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme) {
+        setTheme(savedTheme);
       } else {
-        setTheme('theme-light');
+        const systemPrefersDark = window.matchMedia(
+          '(prefers-color-scheme: dark)'
+        ).matches;
+        setTheme(systemPrefersDark ? THEME_DARK : THEME_LIGHT);
       }
     };
-    getTheme();
 
-    themeSlider.addEventListener('change', switchTheme);
+    const toggleTheme = () => {
+      const currentTheme = localStorage.getItem('theme');
+      setTheme(currentTheme === THEME_DARK ? THEME_LIGHT : THEME_DARK);
+    };
+
+    const systemTheme = (event) => {
+      setTheme(event.matches ? THEME_DARK : THEME_LIGHT);
+    };
+
+    const setupEventListeners = () => {
+      themeSlider.addEventListener('change', toggleTheme);
+      mediaQuery.addEventListener('change', systemTheme);
+    };
+
+    const removeEventListeners = () => {
+      themeSlider.removeEventListener('change', toggleTheme);
+      mediaQuery.removeEventListener('change', systemTheme);
+    };
+
+    const init = () => {
+      initializeTheme();
+      setupEventListeners();
+    };
+
+    init();
+
+    return () => removeEventListeners();
   }, []);
-
-  const setTheme = (theme) => {
-    document.documentElement.className = theme;
-    localStorage.setItem('theme', theme);
-  };
 
   return (
     <div className="theme-switch-wrapper">
