@@ -8,8 +8,11 @@ const Navigation = ({ onRouteChange, isSignedIn }) => {
     <nav className="flex justify-around items-center mt-10">
       <Themes />
       <Logo />
-      {isSignedIn && <Profile onRouteChange={onRouteChange} />}
-      <div className="basis-20"></div>
+      {isSignedIn ? (
+        <Profile onRouteChange={onRouteChange} />
+      ) : (
+        <div className="basis-20"></div>
+      )}
     </nav>
   );
 };
