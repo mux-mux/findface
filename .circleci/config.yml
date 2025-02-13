@@ -4,6 +4,10 @@ version: 2.1
 orbs:
   node: circleci/node@5
 jobs:
+  clear-cache:
+    - run:
+      name: Clear npm cache
+      command: npm cache clean --force
   test-node:
     # Install node dependencies and run tests
     executor: node/default
@@ -11,9 +15,6 @@ jobs:
       - checkout
       - node/install-packages:
           pkg-manager: npm
-      - run:
-          name: Install dependencies
-          command: npm install
       - run:
           name: Run tests
           command: npm test --passWithNoTests
@@ -48,6 +49,7 @@ jobs:
 workflows:
   build-and-test:
     jobs:
+      - clear-cache
       - test-node
       - build-node:
           requires:
