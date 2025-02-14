@@ -7,8 +7,8 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
 
   const getFaceAreas = (data) => {
     if (data && data.outputs) {
-      return data.outputs[0].data.regions.map((face) => {
-        const clarifaiFace = face.region_info.bounding_box;
+      return data.outputs[0].data.regions.map(({ region_info }) => {
+        const clarifaiFace = region_info.bounding_box;
         const image = document.getElementById('inputImage');
         const width = Number(image.width);
         const height = Number(image.height);
@@ -66,21 +66,25 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
   return (
     <div className="flex justify-center mt-4">
       <div className="relative">
-        <img src={imageUrl} id="inputImage" alt="faces" width="500" height="auto" />
-        {areas.map((area) => {
-          return (
-            <div
-              key={area.topRow}
-              className="face-area"
-              style={{
-                top: area.topRow,
-                right: area.rightCol,
-                bottom: area.bottomRow,
-                left: area.leftCol,
-              }}
-            ></div>
-          );
-        })}
+        <img
+          src={imageUrl}
+          id="inputImage"
+          alt="faces"
+          width="500"
+          height="auto"
+        />
+        {areas.map(({ topRow, rightCol, bottomRow, leftCol }) => (
+          <div
+            key={topRow * rightCol}
+            className="face-area"
+            style={{
+              top: topRow,
+              right: rightCol,
+              bottom: bottomRow,
+              left: leftCol,
+            }}
+          ></div>
+        ))}
       </div>
     </div>
   );
