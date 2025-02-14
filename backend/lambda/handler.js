@@ -1,19 +1,20 @@
-const emojis = ["🔥", "💣", "💥", "💫", "✨", "🆒", "😎", "🪄", "🔮", "💯"];
+const emojis = ['🔥', '💣', '💥', '💫', '✨', '🆒', '😎', '🪄', '🔮', '💯'];
 module.exports.rank = async (event) => {
-  const rank = event.queryStringParameters.rank;
+  const queryRank = event.queryStringParameters.rank;
+  const rank = Math.floor(queryRank / 10);
   const rankEmoji = emojis[rank >= emojis.length ? emojis.length - 1 : rank];
   return {
     statusCode: 200,
     headers: {
-      "Access-Control-Allow-Origin": "*",
+      'Access-Control-Allow-Origin': '*',
     },
     body: JSON.stringify(
       {
-        message: "Go Serverless v1.0! Your function executed successfully!",
+        message: 'Go Serverless v1.0! Your function executed successfully!',
         input: rankEmoji,
       },
       null,
-      2,
+      2
     ),
   };
 
