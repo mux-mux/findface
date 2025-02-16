@@ -15,7 +15,7 @@ const handleProfile = (req, res, db) => {
 };
 
 const handleProfileUpdate = (req, res, db) => {
-  const { id, age, email, prevEmail, prevAge } = req.body;
+  const { id, age, email, prevEmail, prevAge, profileImage } = req.body;
 
   if (age !== prevAge && email === prevEmail) {
     db('users')
@@ -39,7 +39,11 @@ const handleProfileUpdate = (req, res, db) => {
           return trx('users')
             .returning('*')
             .where({ id })
-            .update({ email: loginEmail[0].email, age })
+            .update({
+              email: loginEmail[0].email,
+              age,
+              profileImage: profileImage,
+            })
             .then((result) => {
               if (result) {
                 res.json('Update success');

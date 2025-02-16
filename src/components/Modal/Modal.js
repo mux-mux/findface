@@ -27,7 +27,11 @@ const Modal = ({ onClose }) => {
   };
 
   const onProfileUpdate = async () => {
-    if (newEmail !== user.email || newAge !== user.age) {
+    if (
+      newEmail !== user.email ||
+      newAge !== user.age ||
+      (preview !== '' && preview !== image)
+    ) {
       try {
         setStatus('loading');
 
@@ -36,6 +40,7 @@ const Modal = ({ onClose }) => {
         if (image && typeof image !== 'string') {
           const formData = new FormData();
           formData.append('image', image);
+          formData.append('userId', user.id);
 
           try {
             const uploadResponse = await fetch('http://localhost:3001/upload', {
@@ -114,9 +119,9 @@ const Modal = ({ onClose }) => {
       <div className="w-min mx-auto min-h-full px-6 py-12 lg:px-8">
         <div className="mx-auto my-8 text-slate-600">
           <div className="flex flex-col items-center">
-            {user.profileImage || preview ? (
+            {preview || user.profileImage ? (
               <img
-                src={user.profileImage || preview}
+                src={preview || user.profileImage}
                 alt="Profile"
                 className="w-24 h-24 rounded-full object-cover border"
               />

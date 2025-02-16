@@ -3,7 +3,7 @@ CREATE TABLE users (
   id SERIAL PRIMARY KEY,
   name VARCHAR(100),
   email TEXT UNIQUE NOT NULL,
-  profile_image TEXT,
+  "profileImage" TEXT,
   age SMALLINT DEFAULT 20,
   entries INT DEFAULT 0,
   joined TIMESTAMP NOT NULL

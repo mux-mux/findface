@@ -45,13 +45,16 @@ const App = () => {
 
           if (data && data.id) {
             try {
-              const profile = await fetch(`http://localhost:3001/profile/${data.id}`, {
-                method: 'get',
-                headers: {
-                  'Content-Type': 'application/json',
-                  Authorization: token,
-                },
-              });
+              const profile = await fetch(
+                `http://localhost:3001/profile/${data.id}`,
+                {
+                  method: 'get',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: token,
+                  },
+                }
+              );
               const profileData = await profile.json();
 
               if (profileData && profileData.email) {
@@ -76,8 +79,9 @@ const App = () => {
     setUser({
       id: userProfile.id,
       name: userProfile.name,
-      age: userProfile.age,
       email: userProfile.email,
+      profileImage: userProfile.profileImage,
+      age: userProfile.age,
       entries: userProfile.entries,
       joined: userProfile.joined,
     });
@@ -108,9 +112,16 @@ const App = () => {
       return (
         <div className="text-center">
           <Rank userName={user.name} userEntries={user.entries} />
-          <ImageForm onInputChange={onInputChange} onImageSubmit={onImageSubmit} />
+          <ImageForm
+            onInputChange={onInputChange}
+            onImageSubmit={onImageSubmit}
+          />
           {imageUrl !== '' && (
-            <FindFace imageUrl={imageUrl} onUserDataChange={(userData) => setUser(userData)} user={user} />
+            <FindFace
+              imageUrl={imageUrl}
+              onUserDataChange={(userData) => setUser(userData)}
+              user={user}
+            />
           )}
         </div>
       );

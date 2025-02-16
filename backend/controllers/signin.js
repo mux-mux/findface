@@ -28,7 +28,7 @@ const createSessions = async (user) => {
     .then(() => {
       return { success: 'true', userId: id, token };
     })
-    .catch(console.log);
+    .catch(console.log('Create session error'));
 };
 
 const handleSignin = (req, res, db, bcrypt) => {
@@ -64,7 +64,9 @@ const signinAuth = (req, res, db, bcrypt) => {
     ? getToken(req, res)
     : handleSignin(req, res, db, bcrypt)
         .then((data) => {
-          return data.id && data.email ? createSessions(data) : Promise.reject(data);
+          return data.id && data.email
+            ? createSessions(data)
+            : Promise.reject(data);
         })
         .then((session) => res.json(session))
         .catch((error) => res.status(400).json(error));
