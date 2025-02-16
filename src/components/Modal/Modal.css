@@ -27,6 +27,31 @@
   min-width: 150px;
 }
 
+.upload-button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.upload-button:hover {
+  background-color: #0056b3;
+}
+
+.upload-button:active {
+  background-color: #004080;
+}
+
+.upload-button input[type='file'] {
+  display: none;
+}
+
 @media screen and (max-width: 576px) {
   .profile {
     grid-template-columns: minmax(200px, 1fr);

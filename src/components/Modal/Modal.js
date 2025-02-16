@@ -10,32 +10,83 @@ const Modal = ({ onClose }) => {
   const [newEmail, setNewEmail] = useState(user.email);
   const [newAge, setNewAge] = useState(user.age || 20);
   const [message, setMessage] = useState('');
+  const [image, setImage] = useState(user.profileImage || '');
+  const [preview, setPreview] = useState(user.profileImage || '');
   const { status, setStatus } = useStatus('idle');
+
+  const onImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+      setImage(file);
+    }
+  };
 
   const onProfileUpdate = async () => {
     if (newEmail !== user.email || newAge !== user.age) {
       try {
         setStatus('loading');
 
-        const response = await fetch(`http://localhost:3001/profile/${user.id}`, {
-          method: 'post',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: window.localStorage.getItem('token'),
-          },
-          body: JSON.stringify({
-            ...user,
-            age: newAge,
-            email: newEmail,
-            prevEmail: user.email,
-            prevAge: user.age,
-          }),
-        });
+        let imageUrl = user.profileImage;
+
+        if (image && typeof image !== 'string') {
+          const formData = new FormData();
+          formData.append('image', image);
+
+          try {
+            const uploadResponse = await fetch('http://localhost:3001/upload', {
+              method: 'POST',
+              body: formData,
+              headers: {
+                Authorization: window.localStorage.getItem('token'),
+              },
+            });
+
+            const uploadData = await uploadResponse.json();
+            if (uploadResponse.ok) {
+              imageUrl = uploadData.imageUrl;
+            } else {
+              throw new Error(uploadData.error);
+            }
+          } catch (error) {
+            setStatus('error');
+            setMessage('Image upload failed');
+            return;
+          }
+        }
+
+        const response = await fetch(
+          `http://localhost:3001/profile/${user.id}`,
+          {
+            method: 'post',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: window.localStorage.getItem('token'),
+            },
+            body: JSON.stringify({
+              ...user,
+              age: newAge,
+              email: newEmail,
+              prevEmail: user.email,
+              prevAge: user.age,
+              profileImage: imageUrl,
+            }),
+          }
+        );
 
         if (response.status === 200) {
           setStatus('success');
           setMessage('Update success');
-          loadUser({ ...user, age: newAge, email: newEmail });
+          loadUser({
+            ...user,
+            age: newAge,
+            email: newEmail,
+            profileImage: imageUrl,
+          });
         }
       } catch (error) {
         setStatus('error');
@@ -62,15 +113,37 @@ const Modal = ({ onClose }) => {
     <div className="modal">
       <div className="w-min mx-auto min-h-full px-6 py-12 lg:px-8">
         <div className="mx-auto my-8 text-slate-600">
-          <svg
-            className="w-14 h-14 text-gray-400 -left-1 m-auto"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd"></path>
-          </svg>
-          <h2 className="my-8 text-center text-2xl font-bold leading-9 tracking-tight">{user.name}</h2>
+          <div className="flex flex-col items-center">
+            {user.profileImage || preview ? (
+              <img
+                src={user.profileImage || preview}
+                alt="Profile"
+                className="w-24 h-24 rounded-full object-cover border"
+              />
+            ) : (
+              <svg
+                className="w-24 h-24 text-gray-400 -left-1 m-auto"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                  clipRule="evenodd"
+                ></path>
+              </svg>
+            )}
+            <input
+              type="file"
+              accept="image/*"
+              onChange={onImageChange}
+              className="mt-2 upload-button"
+            />
+          </div>
+          <h2 className="my-8 text-center text-2xl font-bold leading-9 tracking-tight">
+            {user.name}
+          </h2>
           <div className="profile">
             <span>Submitted: </span> <span>{`${user.entries} images`}</span>
             <span>Age: </span>{' '}
@@ -125,7 +198,9 @@ const Modal = ({ onClose }) => {
           </button>
         </div>
         {status === 'loading' && <Spinner />}
-        {(status === 'error' || status === 'success') && <Alert message={message} onClose={() => setStatus('idle')} />}
+        {(status === 'error' || status === 'success') && (
+          <Alert message={message} onClose={() => setStatus('idle')} />
+        )}
       </div>
     </div>
   );
