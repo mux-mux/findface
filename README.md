@@ -9,17 +9,17 @@
   <br>
 </div>
 
-## Stages :scroll:
+## Features :sparkles:
 
-1. React Components
-2. Tailwind Forms, Classes
-3. ClarifAI Face Area Detect
-4. Switch Light/Dark Theme
-5. Express Endpoints
-6. PostresSQL DB
-7. Knex JS DB Connect
-8. Bcrypt Password Storage
-9. Vercel Deployment
+- Register Personal Account ✅
+- Change User Profile Data 👤
+- Store User Session 💾
+- Progress Badges 🏆
+- Find faces in the image 🙆‍♀️
+- Apply image Filters 🎨
+- Download Image with Filters 📥
+- Switch light/dark theme 🌗
+- Easy configuration with Docker 🐳
 
 ## Folder structure :open_file_folder:
 
