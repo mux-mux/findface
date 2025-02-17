@@ -5,7 +5,11 @@ const handleRegister = (req, res, db, bcrypt) => {
   const { name, email, password } = req.body;
 
   if (!name || !validateEmail(email) || !password) {
-    return res.status(400).json('Incorrect form data');
+    return res
+      .status(400)
+      .json(
+        'The credentials you entered are incorrect. Please double-check and try again.'
+      );
   }
 
   const salt = bcrypt.genSaltSync(10);

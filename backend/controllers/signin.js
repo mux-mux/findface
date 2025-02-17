@@ -35,7 +35,9 @@ const handleSignin = (req, res, db, bcrypt) => {
   const { email, password } = req.body;
 
   if (!validateEmail(email) || !password) {
-    return Promise.reject('Incorrect form data');
+    return Promise.reject(
+      'The format of credentials you entered is incorrect. Please review and ensure it matches the required format.'
+    );
   }
 
   return db
@@ -50,12 +52,20 @@ const handleSignin = (req, res, db, bcrypt) => {
           .from('users')
           .where('email', '=', email)
           .then((user) => user[0])
-          .catch(() => Promise.reject('Unable to get user'));
+          .catch(() =>
+            Promise.reject(
+              'We are unable to retrieve the user information at the moment. Please try again later'
+            )
+          );
       } else {
         throw new Error();
       }
     })
-    .catch(() => Promise.reject('Wrong credentials'));
+    .catch(() =>
+      Promise.reject(
+        'The credentials you entered are incorrect. Please double-check and try again.'
+      )
+    );
 };
 
 const signinAuth = (req, res, db, bcrypt) => {
@@ -66,7 +76,9 @@ const signinAuth = (req, res, db, bcrypt) => {
         .then((data) => {
           return data.id && data.email
             ? createSessions(data)
-            : Promise.reject(data);
+            : Promise.reject(
+                'There seems to be an authorization issue. Please try again later'
+              );
         })
         .then((session) => res.json(session))
         .catch((error) => res.status(400).json(error));
