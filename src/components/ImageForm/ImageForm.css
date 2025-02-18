@@ -1,20 +1,20 @@
 .form {
-  background: radial-gradient(black 15%, transparent 16%) 0 0, radial-gradient(black 15%, transparent 16%) 8px 8px,
-    radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%) 0 1px,
-    radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%) 8px 9px;
-  background-color: #28282809;
-  background-size: 6px 6px;
+  background-color: #e5e5f7;
   width: min(600px, 95%);
 }
 
 .search-button {
   align-items: center;
   appearance: none;
-  background-image: radial-gradient(100% 100% at 100% 0, #5adaff 0, var(--button-color, #1864a7) 100%);
+  background-image: radial-gradient(
+    100% 100% at 100% 0,
+    #5adaff 0,
+    var(--button-color, #1864a7) 100%
+  );
   border: 0;
   border-radius: 6px;
-  box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px,
-    rgba(58, 65, 111, 0.5) 0 -3px 0 inset;
+  box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,
+    rgba(45, 35, 66, 0.3) 0 7px 13px -3px, rgba(58, 65, 111, 0.5) 0 -3px 0 inset;
   box-sizing: border-box;
   color: #fff;
   cursor: pointer;
@@ -40,12 +40,14 @@
 }
 
 .search-button:focus {
-  box-shadow: var(--button-action-color, #194c79) 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px,
-    rgba(45, 35, 66, 0.3) 0 7px 13px -3px, var(--button-action-color, #194c79) 0 -3px 0 inset;
+  box-shadow: var(--button-action-color, #194c79) 0 0 0 1.5px inset,
+    rgba(45, 35, 66, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px,
+    var(--button-action-color, #194c79) 0 -3px 0 inset;
 }
 
 .search-button:hover {
-  box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px,
+  box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,
+    rgba(45, 35, 66, 0.3) 0 7px 13px -3px,
     var(--button-action-color, #194c79) 0 -3px 0 inset;
   transform: translateY(-2px);
 }
