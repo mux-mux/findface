@@ -14,10 +14,10 @@
 - Register Personal Account ✅
 - Change User Profile Data 👤
 - Store User Session 💾
-- Progress Badges 🏆
+- Show Progress Badges 🏆
 - Find faces in the image 🙆‍♀️
 - Apply image Filters 🎨
-- Download Image with Filters 📥
+- Download Image 📥
 - Switch light/dark theme 🌗
 - Easy configuration with Docker 🐳
 
