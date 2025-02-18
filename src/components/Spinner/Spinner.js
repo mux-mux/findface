@@ -1,9 +1,13 @@
 import React from 'react';
 
-import spinner from './spinner.gif';
+import './Spinner.css';
 
 const Spinner = () => {
-  return <img className="mx-auto w-24" src={spinner} alt="loading spinner" />;
+  return (
+    <div className="loader-container">
+      <div class="loader"></div>
+    </div>
+  );
 };
 
 export default Spinner;
