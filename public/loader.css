@@ -8,9 +8,17 @@
   justify-content: center;
   align-items: center;
   z-index: 9999;
-  background: #6190e8;
-  background: -webkit-linear-gradient(to right, #6190e8, #a7bfe8);
-  background: linear-gradient(to right, #6190e8, #a7bfe8);
+  background: var(--background-color-1, #6190e8);
+  background: -webkit-linear-gradient(
+    to right,
+    var(--background-color-1, #6190e8),
+    var(--background-color-2, #a7bfe8)
+  );
+  background: linear-gradient(
+    to right,
+    var(--background-color-1, #6190e8),
+    var(--background-color-2, #a7bfe8)
+  );
 }
 
 .loader {

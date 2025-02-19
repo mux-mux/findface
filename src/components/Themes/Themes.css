@@ -1,37 +1,17 @@
-.theme-dark {
-  --text-color: #eee;
-  --background-color-1: #606c88;
-  --background-color-2: #3f4c6b;
-  --background-slider: #3b3b3b;
-  --background-modal: #cacaca;
-  --border-color: #ddd;
-  --button-color: #1864a7;
-  --button-action-color: #194c79;
-}
-.theme-light {
-  --text-color: #222;
-  --background-color-1: #6190e8;
-  --background-color-2: #a7bfe8;
-  --background-modal: #fafafa;
-  --background-slider: #2196f3;
-  --border-color: #666;
-  --button-color: #5468ff;
-  --button-action-color: #3c4fe0;
-}
 .theme-switch-wrapper {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 2rem 0;
-  font-size: 2.4rem;
+  font-size: 2rem;
   color: var(--text-color, #eee);
-  line-height: 2.4rem;
+  line-height: 2rem;
 }
 .switch {
   position: relative;
   display: inline-block;
   width: 75px;
-  height: 2.4rem;
+  height: 2rem;
 }
 
 .switch input {
@@ -55,11 +35,12 @@
 .slider:before {
   position: absolute;
   content: '';
-  height: 2rem;
-  width: 2rem;
-  left: 4px;
+  height: 1.6rem;
+  width: 1.6rem;
+  left: 3px;
   bottom: 3px;
   background-color: white;
+  will-change: transform;
   -webkit-transition: 0.4s;
   transition: 0.4s;
 }
@@ -73,13 +54,13 @@ input:focus + .slider {
 }
 
 input:checked + .slider:before {
-  -webkit-transform: translateX(35px);
-  -ms-transform: translateX(35px);
-  transform: translateX(35px);
+  -webkit-transform: translateX(43px);
+  -ms-transform: translateX(43px);
+  transform: translateX(43px);
 }
 
 .slider.round {
-  border-radius: 2.4rem;
+  border-radius: 2rem;
 }
 
 .slider.round:before {

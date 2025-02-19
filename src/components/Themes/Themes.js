@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 
+import './Theme-variables.css';
 import './Themes.css';
 
 const Themes = () => {

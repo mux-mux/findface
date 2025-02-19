@@ -1,0 +1,20 @@
+.theme-dark {
+  --text-color: #eee;
+  --background-color-1: #606c88;
+  --background-color-2: #3f4c6b;
+  --background-slider: #3b3b3b;
+  --background-modal: #cacaca;
+  --border-color: #ddd;
+  --button-color: #1864a7;
+  --button-action-color: #194c79;
+}
+.theme-light {
+  --text-color: #222;
+  --background-color-1: #6190e8;
+  --background-color-2: #a7bfe8;
+  --background-modal: #fafafa;
+  --background-slider: #2196f3;
+  --border-color: #666;
+  --button-color: #5468ff;
+  --button-action-color: #3c4fe0;
+}
