@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createContext } from 'react';
+import React, { useState, useEffect, useCallback, createContext } from 'react';
 
 import Navigation from './components/Navigation/Navigation.js';
 import ImageForm from './components/ImageForm/ImageForm.js';
@@ -14,6 +14,7 @@ const initialUserState = {
   id: 0,
   name: '',
   email: '',
+  profileImage: 'http://localhost:3001/uploads/default-profile-image.png',
   age: 0,
   entries: 0,
   joined: '',
@@ -28,53 +29,7 @@ const App = () => {
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [user, setUser] = useState(initialUserState);
 
-  useEffect(() => {
-    const token = window.localStorage.getItem('token');
-
-    const getUser = async () => {
-      if (token) {
-        try {
-          const response = await fetch('http://localhost:3001/signin', {
-            method: 'post',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: token,
-            },
-          });
-          const data = await response.json();
-
-          if (data && data.id) {
-            try {
-              const profile = await fetch(
-                `http://localhost:3001/profile/${data.id}`,
-                {
-                  method: 'get',
-                  headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: token,
-                  },
-                }
-              );
-              const profileData = await profile.json();
-
-              if (profileData && profileData.email) {
-                loadUser(profileData);
-                onRouteChange('home');
-              }
-            } catch (error) {
-              console.log(error);
-            }
-          }
-        } catch (error) {
-          console.log(error);
-        }
-      }
-    };
-
-    getUser();
-  }, []);
-
-  const loadUser = (userProfile) => {
+  const loadUser = useCallback((userProfile) => {
     setImageUrl('');
     setUser({
       id: userProfile.id,
@@ -85,7 +40,7 @@ const App = () => {
       entries: userProfile.entries,
       joined: userProfile.joined,
     });
-  };
+  }, []);
 
   const onInputChange = (e) => {
     setInput(e.target.value);
@@ -96,39 +51,83 @@ const App = () => {
     setImageUrl(input);
   };
 
-  const onRouteChange = (route) => {
-    if (route === 'signout') {
+  const onRouteChange = useCallback((newRoute) => {
+    if (newRoute === 'signout') {
       setIsSignedIn(false);
       setUser(initialUserState);
       window.localStorage.removeItem('token');
-    } else if (route === 'home') {
+    } else if (newRoute === 'home') {
       setIsSignedIn(true);
     }
-    setRoute(route);
-  };
+    setRoute(newRoute);
+  }, []);
 
-  const showHomeOrForm = () => {
-    if (route === 'home') {
-      return (
-        <div className="text-center">
-          <Rank userName={user.name} userEntries={user.entries} />
-          <ImageForm
-            onInputChange={onInputChange}
-            onImageSubmit={onImageSubmit}
-          />
-          {imageUrl !== '' && (
-            <FindFace
-              imageUrl={imageUrl}
-              onUserDataChange={(userData) => setUser(userData)}
-              user={user}
+  useEffect(() => {
+    const token = window.localStorage.getItem('token');
+    if (!token) return;
+
+    const fetchUser = async () => {
+      try {
+        const response = await fetch('http://localhost:3001/signin', {
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: token,
+          },
+        });
+        const data = await response.json();
+
+        if (data?.id) {
+          const profile = await fetch(
+            `http://localhost:3001/profile/${data.id}`,
+            {
+              method: 'get',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: token,
+              },
+            }
+          );
+          const profileData = await profile.json();
+
+          if (profileData?.email) {
+            loadUser(profileData);
+            onRouteChange('home');
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching user:', error);
+      }
+    };
+
+    fetchUser();
+  }, [loadUser, onRouteChange]);
+
+  const renderContent = () => {
+    switch (route) {
+      case 'home':
+        return (
+          <div className="text-center">
+            <Rank userName={user.name} userEntries={user.entries} />
+            <ImageForm
+              onInputChange={onInputChange}
+              onImageSubmit={onImageSubmit}
             />
-          )}
-        </div>
-      );
-    } else if (route === 'signin' || route === 'signout') {
-      return <Signin loadUser={loadUser} onRouteChange={onRouteChange} />;
-    } else {
-      return <Register loadUser={loadUser} onRouteChange={onRouteChange} />;
+            {imageUrl && (
+              <FindFace
+                imageUrl={imageUrl}
+                onUserDataChange={(userData) => setUser(userData)}
+                user={user}
+              />
+            )}
+          </div>
+        );
+      case 'signin':
+      case 'signout':
+        return <Signin loadUser={loadUser} onRouteChange={onRouteChange} />;
+      case 'register':
+      default:
+        return <Register loadUser={loadUser} onRouteChange={onRouteChange} />;
     }
   };
 
@@ -138,7 +137,7 @@ const App = () => {
       <UserContext.Provider value={{ user, loadUser }}>
         <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange} />
       </UserContext.Provider>
-      {showHomeOrForm()}
+      {renderContent()}
     </div>
   );
 };
