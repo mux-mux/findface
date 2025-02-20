@@ -104,7 +104,7 @@ const Modal = ({ onClose }) => {
 
   return (
     <div className="modal">
-      <div className="w-min mx-auto min-h-full px-6 py-12 lg:px-8">
+      <div className="flex flex-col mx-auto w-min">
         <div className="mx-auto my-8 text-slate-600">
           <div className="flex flex-col items-center">
             {preview || user.profileImage ? (
