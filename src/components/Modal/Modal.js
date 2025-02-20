@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useCallback, useContext } from 'react';
 import { UserContext } from '../../App.js';
 import Alert from '../Alert/Alert.js';
 import Spinner from '../Spinner/Spinner.js';
@@ -16,100 +16,88 @@ const Modal = ({ onClose }) => {
 
   const onImageChange = (e) => {
     const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreview(reader.result);
-      };
-      reader.readAsDataURL(file);
-      setImage(file);
-    }
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPreview(reader.result);
+    };
+    reader.readAsDataURL(file);
+    setImage(file);
   };
 
-  const onProfileUpdate = async () => {
+  const onProfileUpdate = useCallback(async () => {
     if (
-      newEmail !== user.email ||
-      newAge !== user.age ||
-      (preview !== '' && preview !== image)
-    ) {
-      try {
-        setStatus('loading');
+      newEmail === user.email &&
+      newAge === user.age &&
+      preview === '' &&
+      preview === image
+    )
+      return;
 
-        let imageUrl = user.profileImage;
+    setStatus('loading');
+    let imageUrl = user.profileImage;
 
-        if (image && typeof image !== 'string') {
-          const formData = new FormData();
-          formData.append('image', image);
-          formData.append('userId', user.id);
+    try {
+      if (image && typeof image !== 'string') {
+        const formData = new FormData();
+        formData.append('image', image);
+        formData.append('userId', user.id);
 
-          try {
-            const uploadResponse = await fetch('http://localhost:3001/upload', {
-              method: 'POST',
-              body: formData,
-              headers: {
-                Authorization: window.localStorage.getItem('token'),
-              },
-            });
+        const uploadResponse = await fetch('http://localhost:3001/upload', {
+          method: 'POST',
+          body: formData,
+          headers: {
+            Authorization: window.localStorage.getItem('token'),
+          },
+        });
 
-            const uploadData = await uploadResponse.json();
-            if (uploadResponse.ok) {
-              imageUrl = uploadData.imageUrl;
-            } else {
-              throw new Error(uploadData.error);
-            }
-          } catch (error) {
-            setStatus('error');
-            setMessage('Image upload failed');
-            return;
-          }
-        }
+        const uploadData = await uploadResponse.json();
+        if (!uploadResponse.ok) throw new Error(uploadData.error);
 
-        const response = await fetch(
-          `http://localhost:3001/profile/${user.id}`,
-          {
-            method: 'post',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: window.localStorage.getItem('token'),
-            },
-            body: JSON.stringify({
-              ...user,
-              age: newAge,
-              email: newEmail,
-              prevEmail: user.email,
-              prevAge: user.age,
-              profileImage: imageUrl,
-            }),
-          }
-        );
-
-        if (response.status === 200) {
-          setStatus('success');
-          setMessage('Update success');
-          loadUser({
-            ...user,
-            age: newAge,
-            email: newEmail,
-            profileImage: imageUrl,
-          });
-        }
-      } catch (error) {
-        setStatus('error');
+        imageUrl = uploadData.imageUrl;
       }
+
+      const response = await fetch(`http://localhost:3001/profile/${user.id}`, {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: window.localStorage.getItem('token'),
+        },
+        body: JSON.stringify({
+          ...user,
+          age: newAge,
+          email: newEmail,
+          prevEmail: user.email,
+          prevAge: user.age,
+          profileImage: imageUrl,
+        }),
+      });
+
+      if (!response.ok) throw new Error('Profile update failed');
+
+      setStatus('success');
+      setMessage('Profile updated successfully');
+      loadUser({
+        ...user,
+        age: newAge,
+        email: newEmail,
+        profileImage: imageUrl,
+      });
+    } catch (error) {
+      setStatus('error');
+      setMessage(error.message);
     }
+  }, [newEmail, newAge, preview, image, user, loadUser, setStatus]);
+
+  const enableEditing = (e) => {
+    const input = e.currentTarget.previousElementSibling;
+    input.removeAttribute('disabled');
+    input.focus();
   };
 
-  const onRemoveDisabled = (e) => {
-    const parent = e.currentTarget.parentNode;
-    const childInput = parent.getElementsByClassName('input-profile');
-    childInput[0].removeAttribute('disabled');
-    childInput[0].focus();
-  };
-
-  const onSetEmail = (e) => setNewEmail(e.target.value);
-  const onSetAge = (e) => setNewAge(e.target.value);
-  const onSetDisabled = (e) => {
-    if ((e.type === 'keydown' && e.key === 'Enter') || e.type === 'blur') {
+  const disableEditing = (e) => {
+    if (e.type === 'blur' || (e.type === 'keydown' && e.key === 'Enter')) {
       e.target.setAttribute('disabled', 'disabled');
     }
   };
@@ -158,11 +146,11 @@ const Modal = ({ onClose }) => {
                 value={newAge}
                 disabled
                 className="input-profile"
-                onChange={onSetAge}
-                onBlur={onSetDisabled}
-                onKeyDown={onSetDisabled}
+                onChange={(e) => setNewAge(e.target.value)}
+                onBlur={disableEditing}
+                onKeyDown={disableEditing}
               />
-              <span className="edit-profile" onClick={onRemoveDisabled}>
+              <span className="edit-profile" onClick={enableEditing}>
                 &#9998;
               </span>
             </div>
@@ -175,11 +163,11 @@ const Modal = ({ onClose }) => {
                 value={newEmail}
                 disabled
                 className="input-profile"
-                onChange={onSetEmail}
-                onBlur={onSetDisabled}
-                onKeyDown={onSetDisabled}
+                onChange={(e) => setNewEmail(e.target.value)}
+                onBlur={disableEditing}
+                onKeyDown={disableEditing}
               />
-              <span className="edit-profile" onClick={onRemoveDisabled}>
+              <span className="edit-profile" onClick={enableEditing}>
                 &#9998;
               </span>
             </div>
@@ -210,4 +198,5 @@ const Modal = ({ onClose }) => {
     </div>
   );
 };
+
 export default Modal;
