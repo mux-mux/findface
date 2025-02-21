@@ -57,7 +57,7 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
     } catch (error) {
       console.error('Error fetching face data:', error);
     }
-  }, [imageUrl, user.id, getFaceAreas]);
+  }, [imageUrl, user.id, onUserDataChange, getFaceAreas]);
 
   useEffect(() => {
     fetchFaceData();

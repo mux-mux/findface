@@ -103,6 +103,10 @@ const App = () => {
     fetchUser();
   }, [loadUser, onRouteChange]);
 
+  const onUserDataChange = useCallback((updatedUser) => {
+    setUser(updatedUser);
+  }, []);
+
   const renderContent = () => {
     switch (route) {
       case 'home':
@@ -116,7 +120,7 @@ const App = () => {
             {imageUrl && (
               <FindFace
                 imageUrl={imageUrl}
-                onUserDataChange={(userData) => setUser(userData)}
+                onUserDataChange={onUserDataChange}
                 user={user}
               />
             )}
