@@ -8,13 +8,13 @@ const useStatus = (initialStatus = 'idle') => {
       return;
     }
 
-    // const timeoutId = setTimeout(() => {
-    //   setStatus('idle');
-    // }, 10000);
+    const timeoutId = setTimeout(() => {
+      setStatus('idle');
+    }, 10000);
 
-    // return () => {
-    //   clearTimeout(timeoutId);
-    // };
+    return () => {
+      clearTimeout(timeoutId);
+    };
   }, [status]);
 
   return { status, setStatus };

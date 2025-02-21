@@ -1,67 +1,67 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './FindFace.css';
 
 const FindFace = ({ imageUrl, onUserDataChange, user }) => {
-  const [areas, setFaceAreas] = useState([]);
+  const [faceAreas, setFaceAreas] = useState([]);
 
-  const getFaceAreas = (data) => {
-    if (data && data.outputs) {
-      return data.outputs[0].data.regions.map(({ region_info }) => {
-        const clarifaiFace = region_info.bounding_box;
-        const image = document.getElementById('inputImage');
-        const width = Number(image.width);
-        const height = Number(image.height);
+  const getFaceAreas = useCallback((data) => {
+    if (!data?.outputs) return [];
 
-        return {
-          topRow: clarifaiFace.top_row * height,
-          rightCol: width - clarifaiFace.right_col * width,
-          bottomRow: height - clarifaiFace.bottom_row * height,
-          leftCol: clarifaiFace.left_col * width,
-        };
+    const image = document.getElementById('inputImage');
+    if (!image) return [];
+
+    const width = image.width;
+    const height = image.height;
+
+    return data.outputs[0].data.regions.map(({ region_info }) => {
+      const { top_row, right_col, bottom_row, left_col } =
+        region_info.bounding_box;
+      return {
+        topRow: top_row * height,
+        rightCol: width - right_col * width,
+        bottomRow: height - bottom_row * height,
+        leftCol: left_col * width,
+      };
+    });
+  }, []);
+
+  const fetchFaceData = useCallback(async () => {
+    if (!imageUrl) return;
+
+    try {
+      const response = await fetch('http://localhost:3001/apicall', {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: window.localStorage.getItem('token'),
+        },
+        body: JSON.stringify({ input: imageUrl }),
       });
+
+      const result = await response.json();
+      if (!result && result === 'Unauthorized') return;
+
+      const countResponse = await fetch('http://localhost:3001/image', {
+        method: 'put',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: window.localStorage.getItem('token'),
+        },
+        body: JSON.stringify({ id: user.id }),
+      });
+
+      const countData = await countResponse.json();
+      onUserDataChange((prevUser) => ({ ...prevUser, entries: countData }));
+
+      setFaceAreas(getFaceAreas(result));
+    } catch (error) {
+      console.error('Error fetching face data:', error);
     }
-    return;
-  };
+  }, [imageUrl, user.id, getFaceAreas]);
 
   useEffect(() => {
-    const apiCallSetArea = async () => {
-      try {
-        const response = await fetch('http://localhost:3001/apicall', {
-          method: 'post',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: window.localStorage.getItem('token'),
-          },
-          body: JSON.stringify({ input: imageUrl }),
-        });
-        const result = await response.json();
-
-        if (result && result !== 'Unauthorized') {
-          try {
-            const count = await fetch('http://localhost:3001/image', {
-              method: 'put',
-              headers: {
-                'Content-Type': 'application/json',
-                Authorization: window.localStorage.getItem('token'),
-              },
-              body: JSON.stringify({ id: user.id }),
-            });
-            const countData = await count.json();
-
-            onUserDataChange({ ...user, entries: countData });
-            setFaceAreas(getFaceAreas(result));
-          } catch (error) {
-            console.log(error);
-          }
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    apiCallSetArea();
-  }, [imageUrl]);
+    fetchFaceData();
+  }, [fetchFaceData]);
 
   return (
     <div className="flex justify-center mt-4">
@@ -73,15 +73,15 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
           width="500"
           height="auto"
         />
-        {areas.map(({ topRow, rightCol, bottomRow, leftCol }) => (
+        {faceAreas.map((area, index) => (
           <div
-            key={topRow * rightCol}
+            key={index}
             className="face-area"
             style={{
-              top: topRow,
-              right: rightCol,
-              bottom: bottomRow,
-              left: leftCol,
+              top: area.topRow,
+              right: area.rightCol,
+              bottom: area.bottomRow,
+              left: area.leftCol,
             }}
           ></div>
         ))}
