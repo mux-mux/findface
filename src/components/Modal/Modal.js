@@ -2,6 +2,7 @@ import { useState, useCallback, useContext } from 'react';
 import { UserContext } from '../../App.js';
 import Alert from '../Alert/Alert.js';
 import Spinner from '../Spinner/Spinner.js';
+import ProfileImage from '../ProfileImage/ProfileImage.js';
 import useStatus from '../../hooks/useStatus.js';
 import './Modal.css';
 
@@ -107,26 +108,11 @@ const Modal = ({ onClose }) => {
       <div className="flex flex-col mx-auto w-min">
         <div className="mx-auto my-8 text-slate-600">
           <div className="flex flex-col items-center">
-            {preview || user.profileImage ? (
-              <img
-                src={preview || user.profileImage}
-                alt="Profile"
-                className="w-24 h-24 rounded-full object-cover border"
-              />
-            ) : (
-              <svg
-                className="w-24 h-24 text-gray-400 -left-1 m-auto"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                  clipRule="evenodd"
-                ></path>
-              </svg>
-            )}
+            <ProfileImage
+              src={preview || user.profileImage}
+              alt={`${user.name} profile`}
+              size="lg"
+            />
             <input
               type="file"
               accept="image/*"

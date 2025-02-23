@@ -1,49 +1,35 @@
-import { useState, useContext, Fragment } from 'react';
+import { useState, useContext, useCallback, Fragment } from 'react';
 import { UserContext } from '../../App.js';
 import { createPortal } from 'react-dom';
 import { Menu, Transition } from '@headlessui/react';
 
 import Modal from '../Modal/Modal.js';
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
-}
+import ProfileImage from '../ProfileImage/ProfileImage.js';
 
 const Profile = ({ onRouteChange }) => {
   const [showModal, setShowModal] = useState(false);
   const { user } = useContext(UserContext);
 
+  const handleOpenModal = useCallback(() => setShowModal(true), []);
+  const handleCloseModal = useCallback(() => setShowModal(false), []);
+  const handleSignOut = useCallback(
+    () => onRouteChange('signout'),
+    [onRouteChange]
+  );
+
   return (
     <div className="flex justify-center">
       {showModal &&
-        createPortal(
-          <Modal onClose={() => setShowModal(false)} />,
-          document.body
-        )}
+        createPortal(<Modal onClose={handleCloseModal} />, document.body)}
       <Menu as="div" className="relative inline-block text-left">
         <div>
           <Menu.Button className="inline-flex w-full justify-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold text-gray-900">
             <div className="relative w-12 h-12 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
-              {user.profileImage ? (
-                <img
-                  src={user.profileImage}
-                  alt="Profile"
-                  className="w-14 h-14 rounded-full object-cover border"
-                />
-              ) : (
-                <svg
-                  className="absolute w-14 h-14 text-gray-400 -left-1"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                    clipRule="evenodd"
-                  ></path>
-                </svg>
-              )}
+              <ProfileImage
+                src={user.profileImage}
+                alt={`${user.name} profile`}
+                size="sm"
+              />
             </div>
           </Menu.Button>
         </div>
@@ -62,11 +48,10 @@ const Profile = ({ onRouteChange }) => {
                 {({ active }) => (
                   <a
                     href="#1"
-                    className={classNames(
-                      active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                      'block px-4 py-2 text-sm'
-                    )}
-                    onClick={() => setShowModal(true)}
+                    className={`block px-4 py-2 text-sm ${
+                      active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
+                    }`}
+                    onClick={handleOpenModal}
                   >
                     Account settings
                   </a>
@@ -76,11 +61,10 @@ const Profile = ({ onRouteChange }) => {
                 {({ active }) => (
                   <button
                     type="submit"
-                    className={classNames(
-                      active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                      'block w-full px-4 py-2 text-left text-sm'
-                    )}
-                    onClick={() => onRouteChange('signout')}
+                    className={`block w-full px-4 py-2 text-left text-sm ${
+                      active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
+                    }`}
+                    onClick={handleSignOut}
                   >
                     Sign out
                   </button>
