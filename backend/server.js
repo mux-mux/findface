@@ -4,8 +4,9 @@ import bcrypt from 'bcrypt';
 import knex from 'knex';
 import morgan from 'morgan';
 import multer from 'multer';
-import { fileURLToPath } from 'url';
-import path, { dirname } from 'path';
+import AWS from 'aws-sdk';
+import multerS3 from 'multer-s3';
+import path from 'path';
 import { rateLimit } from 'express-rate-limit';
 import 'dotenv/config';
 
@@ -30,26 +31,31 @@ const limiter = rateLimit({
   legacyHeaders: false,
 });
 
-const storage = multer.diskStorage({
-  destination: 'uploads/',
-  filename: (req, file, cb) => {
-    const fileExtension = path.extname(file.originalname);
-    const uniqueFilename =
-      Date.now() + '-' + Math.random().toString(36).substring(2, 9);
-    cb(null, `${uniqueFilename}${fileExtension}`);
-  },
+const s3 = new AWS.S3({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  region: process.env.AWS_REGION,
 });
 
-const upload = multer({ storage });
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const upload = multer({
+  storage: multerS3({
+    s3: s3,
+    bucket: process.env.S3_BUCKET_NAME,
+    contentType: multerS3.AUTO_CONTENT_TYPE,
+    key: (req, file, cb) => {
+      const fileExtension = path.extname(file.originalname);
+      const uniqueFilename =
+        Date.now() + '-' + Math.random().toString(36).substring(2, 9);
+      cb(null, `${uniqueFilename}${fileExtension}`);
+    },
+  }),
+});
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 app.use(limiter);
 app.use(morgan('tiny'));
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.get('/', (req, resp) => resp.send('server is working'));
 app.post('/signin', (req, resp) => signinAuth(req, resp, db, bcrypt));
