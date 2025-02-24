@@ -3,6 +3,7 @@ import './FindFace.css';
 
 const FindFace = ({ imageUrl, onUserDataChange, user }) => {
   const [faceAreas, setFaceAreas] = useState([]);
+  const [filterType, setFilterType] = useState('none');
 
   const getFaceAreas = useCallback((data) => {
     if (!data?.outputs) return [];
@@ -64,7 +65,20 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
   }, [fetchFaceData]);
 
   return (
-    <div className="flex justify-center mt-4">
+    <div className="flex items-center flex-col mt-4">
+      <div className="filter-controls">
+        {['none', 'blur', 'emoji', 'cat', 'dog'].map((type) => (
+          <button
+            key={type}
+            className={filterType === type ? 'selected' : ''}
+            onClick={() => setFilterType(type)}
+          >
+            {type === 'none'
+              ? 'No Filter'
+              : `Apply ${type.charAt(0).toUpperCase() + type.slice(1)}`}
+          </button>
+        ))}
+      </div>
       <div className="relative">
         <img
           src={imageUrl}
@@ -73,18 +87,34 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
           width="500"
           height="auto"
         />
-        {faceAreas.map((area, index) => (
-          <div
-            key={index}
-            className="face-area"
-            style={{
-              top: area.topRow,
-              right: area.rightCol,
-              bottom: area.bottomRow,
-              left: area.leftCol,
-            }}
-          ></div>
-        ))}
+        {faceAreas.map((area, index) => {
+          const imgWidth = 500;
+          const width = imgWidth - (area.leftCol + area.bottomRow);
+          const fontSize = width * 0.9;
+
+          return (
+            <div
+              key={index}
+              className={`face-area filter-${filterType}`}
+              style={{
+                top: area.topRow,
+                left: area.leftCol,
+                right: area.rightCol,
+                bottom: area.bottomRow,
+              }}
+            >
+              {filterType === 'emoji' && (
+                <span style={{ fontSize: `${fontSize}px` }}>😎</span>
+              )}
+              {filterType === 'cat' && (
+                <span style={{ fontSize: `${fontSize}px` }}>🐱</span>
+              )}
+              {filterType === 'dog' && (
+                <span style={{ fontSize: `${fontSize}px` }}>🐶</span>
+              )}
+            </div>
+          );
+        })}
       </div>
     </div>
   );

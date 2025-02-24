@@ -1,8 +1,43 @@
 .face-area {
   position: absolute;
-  box-shadow: 0 0 0 3px #149df2 inset;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+}
+.filter-controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.filter-controls button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  background-color: #149df2;
+  color: white;
+  font-size: 14px;
   cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  font-weight: bold;
+}
+
+.filter-controls button:hover {
+  background-color: #0d8bd1;
+}
+
+.filter-controls button:active {
+  transform: scale(0.95);
+}
+
+.filter-controls button.selected {
+  background-color: #0a6fa6;
+  box-shadow: 0 0 10px rgba(21, 145, 245, 0.6);
+}
+
+.filter-none {
+  box-shadow: 0 0 0 1px #72bf64 inset;
+}
+.filter-blur {
+  backdrop-filter: blur(20px);
 }
