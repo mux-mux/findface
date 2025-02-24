@@ -2,6 +2,17 @@ import jwt from 'jsonwebtoken';
 import { createClient } from 'redis';
 import { validateEmail } from '../utils/validation.js';
 
+const ERRORS = {
+  INVALID_CREDENTIALS:
+    'The credentials you entered are incorrect. Please double-check and try again.',
+  INVALID_FORMAT:
+    'The format of credentials you entered is incorrect. Please review and ensure it matches the required format.',
+  USER_FETCH_ERROR:
+    'We are unable to retrieve the user information at the moment. Please try again later.',
+  AUTH_ISSUE:
+    'There seems to be an authorization issue. Please try again later.',
+};
+
 const redisClient = await createClient({ url: process.env.REDIS_URL })
   .on('error', (err) => console.log('Redis Client Error', err))
   .connect();
@@ -35,9 +46,7 @@ const handleSignin = (req, res, db, bcrypt) => {
   const { email, password } = req.body;
 
   if (!validateEmail(email) || !password) {
-    return Promise.reject(
-      'The format of credentials you entered is incorrect. Please review and ensure it matches the required format.'
-    );
+    return Promise.reject(ERRORS.INVALID_FORMAT);
   }
 
   return db
@@ -52,20 +61,12 @@ const handleSignin = (req, res, db, bcrypt) => {
           .from('users')
           .where('email', '=', email)
           .then((user) => user[0])
-          .catch(() =>
-            Promise.reject(
-              'We are unable to retrieve the user information at the moment. Please try again later'
-            )
-          );
+          .catch(() => Promise.reject(ERRORS.USER_FETCH_ERROR));
       } else {
         throw new Error();
       }
     })
-    .catch(() =>
-      Promise.reject(
-        'The credentials you entered are incorrect. Please double-check and try again.'
-      )
-    );
+    .catch(() => Promise.reject(ERRORS.INVALID_CREDENTIALS));
 };
 
 const signinAuth = (req, res, db, bcrypt) => {
@@ -76,9 +77,7 @@ const signinAuth = (req, res, db, bcrypt) => {
         .then((data) => {
           return data.id && data.email
             ? createSessions(data)
-            : Promise.reject(
-                'There seems to be an authorization issue. Please try again later'
-              );
+            : Promise.reject(ERRORS.AUTH_ISSUE);
         })
         .then((session) => res.json(session))
         .catch((error) => res.status(400).json(error));
