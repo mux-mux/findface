@@ -88,9 +88,10 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
           height="auto"
         />
         {faceAreas.map((area, index) => {
-          const imgWidth = 500;
-          const width = imgWidth - (area.leftCol + area.bottomRow);
-          const fontSize = width * 0.9;
+          const img = document.getElementById('inputImage');
+          const width = img.width - (area.leftCol + area.rightCol);
+          const height = img.height - (area.bottomRow + area.topRow);
+          const fontSize = Math.max(width, height) * 1.1;
 
           return (
             <div

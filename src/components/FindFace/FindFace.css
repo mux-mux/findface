@@ -4,6 +4,14 @@
   flex-wrap: wrap;
   justify-content: center;
 }
+.face-area span {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  line-height: 0.8;
+}
 .filter-controls {
   display: flex;
   gap: 10px;
