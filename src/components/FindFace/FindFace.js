@@ -6,7 +6,10 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
   const [filterType, setFilterType] = useState('none');
 
   const getFaceAreas = useCallback((data) => {
-    if (!data?.outputs) return [];
+    if (!data.outputs[0].data.regions) {
+      alert('No faces detected!');
+      return [];
+    }
 
     const image = document.getElementById('inputImage');
     if (!image) return [];
@@ -67,7 +70,7 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
   return (
     <div className="flex items-center flex-col mt-4">
       <div className="filter-controls">
-        {['none', 'blur', 'emoji', 'cat', 'dog'].map((type) => (
+        {['none', 'blur', 'emoji', 'alien', 'dog', 'ghost'].map((type) => (
           <button
             key={type}
             className={filterType === type ? 'selected' : ''}
@@ -107,11 +110,14 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
               {filterType === 'emoji' && (
                 <span style={{ fontSize: `${fontSize}px` }}>😎</span>
               )}
-              {filterType === 'cat' && (
-                <span style={{ fontSize: `${fontSize}px` }}>🐱</span>
+              {filterType === 'alien' && (
+                <span style={{ fontSize: `${fontSize}px` }}>👽</span>
               )}
               {filterType === 'dog' && (
                 <span style={{ fontSize: `${fontSize}px` }}>🐶</span>
+              )}
+              {filterType === 'ghost' && (
+                <span style={{ fontSize: `${fontSize}px` }}>🫠</span>
               )}
             </div>
           );
