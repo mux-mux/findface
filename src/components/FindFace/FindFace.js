@@ -67,8 +67,12 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
     fetchFaceData();
   }, [fetchFaceData]);
 
+  const handleDownload = () => {
+    console.log('Download image');
+  };
+
   return (
-    <div className="flex items-center flex-col mt-4">
+    <div className="flex items-center flex-col mt-4 gap-3">
       <div className="filter-controls">
         {['none', 'blur', 'emoji', 'alien', 'dog', 'ghost'].map((type) => (
           <button
@@ -82,6 +86,9 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
           </button>
         ))}
       </div>
+      <button onClick={handleDownload} className="mb-5 download-controls">
+        Download Image
+      </button>
       <div className="relative">
         <img
           src={imageUrl}

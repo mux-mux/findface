@@ -20,7 +20,8 @@
   margin-bottom: 15px;
 }
 
-.filter-controls button {
+.filter-controls button,
+.download-controls {
   padding: 10px 15px;
   border: none;
   border-radius: 8px;
@@ -43,6 +44,14 @@
 .filter-controls button.selected {
   background-color: #0a6fa6;
   box-shadow: 0 0 10px rgba(21, 145, 245, 0.6);
+}
+
+.download-controls {
+  background-color: #55af31;
+}
+
+.download-controls:hover {
+  background-color: #5cbf36;
 }
 
 .filter-none {
