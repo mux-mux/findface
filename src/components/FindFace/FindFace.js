@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import Spinner from '../Spinner/Spinner.js';
 import './FindFace.css';
 
 const FindFace = ({ imageUrl, onUserDataChange, user }) => {
   const [faceAreas, setFaceAreas] = useState([]);
   const [filterType, setFilterType] = useState('none');
+  const [isDownloading, setIsDownloading] = useState(false);
 
   const getFaceAreas = useCallback((data) => {
     if (!data.outputs[0].data.regions) {
@@ -68,6 +70,8 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
   }, [fetchFaceData]);
 
   const handleDownload = () => {
+    setIsDownloading(true);
+
     const img = new Image();
     const proxyUrl = 'https://cors-anywhere-api-liwc.onrender.com/proxy?url=';
     const proxiedImageUrl = proxyUrl + imageUrl;
@@ -142,11 +146,13 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
         link.href = URL.createObjectURL(blob);
         link.download = 'filtered_image.png';
         link.click();
+        setIsDownloading(false);
       }, 'image/png');
     };
 
     img.onerror = () => {
       console.error('Failed to load image for processing.');
+      setIsDownloading(false);
     };
   };
 
@@ -165,9 +171,18 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
           </button>
         ))}
       </div>
-      <button onClick={handleDownload} className="mb-5 download-controls">
-        {'Download Image'}
-      </button>
+      <div className="relative mb-5">
+        <button
+          onClick={handleDownload}
+          disabled={isDownloading}
+          className="download-controls flex items-center"
+        >
+          {'Download Image'}
+        </button>
+        {isDownloading && (
+          <Spinner className="absolute -right-2 top-5 translate-x-full -translate-y-1/2" />
+        )}
+      </div>
       <div className="relative">
         <img
           src={imageUrl}

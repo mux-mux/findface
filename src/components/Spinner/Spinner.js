@@ -2,9 +2,13 @@ import React from 'react';
 
 import './Spinner.css';
 
-const Spinner = () => {
+const Spinner = ({ className }) => {
   return (
-    <div className="spinner-container">
+    <div
+      className={
+        className ? `spinner-container ${className}` : 'spinner-container'
+      }
+    >
       <div className="loader"></div>
     </div>
   );

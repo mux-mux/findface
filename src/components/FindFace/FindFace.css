@@ -56,7 +56,6 @@
 
 .filter-none {
   box-shadow: 0 0 0 3px #72bf64 inset;
-  border-radius: 50%;
 }
 .filter-blur {
   backdrop-filter: blur(20px);
