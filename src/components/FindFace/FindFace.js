@@ -68,7 +68,86 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
   }, [fetchFaceData]);
 
   const handleDownload = () => {
-    console.log('Download image');
+    const img = new Image();
+    const proxyUrl = 'https://cors-anywhere-api-liwc.onrender.com/proxy?url=';
+    const proxiedImageUrl = proxyUrl + imageUrl;
+    img.crossOrigin = 'anonymous';
+    img.src = proxiedImageUrl;
+
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d', {
+        willReadFrequently: true,
+      });
+
+      canvas.width = img.width;
+      canvas.height = img.height;
+
+      ctx.drawImage(img, 0, 0, img.width, img.height);
+
+      faceAreas.forEach((area) => {
+        const width = img.width - (area.leftCol + area.rightCol);
+        const height = img.height - (area.bottomRow + area.topRow);
+        const fontSize = Math.max(width, height) * 1.1;
+
+        if (filterType === 'blur') {
+          const blurredCanvas = document.createElement('canvas');
+          const blurredCtx = blurredCanvas.getContext('2d', {
+            willReadFrequently: true,
+          });
+
+          blurredCanvas.width = img.width;
+          blurredCanvas.height = img.height;
+
+          ctx.drawImage(img, 0, 0, img.width, img.height);
+          blurredCtx.filter = 'blur(20px)';
+          blurredCtx.drawImage(img, 0, 0, img.width, img.height);
+
+          faceAreas.forEach((area) => {
+            const width = img.width - (area.leftCol + area.rightCol);
+            const height = img.height - (area.bottomRow + area.topRow);
+
+            const faceImageData = blurredCtx.getImageData(
+              area.leftCol,
+              area.topRow,
+              width,
+              height
+            );
+
+            ctx.putImageData(faceImageData, area.leftCol, area.topRow);
+          });
+        }
+
+        if (['emoji', 'alien', 'dog', 'ghost'].includes(filterType)) {
+          const emojiMap = {
+            emoji: '😎',
+            alien: '👽',
+            dog: '🐶',
+            ghost: '🫠',
+          };
+
+          ctx.font = `${fontSize}px Arial`;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(
+            emojiMap[filterType],
+            area.leftCol + width / 2,
+            area.topRow + height / 2
+          );
+        }
+      });
+
+      canvas.toBlob((blob) => {
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'filtered_image.png';
+        link.click();
+      }, 'image/png');
+    };
+
+    img.onerror = () => {
+      console.error('Failed to load image for processing.');
+    };
   };
 
   return (
@@ -87,7 +166,7 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
         ))}
       </div>
       <button onClick={handleDownload} className="mb-5 download-controls">
-        Download Image
+        {'Download Image'}
       </button>
       <div className="relative">
         <img
