@@ -176,7 +176,7 @@ const Modal = ({ onClose }) => {
             Cancel
           </button>
         </div>
-        {status === 'loading' && <Spinner />}
+        {status === 'loading' && <Spinner/>}
         {(status === 'error' || status === 'success') && (
           <Alert message={message} onClose={() => setStatus('idle')} />
         )}

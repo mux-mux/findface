@@ -180,7 +180,7 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
           {'Download Image'}
         </button>
         {isDownloading && (
-          <Spinner className="absolute -right-2 top-5 translate-x-full -translate-y-1/2" />
+          <Spinner className="absolute -right-2 top-5 translate-x-full -translate-y-1/2 !m-0" />
         )}
       </div>
       <div className="relative">
