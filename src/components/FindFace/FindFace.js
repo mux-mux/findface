@@ -32,6 +32,7 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
   }, []);
 
   const fetchFaceData = useCallback(async () => {
+    setFaceAreas([]);
     if (!imageUrl) return;
 
     try {
