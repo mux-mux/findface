@@ -105,8 +105,8 @@ const Modal = ({ onClose }) => {
 
   return (
     <div className="modal">
-      <div className="flex flex-col mx-auto w-min">
-        <div className="mx-auto my-8 text-slate-600">
+      <div className="flex flex-col justify-center mx-auto w-min h-full">
+        <div className="mx-auto mb-8 text-slate-600">
           <div className="flex flex-col items-center">
             <ProfileImage
               src={preview || user.profileImage}
@@ -176,7 +176,7 @@ const Modal = ({ onClose }) => {
             Cancel
           </button>
         </div>
-        {status === 'loading' && <Spinner/>}
+        {status === 'loading' && <Spinner />}
         {(status === 'error' || status === 'success') && (
           <Alert message={message} onClose={() => setStatus('idle')} />
         )}
