@@ -48,7 +48,7 @@ const Profile = ({ onRouteChange }) => {
                 {({ active }) => (
                   <button
                     type="button"
-                    className={`block px-4 py-2 text-sm ${
+                    className={`block w-full px-4 py-2 text-left text-sm ${
                       active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
                     }`}
                     onClick={handleOpenModal}
