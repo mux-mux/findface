@@ -46,15 +46,15 @@ const Profile = ({ onRouteChange }) => {
             <div className="py-1">
               <Menu.Item>
                 {({ active }) => (
-                  <a
-                    href="#1"
+                  <button
+                    type="button"
                     className={`block px-4 py-2 text-sm ${
                       active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
                     }`}
                     onClick={handleOpenModal}
                   >
                     Account settings
-                  </a>
+                  </button>
                 )}
               </Menu.Item>
               <Menu.Item>
