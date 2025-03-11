@@ -105,7 +105,7 @@ const Modal = ({ onClose }) => {
 
   return (
     <div className="modal">
-      <div className="flex flex-col justify-center mx-auto w-min h-full">
+      <div className="flex flex-col justify-center mx-auto w-min py-20">
         <div className="mx-auto mb-8 text-slate-600">
           <div className="flex flex-col items-center">
             <ProfileImage
