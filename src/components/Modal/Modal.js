@@ -28,12 +28,7 @@ const Modal = ({ onClose }) => {
   };
 
   const onProfileUpdate = useCallback(async () => {
-    if (
-      newEmail === user.email &&
-      newAge === user.age &&
-      preview === '' &&
-      preview === image
-    )
+    if (newEmail === user.email && newAge === user.age && preview === image)
       return;
 
     setStatus('loading');
@@ -132,7 +127,7 @@ const Modal = ({ onClose }) => {
                 value={newAge}
                 disabled
                 className="input-profile"
-                onChange={(e) => setNewAge(e.target.value)}
+                onChange={(e) => setNewAge(+e.target.value)}
                 onBlur={disableEditing}
                 onKeyDown={disableEditing}
               />
