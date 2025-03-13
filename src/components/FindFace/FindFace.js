@@ -189,7 +189,7 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
           src={imageUrl}
           id="inputImage"
           alt="faces"
-          width="500"
+          width="auto"
           height="auto"
         />
         {faceAreas.map((area, index) => {
