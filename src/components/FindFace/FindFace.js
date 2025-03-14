@@ -66,6 +66,18 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
     }
   }, [imageUrl, user.id, onUserDataChange, getFaceAreas]);
 
+  const getAreaSize = useCallback((image, faceArea) => {
+    const width = image.width - (faceArea.leftCol + faceArea.rightCol);
+    const height = image.height - (faceArea.bottomRow + faceArea.topRow);
+    const fontSize = Math.max(width, height) * 1.1;
+
+    return {
+      width,
+      height,
+      fontSize,
+    };
+  }, []);
+
   useEffect(() => {
     fetchFaceData();
   }, [fetchFaceData]);
@@ -91,9 +103,7 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
       ctx.drawImage(img, 0, 0, img.width, img.height);
 
       faceAreas.forEach((area) => {
-        const width = img.width - (area.leftCol + area.rightCol);
-        const height = img.height - (area.bottomRow + area.topRow);
-        const fontSize = Math.max(width, height) * 1.1;
+        const { width, height, fontSize } = getAreaSize(img, area);
 
         if (filterType === 'blur') {
           const blurredCanvas = document.createElement('canvas');
@@ -109,9 +119,6 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
           blurredCtx.drawImage(img, 0, 0, img.width, img.height);
 
           faceAreas.forEach((area) => {
-            const width = img.width - (area.leftCol + area.rightCol);
-            const height = img.height - (area.bottomRow + area.topRow);
-
             const faceImageData = blurredCtx.getImageData(
               area.leftCol,
               area.topRow,
@@ -194,9 +201,7 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
         />
         {faceAreas.map((area, index) => {
           const img = document.getElementById('inputImage');
-          const width = img.width - (area.leftCol + area.rightCol);
-          const height = img.height - (area.bottomRow + area.topRow);
-          const fontSize = Math.max(width, height) * 1.1;
+          const { fontSize } = getAreaSize(img, area);
 
           return (
             <div
