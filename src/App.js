@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, createContext } from 'react';
+import DOMPurify from 'dompurify';
 
 import Navigation from './components/Navigation/Navigation.js';
 import ImageForm from './components/ImageForm/ImageForm.js';
@@ -48,7 +49,8 @@ const App = () => {
 
   const onImageSubmit = (e) => {
     e.preventDefault();
-    setImageUrl(input);
+    const sanitizedUrl = DOMPurify.sanitize(input);
+    setImageUrl(sanitizedUrl);
   };
 
   const onRouteChange = useCallback((newRoute) => {
