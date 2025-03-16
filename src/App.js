@@ -49,7 +49,7 @@ const App = () => {
 
   const onImageSubmit = (e) => {
     e.preventDefault();
-    const sanitizedUrl = DOMPurify.sanitize(input);
+    const sanitizedUrl = DOMPurify.sanitize(input).trim();
     setImageUrl(sanitizedUrl);
   };
 
