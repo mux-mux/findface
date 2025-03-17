@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import DOMPurify from 'dompurify';
 import Spinner from '../Spinner/Spinner.js';
 import Alert from '../Alert/Alert.js';
 import useStatus from '../../hooks/useStatus.js';
@@ -12,20 +13,45 @@ const Register = ({ onRouteChange, loadUser }) => {
   const [message, setMessage] = useState('');
   const { status, setStatus } = useStatus('idle');
 
-  const onEmailChange = (e) => setEmail(e.target.value);
-  const onPasswordChange = (e) => setPassword(e.target.value);
-  const onNameChange = (e) => setName(e.target.value);
+  const sanitizeInput = (value) => DOMPurify.sanitize(value.trim());
+
+  const onEmailChange = (e) => setEmail(sanitizeInput(e.target.value));
+  const onPasswordChange = (e) => setPassword(sanitizeInput(e.target.value));
+  const onNameChange = (e) => setName(sanitizeInput(e.target.value));
 
   const saveSessionToken = (token) => {
     window.localStorage.setItem('token', token);
   };
 
+  const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const isValidPassword = (password) =>
+    /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*()_+=-]{4,}$/.test(password);
+
   const onSubmitRegister = async (e) => {
     e.preventDefault();
+    setStatus('loading');
+
+    if (!name || name.length < 2) {
+      setMessage('Name must be at least 2 characters');
+      setStatus('error');
+      return;
+    }
+
+    if (!isValidEmail(email)) {
+      setMessage('Invalid email format');
+      setStatus('error');
+      return;
+    }
+
+    if (!isValidPassword(password)) {
+      setMessage(
+        'Password must be at least 4 characters long and include a number'
+      );
+      setStatus('error');
+      return;
+    }
 
     try {
-      setStatus('loading');
-
       const response = await fetch('http://localhost:3001/register', {
         method: 'post',
         headers: { 'Content-Type': 'application/json' },
@@ -44,6 +70,7 @@ const Register = ({ onRouteChange, loadUser }) => {
         throw new Error();
       }
     } catch (error) {
+      setMessage(error.message || 'Something went wrong, please try again.');
       setStatus('error');
     }
   };

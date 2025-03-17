@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import DOMPurify from 'dompurify';
 import Spinner from '../Spinner/Spinner.js';
 import Alert from '../Alert/Alert.js';
 import useStatus from '../../hooks/useStatus.js';
@@ -13,7 +14,8 @@ const Signin = ({ onRouteChange, loadUser }) => {
   const handleChange = useCallback(
     (e) => {
       const { name, value } = e.target;
-      setFormData((prev) => ({ ...prev, [name]: value }));
+      const sanitizedValue = DOMPurify.sanitize(value.trim());
+      setFormData((prev) => ({ ...prev, [name]: sanitizedValue }));
     },
     [setFormData]
   );
@@ -42,10 +44,27 @@ const Signin = ({ onRouteChange, loadUser }) => {
     return response.json();
   };
 
+  const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const isValidPassword = (password) => password.length >= 4;
+
   const handleSubmit = useCallback(
     async (e) => {
       e.preventDefault();
       setStatus('loading');
+
+      const { email, password } = formData;
+
+      if (!isValidEmail(email)) {
+        setMessage('Invalid email format');
+        setStatus('error');
+        return;
+      }
+
+      if (!isValidPassword(password)) {
+        setMessage('Password must be at least 4 characters long');
+        setStatus('error');
+        return;
+      }
 
       try {
         const data = await signinUser(formData);
