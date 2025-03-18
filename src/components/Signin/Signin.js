@@ -3,19 +3,49 @@ import DOMPurify from 'dompurify';
 import Spinner from '../Spinner/Spinner.js';
 import Alert from '../Alert/Alert.js';
 import useStatus from '../../hooks/useStatus.js';
+import { VALIDATIONS } from '../../constants.js';
 
 import './Signin.css';
 
+const { MIN_PASS_LENGTH, MESSAGES } = VALIDATIONS;
+
 const Signin = ({ onRouteChange, loadUser }) => {
   const [formData, setFormData] = useState({ email: '', password: '' });
+  const [errors, setErrors] = useState({ email: '', password: '' });
   const [message, setMessage] = useState('');
   const { status, setStatus } = useStatus('idle');
+
+  const validateEmail = (value) => {
+    if (!value) return '';
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+      ? ''
+      : MESSAGES.EMAIL_FORMAT;
+  };
+
+  const validatePassword = (value) => {
+    if (!value) return '';
+    if (value.length < MIN_PASS_LENGTH) {
+      return MESSAGES.MIN_PASS_LENGTH;
+    }
+    if (!/\d/.test(value)) {
+      return MESSAGES.PASS_INCLUDE_NUMBER;
+    }
+    return '';
+  };
 
   const handleChange = useCallback(
     (e) => {
       const { name, value } = e.target;
       const sanitizedValue = DOMPurify.sanitize(value.trim());
       setFormData((prev) => ({ ...prev, [name]: sanitizedValue }));
+
+      setErrors((prev) => ({
+        ...prev,
+        [name]:
+          name === 'email'
+            ? validateEmail(sanitizedValue)
+            : validatePassword(sanitizedValue),
+      }));
     },
     [setFormData]
   );
@@ -44,9 +74,6 @@ const Signin = ({ onRouteChange, loadUser }) => {
     return response.json();
   };
 
-  const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  const isValidPassword = (password) => password.length >= 4;
-
   const handleSubmit = useCallback(
     async (e) => {
       e.preventDefault();
@@ -54,14 +81,11 @@ const Signin = ({ onRouteChange, loadUser }) => {
 
       const { email, password } = formData;
 
-      if (!isValidEmail(email)) {
-        setMessage('Invalid email format');
-        setStatus('error');
-        return;
-      }
+      const emailError = validateEmail(email);
+      const passwordError = validatePassword(password);
 
-      if (!isValidPassword(password)) {
-        setMessage('Password must be at least 4 characters long');
+      if (emailError || passwordError) {
+        setErrors({ email: emailError, password: passwordError });
         setStatus('error');
         return;
       }
@@ -123,7 +147,13 @@ const Signin = ({ onRouteChange, loadUser }) => {
                 maxLength="60"
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 onChange={handleChange}
+                value={formData.email}
               />
+              {errors.email && (
+                <p className="absolute text-red-500 text-xs mt-1">
+                  {errors.email}
+                </p>
+              )}
             </div>
           </div>
 
@@ -146,14 +176,22 @@ const Signin = ({ onRouteChange, loadUser }) => {
                 maxLength="200"
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 onChange={handleChange}
+                value={formData.password}
               />
+              {errors.password && (
+                <p className="absolute text-red-500 text-xs mt-1">
+                  {errors.password}
+                </p>
+              )}
             </div>
           </div>
 
           <div>
             <button
               type="submit"
-              disabled={status === 'loading'}
+              disabled={
+                status === 'loading' || Object.values(errors).some((err) => err)
+              }
               className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
               {status === 'loading' ? 'Signing in...' : 'Sign in'}
@@ -163,13 +201,12 @@ const Signin = ({ onRouteChange, loadUser }) => {
 
         <p className="mt-10 text-center text-sm">
           Not a member?
-          <a
-            href="##"
+          <button
             className="ml-1 font-semibold leading-6 hover:text-blue-500"
             onClick={() => onRouteChange('register')}
           >
             Register
-          </a>
+          </button>
         </p>
       </div>
       {status === 'loading' && <Spinner />}
