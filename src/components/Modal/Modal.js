@@ -1,4 +1,5 @@
 import { useState, useCallback, useContext } from 'react';
+import FocusLock from 'react-focus-lock';
 import { UserContext } from '../../App.js';
 import Alert from '../Alert/Alert.js';
 import Spinner from '../Spinner/Spinner.js';
@@ -99,96 +100,98 @@ const Modal = ({ onClose }) => {
   };
 
   return (
-    <div className="modal">
-      <div className="flex flex-col justify-center mx-auto w-min py-20">
-        <div className="mx-auto mb-8 text-slate-600">
-          <div className="flex flex-col items-center">
-            <ProfileImage
-              src={preview || user.profileImage}
-              alt={`${user.name} profile`}
-              size="lg"
-            />
-            <input
-              type="file"
-              accept="image/*"
-              onChange={onImageChange}
-              className="mt-2 upload-button"
-              aria-label="Upload an image from PC"
-            />
-          </div>
-          <h2 className="my-8 text-xl text-center font-semibold text-gray-800">
-            {user.name}
-          </h2>
-          <div className="profile">
-            <span>Submitted: </span> <span>{`${user.entries} images`}</span>
-            <span>Age: </span>{' '}
-            <div className="flex">
-              <input
-                type="number"
-                value={newAge}
-                disabled
-                className="input-profile"
-                onChange={(e) => setNewAge(+e.target.value)}
-                onBlur={disableEditing}
-                onKeyDown={disableEditing}
-                aria-label="Enter your age"
+    <FocusLock>
+      <div className="modal">
+        <div className="flex flex-col justify-center mx-auto w-min py-20">
+          <div className="mx-auto mb-8 text-slate-600">
+            <div className="flex flex-col items-center">
+              <ProfileImage
+                src={preview || user.profileImage}
+                alt={`${user.name} profile`}
+                size="lg"
               />
-              <button
-                className="edit-profile"
-                onClick={enableEditing}
-                aria-label="Edit your age"
-              >
-                &#9998;
-              </button>
-            </div>
-            <span>Memeber since: </span>
-            <span>{new Date(user.joined).toLocaleDateString()}</span>
-            <span>Email: </span>{' '}
-            <div className="flex">
               <input
-                type="email"
-                value={newEmail}
-                disabled
-                className="input-profile"
-                onChange={(e) => setNewEmail(e.target.value)}
-                onBlur={disableEditing}
-                onKeyDown={disableEditing}
+                type="file"
+                accept="image/*"
+                onChange={onImageChange}
+                className="mt-2 upload-button"
+                aria-label="Upload an image from PC"
               />
-              <button
-                className="edit-profile"
-                onClick={enableEditing}
-                aria-label="Edit your email"
-              >
-                &#9998;
-              </button>
+            </div>
+            <h2 className="my-8 text-xl text-center font-semibold text-gray-800">
+              {user.name}
+            </h2>
+            <div className="profile">
+              <span>Submitted: </span> <span>{`${user.entries} images`}</span>
+              <span>Age: </span>{' '}
+              <div className="flex">
+                <input
+                  type="number"
+                  value={newAge}
+                  disabled
+                  className="input-profile"
+                  onChange={(e) => setNewAge(+e.target.value)}
+                  onBlur={disableEditing}
+                  onKeyDown={disableEditing}
+                  aria-label="Enter your age"
+                />
+                <button
+                  className="edit-profile"
+                  onClick={enableEditing}
+                  aria-label="Edit your age"
+                >
+                  &#9998;
+                </button>
+              </div>
+              <span>Memeber since: </span>
+              <span>{new Date(user.joined).toLocaleDateString()}</span>
+              <span>Email: </span>{' '}
+              <div className="flex">
+                <input
+                  type="email"
+                  value={newEmail}
+                  disabled
+                  className="input-profile"
+                  onChange={(e) => setNewEmail(e.target.value)}
+                  onBlur={disableEditing}
+                  onKeyDown={disableEditing}
+                />
+                <button
+                  className="edit-profile"
+                  onClick={enableEditing}
+                  aria-label="Edit your email"
+                >
+                  &#9998;
+                </button>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="flex justify-around">
-          <button
-            type="button"
-            onClick={onProfileUpdate}
-            className="w-1/2 mr-2 bg-blue-600 text-white font-medium rounded-lg px-4 py-2 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300"
-            aria-label="Save profile updates"
-          >
-            Save
-          </button>
-          <button
-            type="button"
-            onClick={onClose}
-            className="w-1/2 ml-2 bg-red-600 text-white font-medium rounded-lg px-4 py-2 hover:bg-red-700 focus:ring-4 focus:ring-red-300"
-            aria-label="Cancel profile updates"
-          >
-            Cancel
-          </button>
+          <div className="flex justify-around">
+            <button
+              type="button"
+              onClick={onProfileUpdate}
+              className="w-1/2 mr-2 bg-blue-600 text-white font-medium rounded-lg px-4 py-2 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300"
+              aria-label="Save profile updates"
+            >
+              Save
+            </button>
+            <button
+              type="button"
+              onClick={onClose}
+              className="w-1/2 ml-2 bg-red-600 text-white font-medium rounded-lg px-4 py-2 hover:bg-red-700 focus:ring-4 focus:ring-red-300"
+              aria-label="Cancel profile updates"
+            >
+              Cancel
+            </button>
+          </div>
+          {status === 'loading' && <Spinner />}
+          {(status === 'error' || status === 'success') && (
+            <Alert message={message} onClose={() => setStatus('idle')} />
+          )}
         </div>
-        {status === 'loading' && <Spinner />}
-        {(status === 'error' || status === 'success') && (
-          <Alert message={message} onClose={() => setStatus('idle')} />
-        )}
       </div>
-    </div>
+    </FocusLock>
   );
 };
 

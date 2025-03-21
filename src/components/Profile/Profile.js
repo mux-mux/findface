@@ -21,9 +21,13 @@ const Profile = ({ onRouteChange }) => {
     <div className="flex justify-center">
       {showModal &&
         createPortal(<Modal onClose={handleCloseModal} />, document.body)}
+
       <Menu as="div" className="relative inline-block text-left">
         <div>
-          <Menu.Button className="inline-flex w-full justify-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold text-gray-900">
+          <Menu.Button
+            className="inline-flex w-full justify-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold text-gray-900"
+            aria-label="Open profile dropdown menu. Up/down keys navigation"
+          >
             <div className="relative w-12 h-12 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
               <ProfileImage
                 src={user.profileImage}
