@@ -52,6 +52,7 @@ const Profile = ({ onRouteChange }) => {
                       active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
                     }`}
                     onClick={handleOpenModal}
+                    aria-label="Open Account settings page"
                   >
                     Account settings
                   </button>
@@ -65,6 +66,7 @@ const Profile = ({ onRouteChange }) => {
                       active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
                     }`}
                     onClick={handleSignOut}
+                    aria-label="Log out of your account"
                   >
                     Sign out
                   </button>

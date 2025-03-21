@@ -59,7 +59,7 @@ const Register = ({ onRouteChange, loadUser }) => {
     setErrors((prev) => ({ ...prev, password: validatePassword(value) }));
   };
   const onNameChange = (e) => {
-    const value = sanitizeInput(e.target.value.replace(/[^a-zA-Z ]/g, ''));
+    const value = sanitizeInput(e.target.value.replace(/[^a-zA-Z0-9-.]/g, ''));
     setName(sanitizeInput(value));
     setErrors((prev) => ({ ...prev, name: validateName(value) }));
   };
@@ -207,6 +207,7 @@ const Register = ({ onRouteChange, loadUser }) => {
                 status === 'loading' || Object.values(errors).some((err) => err)
               }
               className="flex w-full justify-center mt-10 rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              aria-label="Create a new account"
             >
               {status === 'loading' ? 'Registering...' : 'Register'}
             </button>
@@ -218,6 +219,7 @@ const Register = ({ onRouteChange, loadUser }) => {
           <button
             className="ml-1 font-semibold leading-6 hover:text-blue-500"
             onClick={() => onRouteChange('signin')}
+            aria-label="Sign in to account"
           >
             Signin
           </button>

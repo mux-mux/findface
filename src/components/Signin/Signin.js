@@ -188,6 +188,7 @@ const Signin = ({ onRouteChange, loadUser }) => {
                 status === 'loading' || Object.values(errors).some((err) => err)
               }
               className="flex w-full justify-center mt-10 rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              aria-label="Sign in to account"
             >
               {status === 'loading' ? 'Signing in...' : 'Sign in'}
             </button>
@@ -199,6 +200,7 @@ const Signin = ({ onRouteChange, loadUser }) => {
           <button
             className="ml-1 font-semibold leading-6 hover:text-blue-500"
             onClick={() => onRouteChange('register')}
+            aria-label="Create a new account"
           >
             Register
           </button>

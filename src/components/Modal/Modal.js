@@ -113,6 +113,7 @@ const Modal = ({ onClose }) => {
               accept="image/*"
               onChange={onImageChange}
               className="mt-2 upload-button"
+              aria-label="Upload an image from PC"
             />
           </div>
           <h2 className="my-8 text-xl text-center font-semibold text-gray-800">
@@ -130,10 +131,15 @@ const Modal = ({ onClose }) => {
                 onChange={(e) => setNewAge(+e.target.value)}
                 onBlur={disableEditing}
                 onKeyDown={disableEditing}
+                aria-label="Enter your age"
               />
-              <span className="edit-profile" onClick={enableEditing}>
+              <button
+                className="edit-profile"
+                onClick={enableEditing}
+                aria-label="Edit your age"
+              >
                 &#9998;
-              </span>
+              </button>
             </div>
             <span>Memeber since: </span>
             <span>{new Date(user.joined).toLocaleDateString()}</span>
@@ -148,9 +154,13 @@ const Modal = ({ onClose }) => {
                 onBlur={disableEditing}
                 onKeyDown={disableEditing}
               />
-              <span className="edit-profile" onClick={enableEditing}>
+              <button
+                className="edit-profile"
+                onClick={enableEditing}
+                aria-label="Edit your email"
+              >
                 &#9998;
-              </span>
+              </button>
             </div>
           </div>
         </div>
@@ -160,6 +170,7 @@ const Modal = ({ onClose }) => {
             type="button"
             onClick={onProfileUpdate}
             className="w-1/2 mr-2 bg-blue-600 text-white font-medium rounded-lg px-4 py-2 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300"
+            aria-label="Save profile updates"
           >
             Save
           </button>
@@ -167,6 +178,7 @@ const Modal = ({ onClose }) => {
             type="button"
             onClick={onClose}
             className="w-1/2 ml-2 bg-red-600 text-white font-medium rounded-lg px-4 py-2 hover:bg-red-700 focus:ring-4 focus:ring-red-300"
+            aria-label="Cancel profile updates"
           >
             Cancel
           </button>

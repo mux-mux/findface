@@ -172,6 +172,7 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
             key={type}
             className={filterType === type ? 'selected' : ''}
             onClick={() => setFilterType(type)}
+            aria-label={`Apply a filter ${type}`}
           >
             {type === 'none'
               ? 'No Filter'
@@ -184,6 +185,7 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
           onClick={handleDownload}
           disabled={isDownloading}
           className="download-controls flex items-center"
+          aria-label="Download the Image with the applied filter"
         >
           {'Download Image'}
         </button>
