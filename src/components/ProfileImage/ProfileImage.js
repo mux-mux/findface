@@ -1,8 +1,8 @@
 const SIZES = {
-  sm: 'w-14 h-14',
+  sm: 'w-12 h-14',
   md: 'w-20 h-20',
-  lg: 'w-24 h-24'
-}
+  lg: 'w-24 h-24',
+};
 const ProfileImage = ({ src, alt, size }) => {
   const sizeClass = SIZES[size] || SIZES.md;
 
@@ -16,9 +16,9 @@ const ProfileImage = ({ src, alt, size }) => {
         />
       ) : (
         <svg
-          className={`absolute ${sizeClass} text-gray-400 -left-1`}
+          className={`${sizeClass} text-gray-400`}
           fill="currentColor"
-          viewBox="0 0 20 20"
+          viewBox="0 0 20 18"
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
