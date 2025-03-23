@@ -17,15 +17,15 @@ const Signin = ({ onRouteChange, loadUser }) => {
   const handleChange = useCallback(
     (e) => {
       const { name, value } = e.target;
-      const sanitizedValue = DOMPurify.sanitize(value.trim());
-      setFormData((prev) => ({ ...prev, [name]: sanitizedValue }));
+
+      setFormData((prev) => ({ ...prev, [name]: value }));
 
       setErrors((prev) => ({
         ...prev,
         [name]:
           name === 'email'
-            ? validateInput.name(sanitizedValue)
-            : validateInput.password(sanitizedValue),
+            ? validateInput.name(value)
+            : validateInput.password(value),
       }));
     },
     [setFormData, validateInput]
@@ -35,7 +35,7 @@ const Signin = ({ onRouteChange, loadUser }) => {
     window.localStorage.setItem('token', token);
   };
 
-  const signinUser = async ({ email, password }) => {
+  const signinUser = async (email, password) => {
     const response = await fetch('http://localhost:3001/signin', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
@@ -62,7 +62,9 @@ const Signin = ({ onRouteChange, loadUser }) => {
 
       const { email, password } = formData;
 
-      const emailError = validateInput.email(email);
+      const sanitizedEmail = DOMPurify.sanitize(email.trim());
+
+      const emailError = validateInput.email(sanitizedEmail);
       const passwordError = validateInput.password(password);
 
       if (emailError || passwordError) {
@@ -72,7 +74,7 @@ const Signin = ({ onRouteChange, loadUser }) => {
       }
 
       try {
-        const data = await signinUser(formData);
+        const data = await signinUser(sanitizedEmail, password);
 
         if (!data.userId || data.success !== 'true') {
           throw new Error(data || 'Invalid credentials');

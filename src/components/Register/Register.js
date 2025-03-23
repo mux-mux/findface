@@ -15,23 +15,19 @@ const Register = ({ onRouteChange, loadUser }) => {
   const { status, setStatus } = useStatus('idle');
   const { validateInput } = useValidation();
 
-  const sanitizeInput = (value) => DOMPurify.sanitize(value.trim());
-
   const onEmailChange = (e) => {
-    const value = sanitizeInput(
-      e.target.value.replace(/[^a-zA-Z0-9@._-]/g, '')
-    );
-    setEmail(sanitizeInput(value));
+    const value = e.target.value.replace(/[^a-zA-Z0-9@._-]/g, '');
+    setEmail(value);
     setErrors((prev) => ({ ...prev, email: validateInput.email(value) }));
   };
   const onPasswordChange = (e) => {
-    const value = sanitizeInput(e.target.value);
-    setPassword(sanitizeInput(value));
+    const value = e.target.value;
+    setPassword(value);
     setErrors((prev) => ({ ...prev, password: validateInput.password(value) }));
   };
   const onNameChange = (e) => {
-    const value = sanitizeInput(e.target.value.replace(/[^a-zA-Z0-9-.]/g, ''));
-    setName(sanitizeInput(value));
+    const value = e.target.value.replace(/[^a-zA-Z0-9-.]/g, '');
+    setName(value);
     setErrors((prev) => ({ ...prev, name: validateInput.name(value) }));
   };
 
@@ -43,8 +39,11 @@ const Register = ({ onRouteChange, loadUser }) => {
     e.preventDefault();
     setStatus('loading');
 
-    const nameError = validateInput.name(name);
-    const emailError = validateInput.email(email);
+    const sanitizedName = DOMPurify.sanitize(name.trim());
+    const sanitizedEmail = DOMPurify.sanitize(email.trim());
+
+    const nameError = validateInput.name(sanitizedName);
+    const emailError = validateInput.email(sanitizedEmail);
     const passwordError = validateInput.password(password);
 
     if (nameError || emailError || passwordError) {
@@ -61,7 +60,11 @@ const Register = ({ onRouteChange, loadUser }) => {
       const response = await fetch('http://localhost:3001/register', {
         method: 'post',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({
+          name: sanitizedName,
+          email: sanitizedEmail,
+          password,
+        }),
       });
       const json = await response.json();
       const { user, data } = json;
