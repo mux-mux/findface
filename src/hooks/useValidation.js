@@ -20,7 +20,7 @@ const useValidation = () => {
     },
     email: (value) => {
       if (!value) return '';
-      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+      return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)
         ? ''
         : MESSAGES.EMAIL_FORMAT;
     },

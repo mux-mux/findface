@@ -24,7 +24,7 @@ const Signin = ({ onRouteChange, loadUser }) => {
         ...prev,
         [name]:
           name === 'email'
-            ? validateInput.name(value)
+            ? validateInput.email(value)
             : validateInput.password(value),
       }));
     },
