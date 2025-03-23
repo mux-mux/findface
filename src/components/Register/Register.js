@@ -118,9 +118,13 @@ const Register = ({ onRouteChange, loadUser }) => {
               value={name}
             />
             {errors.name && (
-              <p className="absolute text-red-500 text-xs mt-1">
+              <span
+                className="absolute text-red-500 text-xs mt-1"
+                role="alert"
+                aria-live="polite"
+              >
                 {errors.name}
-              </p>
+              </span>
             )}
           </div>
 
@@ -143,9 +147,13 @@ const Register = ({ onRouteChange, loadUser }) => {
               value={email}
             />
             {errors.email && (
-              <p className="absolute text-red-500 text-xs mt-1">
+              <span
+                className="absolute text-red-500 text-xs mt-1"
+                role="alert"
+                aria-live="polite"
+              >
                 {errors.email}
-              </p>
+              </span>
             )}
           </div>
 
@@ -168,9 +176,13 @@ const Register = ({ onRouteChange, loadUser }) => {
               value={password}
             />
             {errors.password && (
-              <p className="absolute text-red-500 text-xs mt-1">
+              <span
+                className="absolute text-red-500 text-xs mt-1"
+                role="alert"
+                aria-live="polite"
+              >
                 {errors.password}
-              </p>
+              </span>
             )}
           </div>
 

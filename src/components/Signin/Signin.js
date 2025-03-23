@@ -132,9 +132,13 @@ const Signin = ({ onRouteChange, loadUser }) => {
               value={formData.email}
             />
             {errors.email && (
-              <p className="absolute text-red-500 text-xs mt-1">
+              <span
+                className="absolute text-red-500 text-xs mt-1"
+                role="alert"
+                aria-live="polite"
+              >
                 {errors.email}
-              </p>
+              </span>
             )}
           </div>
 
@@ -158,9 +162,13 @@ const Signin = ({ onRouteChange, loadUser }) => {
               value={formData.password}
             />
             {errors.password && (
-              <p className="absolute text-red-500 text-xs mt-1">
+              <span
+                className="absolute text-red-500 text-xs mt-1"
+                role="alert"
+                aria-live="polite"
+              >
                 {errors.password}
-              </p>
+              </span>
             )}
           </div>
 
