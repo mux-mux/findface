@@ -3,10 +3,8 @@ import DOMPurify from 'dompurify';
 import Spinner from '../Spinner/Spinner.js';
 import Alert from '../Alert/Alert.js';
 import useStatus from '../../hooks/useStatus.js';
-import { VALIDATIONS } from '../../constants.js';
+import useValidation from '../../hooks/useValidation.js';
 import './Register.css';
-
-const { MIN_NAME_LENGTH, MIN_PASS_LENGTH, MESSAGES } = VALIDATIONS;
 
 const Register = ({ onRouteChange, loadUser }) => {
   const [email, setEmail] = useState('');
@@ -15,53 +13,26 @@ const Register = ({ onRouteChange, loadUser }) => {
   const [message, setMessage] = useState('');
   const [errors, setErrors] = useState({ name: '', email: '', password: '' });
   const { status, setStatus } = useStatus('idle');
+  const { validateInput } = useValidation();
 
   const sanitizeInput = (value) => DOMPurify.sanitize(value.trim());
-
-  const validateName = (value) => {
-    if (!value) return '';
-    if (!value || value.length < MIN_NAME_LENGTH) {
-      return MESSAGES.MIN_NAME_LENGTH;
-    }
-    return '';
-  };
-
-  const validateEmail = (value) => {
-    if (!value) return '';
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!value.match(emailPattern)) {
-      return MESSAGES.EMAIL_FORMAT;
-    }
-    return '';
-  };
-
-  const validatePassword = (value) => {
-    if (!value) return '';
-    if (value.length < MIN_PASS_LENGTH) {
-      return MESSAGES.MIN_PASS_LENGTH;
-    }
-    if (!/\d/.test(value)) {
-      return MESSAGES.PASS_INCLUDE_NUMBER;
-    }
-    return '';
-  };
 
   const onEmailChange = (e) => {
     const value = sanitizeInput(
       e.target.value.replace(/[^a-zA-Z0-9@._-]/g, '')
     );
     setEmail(sanitizeInput(value));
-    setErrors((prev) => ({ ...prev, email: validateEmail(value) }));
+    setErrors((prev) => ({ ...prev, email: validateInput.email(value) }));
   };
   const onPasswordChange = (e) => {
     const value = sanitizeInput(e.target.value);
     setPassword(sanitizeInput(value));
-    setErrors((prev) => ({ ...prev, password: validatePassword(value) }));
+    setErrors((prev) => ({ ...prev, password: validateInput.password(value) }));
   };
   const onNameChange = (e) => {
     const value = sanitizeInput(e.target.value.replace(/[^a-zA-Z0-9-.]/g, ''));
     setName(sanitizeInput(value));
-    setErrors((prev) => ({ ...prev, name: validateName(value) }));
+    setErrors((prev) => ({ ...prev, name: validateInput.name(value) }));
   };
 
   const saveSessionToken = (token) => {
@@ -72,9 +43,9 @@ const Register = ({ onRouteChange, loadUser }) => {
     e.preventDefault();
     setStatus('loading');
 
-    const nameError = validateName(name);
-    const emailError = validateEmail(email);
-    const passwordError = validatePassword(password);
+    const nameError = validateInput.name(name);
+    const emailError = validateInput.email(email);
+    const passwordError = validateInput.password(password);
 
     if (nameError || emailError || passwordError) {
       setErrors({

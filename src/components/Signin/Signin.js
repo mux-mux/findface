@@ -3,35 +3,16 @@ import DOMPurify from 'dompurify';
 import Spinner from '../Spinner/Spinner.js';
 import Alert from '../Alert/Alert.js';
 import useStatus from '../../hooks/useStatus.js';
-import { VALIDATIONS } from '../../constants.js';
+import useValidation from '../../hooks/useValidation.js';
 
 import './Signin.css';
-
-const { MIN_PASS_LENGTH, MESSAGES } = VALIDATIONS;
 
 const Signin = ({ onRouteChange, loadUser }) => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [errors, setErrors] = useState({ email: '', password: '' });
   const [message, setMessage] = useState('');
   const { status, setStatus } = useStatus('idle');
-
-  const validateEmail = (value) => {
-    if (!value) return '';
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
-      ? ''
-      : MESSAGES.EMAIL_FORMAT;
-  };
-
-  const validatePassword = (value) => {
-    if (!value) return '';
-    if (value.length < MIN_PASS_LENGTH) {
-      return MESSAGES.MIN_PASS_LENGTH;
-    }
-    if (!/\d/.test(value)) {
-      return MESSAGES.PASS_INCLUDE_NUMBER;
-    }
-    return '';
-  };
+  const { validateInput } = useValidation();
 
   const handleChange = useCallback(
     (e) => {
@@ -43,11 +24,11 @@ const Signin = ({ onRouteChange, loadUser }) => {
         ...prev,
         [name]:
           name === 'email'
-            ? validateEmail(sanitizedValue)
-            : validatePassword(sanitizedValue),
+            ? validateInput.name(sanitizedValue)
+            : validateInput.password(sanitizedValue),
       }));
     },
-    [setFormData]
+    [setFormData, validateInput]
   );
 
   const saveSessionToken = (token) => {
@@ -81,8 +62,8 @@ const Signin = ({ onRouteChange, loadUser }) => {
 
       const { email, password } = formData;
 
-      const emailError = validateEmail(email);
-      const passwordError = validatePassword(password);
+      const emailError = validateInput.email(email);
+      const passwordError = validateInput.password(password);
 
       if (emailError || passwordError) {
         setErrors({ email: emailError, password: passwordError });
@@ -112,7 +93,7 @@ const Signin = ({ onRouteChange, loadUser }) => {
         setStatus('error');
       }
     },
-    [formData, loadUser, onRouteChange, setStatus]
+    [formData, loadUser, onRouteChange, setStatus, validateInput]
   );
 
   return (
