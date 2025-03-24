@@ -15,9 +15,16 @@
 }
 
 .switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
+  display: block;
+  width: inherit;
+  height: inherit;
+  background-color: transparent;
+  border: none;
+}
+
+.themeCheckbox:checked,
+.themeCheckbox:checked:focus {
+  background-color: transparent;
 }
 
 .slider {

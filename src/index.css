@@ -2,6 +2,12 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+@layer base {
+  *:focus-visible {
+    @apply !outline-none !ring-2 !ring-blue-700 !ring-offset-2;
+  }
+}
+
 body {
   margin: 0;
   font-family: 'Ubuntu', sans-serif;
