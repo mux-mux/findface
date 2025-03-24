@@ -9,6 +9,7 @@ const Logo = () => {
           alt="find face logo"
           height={100}
           width={100}
+          fetchpriority="high"
         />
       </a>
     </div>
