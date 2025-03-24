@@ -155,6 +155,7 @@ const Modal = ({ onClose }) => {
                   onChange={(e) => setNewEmail(e.target.value)}
                   onBlur={disableEditing}
                   onKeyDown={disableEditing}
+                  aria-label="Enter your email"
                 />
                 <button
                   className="edit-profile"
