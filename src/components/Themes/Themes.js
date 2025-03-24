@@ -61,12 +61,11 @@ const Themes = () => {
   return (
     <div className="theme-switch-wrapper">
       <label className="switch">
-        <input
-          type="checkbox"
-          className="themeCheckbox"
-          aria-label="Switch light/dark theme. Dark if checked"
-        />
+        <input type="checkbox" className="themeCheckbox" />
         <span className="slider round"></span>
+        <span className="visually-hidden">
+          Switch light/dark theme. Dark theme if checked
+        </span>
       </label>
     </div>
   );

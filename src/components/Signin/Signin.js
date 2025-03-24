@@ -101,7 +101,7 @@ const Signin = ({ onRouteChange, loadUser }) => {
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <h1 class="visually-hidden">
+        <h1 className="visually-hidden">
           Find Face - AI powered App to detect faces in the image. Apply filters
           and download it
         </h1>
