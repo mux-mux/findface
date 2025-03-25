@@ -82,6 +82,26 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
     fetchFaceData();
   }, [fetchFaceData]);
 
+  const emojiMap = {
+    emoji: '😎',
+    alien: '👽',
+    dog: '🐶',
+    ghost: '🫠',
+  };
+
+  const isEmojiSupported = (emoji) => {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    ctx.font = '16px Arial';
+
+    const textWidth = ctx.measureText(emoji).width;
+    ctx.fillText(emoji, 0, 16);
+    console.log(emoji);
+
+    return emoji === undefined ? true : textWidth > 0;
+    // return textWidth > 0;
+  };
+
   const handleDownload = () => {
     setIsDownloading(true);
 
@@ -130,22 +150,25 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
           });
         }
 
-        if (['emoji', 'alien', 'dog', 'ghost'].includes(filterType)) {
-          const emojiMap = {
-            emoji: '😎',
-            alien: '👽',
-            dog: '🐶',
-            ghost: '🫠',
-          };
+        if (Object.keys(emojiMap).includes(filterType)) {
+          const emoji = emojiMap[filterType];
 
-          ctx.font = `${fontSize}px Arial`;
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'middle';
-          ctx.fillText(
-            emojiMap[filterType],
-            area.leftCol + width / 2,
-            area.topRow + height / 2
-          );
+          if (isEmojiSupported(emoji)) {
+            ctx.font = `${fontSize}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(
+              emoji,
+              area.leftCol + width / 2,
+              area.topRow + height / 2
+            );
+          }
+        } else {
+          const img = new Image();
+          img.src = `/images/${filterType}.png`;
+          img.onload = () => {
+            ctx.drawImage(img, area.leftCol, area.topRow, width, height);
+          };
         }
       });
 
@@ -167,7 +190,7 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
   return (
     <div className="flex items-center flex-col mt-4 gap-3">
       <div className="filter-controls">
-        {['none', 'blur', 'emoji', 'alien', 'dog', 'ghost'].map((type) => (
+        {['none', 'blur', ...Object.keys(emojiMap)].map((type) => (
           <button
             key={type}
             className={filterType === type ? 'selected' : ''}
@@ -205,6 +228,8 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
           const img = document.getElementById('inputImage');
           const { fontSize } = getAreaSize(img, area);
 
+          const isSupported = isEmojiSupported(emojiMap[filterType]);
+
           return (
             <div
               key={index}
@@ -216,17 +241,16 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
                 bottom: area.bottomRow,
               }}
             >
-              {filterType === 'emoji' && (
-                <span style={{ fontSize: `${fontSize}px` }}>😎</span>
-              )}
-              {filterType === 'alien' && (
-                <span style={{ fontSize: `${fontSize}px` }}>👽</span>
-              )}
-              {filterType === 'dog' && (
-                <span style={{ fontSize: `${fontSize}px` }}>🐶</span>
-              )}
-              {filterType === 'ghost' && (
-                <span style={{ fontSize: `${fontSize}px` }}>🫠</span>
+              {isSupported ? (
+                <span style={{ fontSize: `${fontSize}px` }}>
+                  {emojiMap[filterType]}
+                </span>
+              ) : (
+                <img
+                  src={`/images/${filterType}.png`}
+                  alt={filterType}
+                  style={{ objectFit: 'contain', transform: 'scale(1.3)' }}
+                />
               )}
             </div>
           );
