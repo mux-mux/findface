@@ -99,7 +99,6 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
     console.log(emoji);
 
     return emoji === undefined ? true : textWidth > 0;
-    // return textWidth > 0;
   };
 
   const handleDownload = () => {
@@ -122,6 +121,8 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
 
       ctx.drawImage(img, 0, 0, img.width, img.height);
 
+      const imagePromises = [];
+
       faceAreas.forEach((area) => {
         const { width, height, fontSize } = getAreaSize(img, area);
 
@@ -134,20 +135,16 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
           blurredCanvas.width = img.width;
           blurredCanvas.height = img.height;
 
-          ctx.drawImage(img, 0, 0, img.width, img.height);
           blurredCtx.filter = 'blur(20px)';
           blurredCtx.drawImage(img, 0, 0, img.width, img.height);
 
-          faceAreas.forEach((area) => {
-            const faceImageData = blurredCtx.getImageData(
-              area.leftCol,
-              area.topRow,
-              width,
-              height
-            );
-
-            ctx.putImageData(faceImageData, area.leftCol, area.topRow);
-          });
+          const faceImageData = blurredCtx.getImageData(
+            area.leftCol,
+            area.topRow,
+            width,
+            height
+          );
+          ctx.putImageData(faceImageData, area.leftCol, area.topRow);
         }
 
         if (Object.keys(emojiMap).includes(filterType)) {
@@ -162,23 +159,59 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
               area.leftCol + width / 2,
               area.topRow + height / 2
             );
+          } else {
+            const imgPromise = new Promise((resolve, reject) => {
+              const filterImg = new Image();
+              filterImg.src = `/images/${filterType}.png`;
+              filterImg.onload = () => {
+                const aspectRatio = filterImg.width / filterImg.height;
+                let scaledWidth = width;
+                let scaledHeight = height;
+
+                if (scaledWidth / aspectRatio > scaledHeight) {
+                  scaledHeight = scaledWidth / aspectRatio;
+                } else {
+                  scaledWidth = scaledHeight * aspectRatio;
+                }
+
+                const offsetX = area.leftCol + (width - scaledWidth) / 2;
+                const offsetY = area.topRow + (height - scaledHeight) / 2;
+
+                ctx.drawImage(
+                  filterImg,
+                  offsetX,
+                  offsetY,
+                  scaledWidth,
+                  scaledHeight
+                );
+
+                resolve();
+              };
+              filterImg.onerror = (error) => {
+                console.error('Error loading filter image:', error);
+                reject(error);
+              };
+            });
+
+            imagePromises.push(imgPromise);
           }
-        } else {
-          const img = new Image();
-          img.src = `/images/${filterType}.png`;
-          img.onload = () => {
-            ctx.drawImage(img, area.leftCol, area.topRow, width, height);
-          };
         }
       });
 
-      canvas.toBlob((blob) => {
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = 'filtered_image.png';
-        link.click();
-        setIsDownloading(false);
-      }, 'image/png');
+      Promise.all(imagePromises)
+        .then(() => {
+          canvas.toBlob((blob) => {
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'filtered_image.png';
+            link.click();
+            setIsDownloading(false);
+          }, 'image/png');
+        })
+        .catch((error) => {
+          console.error('Error loading filter images:', error);
+          setIsDownloading(false);
+        });
     };
 
     img.onerror = () => {
