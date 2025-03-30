@@ -134,7 +134,7 @@ const Signin = ({ onRouteChange, loadUser }) => {
             />
             {errors.email && (
               <span
-                className="absolute text-red-500 text-xs mt-1"
+                className="absolute text-error text-xs mt-1"
                 role="alert"
                 aria-live="polite"
               >
@@ -164,7 +164,7 @@ const Signin = ({ onRouteChange, loadUser }) => {
             />
             {errors.password && (
               <span
-                className="absolute text-red-500 text-xs mt-1"
+                className="absolute text-error text-xs mt-1"
                 role="alert"
                 aria-live="polite"
               >

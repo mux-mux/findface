@@ -118,7 +118,7 @@ const Register = ({ onRouteChange, loadUser }) => {
             />
             {errors.name && (
               <span
-                className="absolute text-red-500 text-xs mt-1"
+                className="absolute text-error text-xs mt-1"
                 role="alert"
                 aria-live="polite"
               >
@@ -147,7 +147,7 @@ const Register = ({ onRouteChange, loadUser }) => {
             />
             {errors.email && (
               <span
-                className="absolute text-red-500 text-xs mt-1"
+                className="absolute text-error text-xs mt-1"
                 role="alert"
                 aria-live="polite"
               >
@@ -176,7 +176,7 @@ const Register = ({ onRouteChange, loadUser }) => {
             />
             {errors.password && (
               <span
-                className="absolute text-red-500 text-xs mt-1"
+                className="absolute text-error text-xs mt-1"
                 role="alert"
                 aria-live="polite"
               >

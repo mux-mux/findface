@@ -1,13 +1,19 @@
+import { useRef } from 'react';
 import FocusLock from 'react-focus-lock';
+import useOutsideClick from '../../hooks/useOutsideClick.js';
 
 const Alert = ({ onClose, message }) => {
+  const alertRef = useRef(null);
+  useOutsideClick(alertRef, onClose);
+
   let classNames = message.toLowerCase().includes('success')
     ? 'bg-teal-100 border-teal-400 text-teal-700'
     : 'bg-red-100 border-red-400 text-red-700';
 
   return (
-    <FocusLock>
+    <FocusLock returnFocus allowOutsideClick={() => true}>
       <div
+        ref={alertRef}
         className={
           `flex items-center order my-10 px-4 rounded relative w-fit mx-auto ` +
           classNames
