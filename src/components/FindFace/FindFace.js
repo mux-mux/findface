@@ -96,7 +96,6 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
 
     const textWidth = ctx.measureText(emoji).width;
     ctx.fillText(emoji, 0, 16);
-    console.log(emoji);
 
     return emoji === undefined ? true : textWidth > 0;
   };

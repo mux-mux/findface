@@ -3,6 +3,9 @@
 @import 'tailwindcss/utilities';
 
 @layer base {
+  *:focus {
+    @apply !outline-none !ring-0 !ring-offset-0;
+  }
   *:focus-visible {
     @apply !outline-none !ring-2 !ring-blue-700 !ring-offset-2;
   }
