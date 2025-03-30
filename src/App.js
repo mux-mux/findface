@@ -9,8 +9,6 @@ import Rank from './components/Rank/Rank.js';
 import FindFace from './components/FindFace/FindFace.js';
 import Background from './components/Background/Background.js';
 
-import './App.css';
-
 const initialUserState = {
   id: 0,
   name: '',

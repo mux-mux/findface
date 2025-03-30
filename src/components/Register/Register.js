@@ -4,7 +4,6 @@ import Spinner from '../Spinner/Spinner.js';
 import Alert from '../Alert/Alert.js';
 import useStatus from '../../hooks/useStatus.js';
 import useValidation from '../../hooks/useValidation.js';
-import './Register.css';
 
 const Register = ({ onRouteChange, loadUser }) => {
   const [email, setEmail] = useState('');

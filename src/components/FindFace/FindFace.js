@@ -266,7 +266,7 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
           return (
             <div
               key={index}
-              className={`face-area filter-${filterType}`}
+              className={`absolute flex flex-wrap justify-center filter-${filterType}`}
               style={{
                 top: area.topRow,
                 left: area.leftCol,
@@ -275,7 +275,10 @@ const FindFace = ({ imageUrl, onUserDataChange, user }) => {
               }}
             >
               {isSupported ? (
-                <span style={{ fontSize: `${fontSize}px` }}>
+                <span
+                  className="w-full h-full flex justify-center items-start leading-[0.8]"
+                  style={{ fontSize: `${fontSize}px` }}
+                >
                   {emojiMap[filterType]}
                 </span>
               ) : (

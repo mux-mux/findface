@@ -4,9 +4,6 @@ import Spinner from '../Spinner/Spinner.js';
 import Alert from '../Alert/Alert.js';
 import useStatus from '../../hooks/useStatus.js';
 import useValidation from '../../hooks/useValidation.js';
-
-import './Signin.css';
-
 const Signin = ({ onRouteChange, loadUser }) => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [errors, setErrors] = useState({ email: '', password: '' });

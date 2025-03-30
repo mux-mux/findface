@@ -5,7 +5,7 @@ const ImageForm = ({ onInputChange, onImageSubmit }) => {
   return (
     <div>
       <h1 className="text-xl mb-10">Input image url to find faces</h1>
-      <div className="center">
+      <div className="flex justify-center">
         <form
           className="form py-4 px-2 rounded-2xl shadow-md"
           onSubmit={onImageSubmit}
