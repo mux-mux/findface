@@ -9,7 +9,7 @@ const Alert = ({ onClose, message }) => {
     <FocusLock>
       <div
         className={
-          `flex items-center order my-10 px-4 rounded relative min-w-min mx-auto ` +
+          `flex items-center order my-10 px-4 rounded relative w-fit mx-auto ` +
           classNames
         }
       >

@@ -8,6 +8,10 @@
   }
 }
 
+:root {
+  scrollbar-gutter: stable;
+}
+
 body {
   margin: 0;
   font-family: 'Ubuntu', sans-serif;
