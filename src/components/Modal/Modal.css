@@ -1,3 +1,6 @@
+.modal {
+  background-color: var(--background-modal, #cacaca);
+}
 .profile {
   display: grid;
   grid-template-columns: minmax(120px, 1fr) minmax(120px, 2fr);
