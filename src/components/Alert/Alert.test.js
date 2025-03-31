@@ -13,9 +13,7 @@ describe('Alert component', () => {
   test('applies success styles when message contains "success"', () => {
     render(<Alert onClick={() => {}} message="Success: Operation completed" />);
 
-    const alertDiv = screen
-      .getByText(/success: operation completed/i)
-      .getByRole('alert');
+    const alertDiv = screen.getByRole('alert');
 
     expect(alertDiv).toHaveClass(
       'bg-teal-100',
@@ -26,9 +24,7 @@ describe('Alert component', () => {
   test('applies error styles when message does not contain "success"', () => {
     render(<Alert onClick={() => {}} message="Error: Something went wrong" />);
 
-    const alertDiv = screen
-      .getByText(/error: something went wrong/i)
-      .getByRole('alert');
+    const alertDiv = screen.getByRole('alert');
 
     expect(alertDiv).toHaveClass(
       'bg-red-100',
