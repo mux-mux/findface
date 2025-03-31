@@ -14,6 +14,7 @@ const Alert = ({ onClose, message }) => {
     <FocusLock returnFocus allowOutsideClick={() => true}>
       <div
         ref={alertRef}
+        role="alert"
         className={
           `flex items-center order my-10 px-4 rounded relative w-fit mx-auto ` +
           classNames
