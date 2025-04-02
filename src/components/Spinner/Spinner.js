@@ -8,6 +8,7 @@ const Spinner = ({ className }) => {
       className={
         className ? `spinner-container ${className}` : 'spinner-container'
       }
+      role="status"
     >
       <div className="loader"></div>
     </div>

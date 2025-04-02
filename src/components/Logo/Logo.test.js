@@ -16,6 +16,7 @@ describe('Logo component', () => {
     );
     expect(logoImg).toHaveAttribute('fetchpriority', 'high');
   });
+  
   test('renders a link that navigates to homepage', () => {
     render(<Logo />);
 
