@@ -1,8 +1,6 @@
+import { VALIDATIONS } from '../constants.js';
+
 const useValidation = () => {
-  const VALIDATIONS = {
-    MIN_NAME_LENGTH: 2,
-    MIN_PASS_LENGTH: 4,
-  };
   const { MIN_NAME_LENGTH, MIN_PASS_LENGTH } = VALIDATIONS;
 
   const MESSAGES = {
