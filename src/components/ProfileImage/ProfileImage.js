@@ -20,6 +20,7 @@ const ProfileImage = ({ src, alt, size }) => {
           fill="currentColor"
           viewBox="0 0 20 18"
           xmlns="http://www.w3.org/2000/svg"
+          role="img"
         >
           <path
             fillRule="evenodd"
