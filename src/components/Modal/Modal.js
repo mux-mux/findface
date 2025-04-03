@@ -101,7 +101,10 @@ const Modal = ({ onClose }) => {
 
   return (
     <FocusLock>
-      <div className="fixed top-0 left-0 w-full h-full overflow-auto modal">
+      <div
+        className="fixed top-0 left-0 w-full h-full overflow-auto modal"
+        role="dialog"
+      >
         <div className="flex flex-col justify-center mx-auto w-min py-20">
           <div className="mx-auto mb-8 text-slate-600">
             <div className="flex flex-col items-center">
