@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import DOMPurify from 'dompurify';
 import Spinner from '../Spinner/Spinner.js';
 import Alert from '../Alert/Alert.js';
+import AuthButton from '../AuthButton/AuthButton.js';
 import useStatus from '../../hooks/useStatus.js';
 import useValidation from '../../hooks/useValidation.js';
 const Signin = ({ onRouteChange, loadUser }) => {
@@ -174,16 +175,13 @@ const Signin = ({ onRouteChange, loadUser }) => {
           </div>
 
           <div>
-            <button
-              type="submit"
-              disabled={
-                status === 'loading' || Object.values(errors).some((err) => err)
-              }
-              className="flex w-full justify-center mt-10 rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              aria-label="Sign in to account"
-            >
-              {status === 'loading' ? 'Signing in...' : 'Sign in'}
-            </button>
+            <AuthButton
+              status={status}
+              errors={errors}
+              loadingText="Signing in..."
+              defaultText="Sign in"
+              ariaLabel="Sign in to account"
+            />
           </div>
         </form>
 

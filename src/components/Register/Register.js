@@ -2,6 +2,7 @@ import { useState } from 'react';
 import DOMPurify from 'dompurify';
 import Spinner from '../Spinner/Spinner.js';
 import Alert from '../Alert/Alert.js';
+import AuthButton from '../AuthButton/AuthButton.js';
 import useStatus from '../../hooks/useStatus.js';
 import useValidation from '../../hooks/useValidation.js';
 
@@ -186,16 +187,13 @@ const Register = ({ onRouteChange, loadUser }) => {
           </div>
 
           <div>
-            <button
-              type="submit"
-              disabled={
-                status === 'loading' || Object.values(errors).some((err) => err)
-              }
-              className="flex w-full justify-center mt-10 rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              aria-label="Create a new account"
-            >
-              {status === 'loading' ? 'Registering...' : 'Register'}
-            </button>
+            <AuthButton
+              status={status}
+              errors={errors}
+              loadingText="Registering..."
+              defaultText="Register"
+              ariaLabel="Create a new account"
+            />
           </div>
         </form>
 
