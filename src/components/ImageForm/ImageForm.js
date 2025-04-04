@@ -9,6 +9,7 @@ const ImageForm = ({ onInputChange, onImageSubmit }) => {
         <form
           className="form py-4 px-2 rounded-2xl shadow-md"
           onSubmit={onImageSubmit}
+          data-testid="image-form"
         >
           <input
             type="text"
