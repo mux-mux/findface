@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react';
 import useValidation from '../useValidation';
-import { VALIDATIONS } from '../../constants';
+import VALIDATIONS from '../../constants';
 
 describe('useValidation custom hook', () => {
   test('validates name correctly', () => {

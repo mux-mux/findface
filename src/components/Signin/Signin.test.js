@@ -7,11 +7,13 @@ jest.mock('../../hooks/useStatus', () => () => ({
   setStatus: jest.fn(),
 }));
 jest.mock('../../hooks/useValidation', () => {
-  const VALIDATIONS = require('../../constants');
+  const VALIDATIONS = require('../../constants').default;
 
   return () => ({
     validateInput: {
-      email: jest.fn((value) => (!value.includes('@') ? 'Invalid email' : '')),
+      email: jest.fn((value) =>
+        !value.includes('@') ? 'Invalid email address' : ''
+      ),
       password: jest.fn((value) =>
         value.length < VALIDATIONS.MIN_PASS_LENGTH ? 'Password too short' : ''
       ),
@@ -48,7 +50,7 @@ describe('Signin component', () => {
     fireEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(screen.getByText(/invalid email/i)).toBeInTheDocument();
+      expect(screen.getByText(/invalid email address/i)).toBeInTheDocument();
     });
     await waitFor(() => {
       expect(screen.getByText(/password too short/i)).toBeInTheDocument();
