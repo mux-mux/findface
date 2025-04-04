@@ -1,4 +1,4 @@
-import { VALIDATIONS } from '../constants.js';
+import VALIDATIONS from '../constants.js';
 
 const useValidation = () => {
   const { MIN_NAME_LENGTH, MIN_PASS_LENGTH } = VALIDATIONS;

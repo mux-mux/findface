@@ -3,8 +3,13 @@ import DOMPurify from 'dompurify';
 import Spinner from '../Spinner/Spinner.js';
 import Alert from '../Alert/Alert.js';
 import AuthButton from '../AuthButton/AuthButton.js';
+import FormInput from '../FormInput/FormInput.js';
 import useStatus from '../../hooks/useStatus.js';
 import useValidation from '../../hooks/useValidation.js';
+import VALIDATIONS from '../../constants.js';
+
+const { MAX_EMAIL_LENGTH, MAX_PASS_LENGTH } = VALIDATIONS;
+
 const Signin = ({ onRouteChange, loadUser }) => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [errors, setErrors] = useState({ email: '', password: '' });
@@ -115,74 +120,37 @@ const Signin = ({ onRouteChange, loadUser }) => {
           method="POST"
           onSubmit={handleSubmit}
         >
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium leading-6 pb-2"
-            >
-              Email address
-            </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              autoComplete="email"
-              required
-              maxLength="60"
-              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              onChange={handleChange}
-              value={formData.email}
-            />
-            {errors.email && (
-              <span
-                className="absolute text-error text-xs mt-1"
-                role="alert"
-                aria-live="polite"
-              >
-                {errors.email}
-              </span>
-            )}
-          </div>
-
-          <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium leading-6 pb-2"
-            >
-              Password
-            </label>
-
-            <input
-              id="password"
-              name="password"
-              type="password"
-              autoComplete="current-password"
-              required
-              maxLength="200"
-              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              onChange={handleChange}
-              value={formData.password}
-            />
-            {errors.password && (
-              <span
-                className="absolute text-error text-xs mt-1"
-                role="alert"
-                aria-live="polite"
-              >
-                {errors.password}
-              </span>
-            )}
-          </div>
-
-          <div>
-            <AuthButton
-              status={status}
-              errors={errors}
-              loadingText="Signing in..."
-              defaultText="Sign in"
-              ariaLabel="Sign in to account"
-            />
-          </div>
+          <FormInput
+            id="email"
+            name="email"
+            type="email"
+            label="Email address"
+            value={formData.email}
+            onChange={handleChange}
+            error={errors.email}
+            autoComplete="email"
+            required
+            maxLength={MAX_EMAIL_LENGTH}
+          />
+          <FormInput
+            id="password"
+            name="password"
+            type="password"
+            label="Password"
+            value={formData.password}
+            onChange={handleChange}
+            error={errors.password}
+            autoComplete="current-password"
+            required
+            maxLength={MAX_PASS_LENGTH}
+          />
+          <AuthButton
+            status={status}
+            errors={errors}
+            loadingText="Signing in..."
+            defaultText="Sign in"
+            ariaLabel="Sign in to account"
+          />
         </form>
 
         <p className="mt-10 text-center text-sm">

@@ -1,4 +1,9 @@
-export const VALIDATIONS = {
+const VALIDATIONS = {
   MIN_NAME_LENGTH: 2,
   MIN_PASS_LENGTH: 4,
+  MAX_EMAIL_LENGTH: 60,
+  MAX_NAME_LENGTH: 60,
+  MAX_PASS_LENGTH: 120,
 };
+
+export default VALIDATIONS;

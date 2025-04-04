@@ -7,7 +7,7 @@ jest.mock('../../hooks/useStatus', () => () => ({
   setStatus: jest.fn(),
 }));
 jest.mock('../../hooks/useValidation', () => {
-  const { VALIDATIONS } = require('../../constants');
+  const VALIDATIONS = require('../../constants');
 
   return () => ({
     validateInput: {
