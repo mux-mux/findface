@@ -8,6 +8,7 @@ import Register from './components/Register/Register.js';
 import Rank from './components/Rank/Rank.js';
 import FindFace from './components/FindFace/FindFace.js';
 import Background from './components/Background/Background.js';
+import Spinner from './components/Spinner/Spinner.js';
 
 const initialUserState = {
   id: 0,
@@ -26,6 +27,7 @@ const App = () => {
   const [imageUrl, setImageUrl] = useState('');
   const [route, setRoute] = useState('signin');
   const [isSignedIn, setIsSignedIn] = useState(false);
+  const [isAuthChecking, setIsAuthChecking] = useState(true);
   const [user, setUser] = useState(initialUserState);
 
   const loadUser = useCallback((userProfile) => {
@@ -56,6 +58,7 @@ const App = () => {
       setIsSignedIn(false);
       setUser(initialUserState);
       window.localStorage.removeItem('token');
+      window.localStorage.removeItem('rankBadge');
     } else if (newRoute === 'home') {
       setIsSignedIn(true);
     }
@@ -64,7 +67,10 @@ const App = () => {
 
   useEffect(() => {
     const token = window.localStorage.getItem('token');
-    if (!token) return;
+    if (!token) {
+      setIsAuthChecking(false);
+      return;
+    }
 
     const fetchUser = async () => {
       try {
@@ -97,6 +103,8 @@ const App = () => {
         }
       } catch (error) {
         console.error('Error fetching user:', error);
+      } finally {
+        setIsAuthChecking(false);
       }
     };
 
@@ -107,7 +115,7 @@ const App = () => {
     setUser(updatedUser);
   }, []);
 
-  const RenderRoute = () => {
+  const renderRoute = () => {
     switch (route) {
       case 'home':
         return (
@@ -141,7 +149,7 @@ const App = () => {
       <UserContext.Provider value={{ user, loadUser }}>
         <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange} />
       </UserContext.Provider>
-      <RenderRoute />
+      {isAuthChecking ? <Spinner /> : renderRoute()}
     </div>
   );
 };

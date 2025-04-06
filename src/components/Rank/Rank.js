@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const fetchEmoji = async (entries) => {
   try {
@@ -19,16 +19,19 @@ const fetchEmoji = async (entries) => {
 };
 
 const Rank = ({ userName, userEntries }) => {
-  const [emoji, setEmoji] = useState('');
-
-  const generateEmoji = useCallback(async () => {
-    const emoji = await fetchEmoji(userEntries);
-    setEmoji(emoji);
-  }, [userEntries]);
+  const [emoji, setEmoji] = useState(localStorage.getItem('rankBadge') || '🤔');
 
   useEffect(() => {
-    generateEmoji();
-  }, [generateEmoji]);
+    const generateEmoji = async () => {
+      const newEmoji = await fetchEmoji(userEntries);
+      setEmoji(newEmoji);
+      localStorage.setItem('rankBadge', newEmoji);
+    };
+
+    if (userEntries) {
+      generateEmoji();
+    }
+  }, [userEntries]);
 
   return (
     <div>
