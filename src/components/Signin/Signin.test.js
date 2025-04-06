@@ -2,13 +2,15 @@ import '@testing-library/jest-dom';
 import { screen, render, fireEvent, waitFor } from '@testing-library/react';
 import Signin from './Signin';
 
+let mockStatus = 'idle';
+const mockSetStatus = jest.fn();
+
 jest.mock('../../hooks/useStatus', () => () => ({
-  status: 'idle',
-  setStatus: jest.fn(),
+  status: mockStatus,
+  setStatus: mockSetStatus,
 }));
 jest.mock('../../hooks/useValidation', () => {
   const VALIDATIONS = require('../../constants').default;
-
   return () => ({
     validateInput: {
       email: jest.fn((value) =>
@@ -24,12 +26,12 @@ jest.mock('../../hooks/useValidation', () => {
 const mockOnRouteChange = jest.fn();
 const mockLoadUser = jest.fn();
 
-const renderComponent = () =>
+const renderSignin = () =>
   render(<Signin onRouteChange={mockOnRouteChange} loadUser={mockLoadUser} />);
 
 describe('Signin component', () => {
   test('renders the Sing in form', () => {
-    renderComponent();
+    renderSignin();
 
     expect(screen.getByLabelText(/email address/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
@@ -39,7 +41,7 @@ describe('Signin component', () => {
   });
 
   test('displays validation errors on invalid input', async () => {
-    renderComponent();
+    renderSignin();
 
     const emailInput = screen.getByLabelText(/email address/i);
     const passwordInput = screen.getByLabelText(/password/i);
@@ -67,7 +69,7 @@ describe('Signin component', () => {
         json: jest.fn().mockResolvedValue({ email: 'email@example.com' }),
       });
 
-    renderComponent();
+    renderSignin();
 
     fireEvent.change(screen.getByLabelText(/email address/i), {
       target: { value: 'email@example.com' },
@@ -85,5 +87,37 @@ describe('Signin component', () => {
     });
 
     expect(global.fetch).toHaveBeenCalledTimes(2);
+  });
+
+  test('displays error message on failed signin', async () => {
+    mockStatus = 'error';
+
+    global.fetch = jest
+      .fn()
+      .mockRejectedValueOnce(
+        new Error('The credentials you entered are incorrect')
+      );
+
+    renderSignin();
+
+    fireEvent.change(screen.getByLabelText(/email address/i), {
+      target: { value: 'test@example.com' },
+    });
+    fireEvent.change(screen.getByLabelText(/password/i), {
+      target: { value: 'password123' },
+    });
+
+    fireEvent.click(screen.getByRole('button', { name: /sign in/i }));
+
+    await waitFor(() => {
+      expect(
+        screen.getByText(/the credentials you entered are incorrect/i)
+      ).toBeInTheDocument();
+    });
+  });
+
+  afterEach(() => {
+    mockStatus = 'idle';
+    jest.clearAllMocks();
   });
 });
