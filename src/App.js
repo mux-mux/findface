@@ -107,7 +107,7 @@ const App = () => {
     setUser(updatedUser);
   }, []);
 
-  const renderContent = () => {
+  const RenderRoute = () => {
     switch (route) {
       case 'home':
         return (
@@ -141,7 +141,7 @@ const App = () => {
       <UserContext.Provider value={{ user, loadUser }}>
         <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange} />
       </UserContext.Provider>
-      {renderContent()}
+      <RenderRoute />
     </div>
   );
 };
