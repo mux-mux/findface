@@ -1,5 +1,7 @@
 # FindFace - :crystal_ball:AI-powered app to detect faces:ok_woman:in the image:mountain_bicyclist:
 
+[![CircleCI](https://dl.circleci.com/status-badge/img/circleci/JKJVd3C3dwe5WUYnKkCXP7/NjWK5SHCqQTknUovfYEBtz/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/circleci/JKJVd3C3dwe5WUYnKkCXP7/NjWK5SHCqQTknUovfYEBtz/tree/main)
+
 ## [Live Link](https://jsgo.pro/findface/) :link:
 
 <br/>
