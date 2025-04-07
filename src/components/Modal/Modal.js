@@ -125,48 +125,56 @@ const Modal = ({ onClose }) => {
               {user.name}
             </h2>
             <div className="profile">
-              <span>Submitted: </span> <span>{`${user.entries} images`}</span>
-              <span>Age: </span>{' '}
-              <div className="flex">
-                <input
-                  type="number"
-                  value={newAge}
-                  disabled
-                  className="input-profile"
-                  onChange={(e) => setNewAge(+e.target.value)}
-                  onBlur={disableEditing}
-                  onKeyDown={disableEditing}
-                  aria-label="Enter your age"
-                />
-                <button
-                  className="edit-profile"
-                  onClick={enableEditing}
-                  aria-label="Edit your age"
-                >
-                  &#9998;
-                </button>
+              <div className="grid-rows">
+                <span>Submitted: </span> <span>{`${user.entries} images`}</span>
               </div>
-              <span>Memeber since: </span>
-              <span>{new Date(user.joined).toLocaleDateString()}</span>
-              <span>Email: </span>{' '}
-              <div className="flex">
-                <input
-                  type="email"
-                  value={newEmail}
-                  disabled
-                  className="input-profile"
-                  onChange={(e) => setNewEmail(e.target.value)}
-                  onBlur={disableEditing}
-                  onKeyDown={disableEditing}
-                  aria-label="Enter your email"
-                />
-                <button
-                  className="edit-profile"
-                  onClick={enableEditing}
-                  aria-label="Edit your email"
-                >
-                  &#9998;
-                </button>
+              <div className="grid-rows">
+                <span>Age: </span>{' '}
+                <div className="flex">
+                  <input
+                    type="number"
+                    value={newAge}
+                    disabled
+                    className="input-profile"
+                    onChange={(e) => setNewAge(+e.target.value)}
+                    onBlur={disableEditing}
+                    onKeyDown={disableEditing}
+                    aria-label="Enter your age"
+                  />
+                  <button
+                    className="edit-profile"
+                    onClick={enableEditing}
+                    aria-label="Edit your age"
+                  >
+                    &#9998;
+                  </button>
+                </div>
+              </div>
+              <div className="grid-rows">
+                <span>Memeber since: </span>
+                <span>{new Date(user.joined).toLocaleDateString()}</span>
+              </div>
+              <div className="grid-rows">
+                <span>Email: </span>{' '}
+                <div className="flex">
+                  <input
+                    type="email"
+                    value={newEmail}
+                    disabled
+                    className="input-profile"
+                    onChange={(e) => setNewEmail(e.target.value)}
+                    onBlur={disableEditing}
+                    onKeyDown={disableEditing}
+                    aria-label="Enter your email"
+                  />
+                  <button
+                    className="edit-profile"
+                    onClick={enableEditing}
+                    aria-label="Edit your email"
+                  >
+                    &#9998;
+                  </button>
+                </div>
               </div>
             </div>
           </div>
