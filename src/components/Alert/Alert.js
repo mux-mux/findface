@@ -16,13 +16,13 @@ const Alert = ({ onClose, message }) => {
         ref={alertRef}
         role="alert"
         className={
-          `flex items-center order my-10 px-4 rounded relative w-fit mx-auto ` +
+          `fixed bottom-4 left-1/2 transform -translate-x-1/2 flex items-center px-4 py-2 rounded z-50 ` +
           classNames
         }
       >
         <span>{message}</span>
         <button
-          className="top-0 bottom-0 right-0 px-3 py-3 ml-3"
+          className="p-1 ml-3"
           onClick={onClose}
           aria-label={`Close ${message}`}
         >

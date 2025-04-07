@@ -16,13 +16,13 @@ describe('Logo component', () => {
     );
     expect(logoImg).toHaveAttribute('fetchpriority', 'high');
   });
-  
+
   test('renders a link that navigates to homepage', () => {
     render(<Logo />);
 
     const homeLink = screen.getByRole('link', { name: /go back to homepage/i });
 
     expect(homeLink).toBeInTheDocument();
-    expect(homeLink).toHaveAttribute('href', '/');
+    expect(homeLink).toHaveAttribute('href', '/findface/');
   });
 });
