@@ -42,7 +42,7 @@
 .search-button:focus {
   box-shadow: var(--button-action-color, #194c79) 0 0 0 1.5px inset,
     rgba(45, 35, 66, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px,
-    var(--button-action-color, #194c79) 0 -3px 0 inset;
+    var(--button-action-color, #194c79) 0 -3px 0 inset !important;
 }
 
 .search-button:hover {
@@ -53,6 +53,6 @@
 }
 
 .search-button:active {
-  box-shadow: var(--button-action-color, #194c79) 0 3px 7px inset;
+  box-shadow: var(--button-action-color, #194c79) 0 3px 7px inset !important;
   transform: translateY(2px);
 }
