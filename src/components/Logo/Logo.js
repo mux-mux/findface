@@ -3,7 +3,7 @@ import React from 'react';
 const Logo = () => {
   return (
     <div className="ma3">
-      <a href="/" tabIndex="-1" aria-label="Go back to homepage">
+      <a href="/findface/" tabIndex="-1" aria-label="Go back to homepage">
         <img
           src={process.env.PUBLIC_URL + '/logo192.png'}
           alt="find face logo"
