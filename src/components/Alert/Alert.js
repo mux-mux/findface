@@ -22,7 +22,7 @@ const Alert = ({ onClose, message }) => {
       >
         <span>{message}</span>
         <button
-          className="top-0 bottom-0 right-0 px-3 py-3"
+          className="top-0 bottom-0 right-0 px-3 py-3 ml-3"
           onClick={onClose}
           aria-label={`Close ${message}`}
         >

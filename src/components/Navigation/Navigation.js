@@ -11,7 +11,7 @@ const Navigation = ({ onRouteChange, isSignedIn }) => {
       {isSignedIn ? (
         <Profile onRouteChange={onRouteChange} />
       ) : (
-        <div className="basis-20"></div>
+        <div className="flex-1"></div>
       )}
     </nav>
   );

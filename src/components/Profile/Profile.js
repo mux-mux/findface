@@ -18,7 +18,7 @@ const Profile = ({ onRouteChange }) => {
   );
 
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-end flex-1">
       {showModal &&
         createPortal(<Modal onClose={handleCloseModal} />, document.body)}
 

@@ -59,7 +59,7 @@ const Themes = () => {
   }, []);
 
   return (
-    <div className="theme-switch-wrapper">
+    <div className="theme-switch-wrapper flex-1">
       <label className="switch">
         <input type="checkbox" className="themeCheckbox" />
         <span className="slider round"></span>
