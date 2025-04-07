@@ -79,6 +79,15 @@ describe('App component', () => {
   });
 
   test('shows FindFace component after submitting an image URL', async () => {
+    global.Image = class {
+      constructor() {
+        setTimeout(() => {
+          if (this.onload) this.onload();
+        }, 0);
+      }
+      set src(_) {}
+    };
+
     renderApp();
 
     fireEvent.click(screen.getByText(/home/i));

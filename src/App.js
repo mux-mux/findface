@@ -47,11 +47,23 @@ const App = () => {
     setInput(e.target.value);
   };
 
-  const onImageSubmit = (e) => {
+  const onImageSubmit = async (e) => {
     e.preventDefault();
     const sanitizedUrl = DOMPurify.sanitize(input).trim();
-    setImageUrl(sanitizedUrl);
+    (await isImageUrl(sanitizedUrl)) && setImageUrl(sanitizedUrl);
   };
+
+  function isImageUrl(url) {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => resolve(true);
+      img.onerror = () => {
+        alert('Url is not an image');
+        resolve(false);
+      };
+      img.src = url;
+    });
+  }
 
   const onRouteChange = useCallback((newRoute) => {
     if (newRoute === 'signout') {
