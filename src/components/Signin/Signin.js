@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import { NavLink } from 'react-router';
 import DOMPurify from 'dompurify';
 import Spinner from '../Spinner/Spinner.js';
 import Alert from '../Alert/Alert.js';
@@ -155,13 +156,13 @@ const Signin = ({ onRouteChange, loadUser }) => {
 
         <p className="mt-10 text-center text-sm">
           Not a member?
-          <button
+          <NavLink
+            to="/register"
             className="ml-1 font-semibold leading-6 hover:text-blue-500"
-            onClick={() => onRouteChange('register')}
             aria-label="Create a new account"
           >
             Register
-          </button>
+          </NavLink>
         </p>
       </div>
       {status === 'loading' && <Spinner />}
