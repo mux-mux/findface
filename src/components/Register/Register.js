@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import DOMPurify from 'dompurify';
+import { NavLink } from 'react-router';
 import Spinner from '../Spinner/Spinner.js';
 import Alert from '../Alert/Alert.js';
 import AuthButton from '../AuthButton/AuthButton.js';
@@ -150,13 +151,13 @@ const Register = ({ onRouteChange, loadUser }) => {
 
         <p className="mt-10 text-center text-sm">
           Already a member?
-          <button
+          <NavLink
+            to="/signin"
             className="ml-1 font-semibold leading-6 hover:text-blue-500"
-            onClick={() => onRouteChange('signin')}
             aria-label="Sign in to account"
           >
             Signin
-          </button>
+          </NavLink>
         </p>
       </div>
       {status === 'loading' && <Spinner />}

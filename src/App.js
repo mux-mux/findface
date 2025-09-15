@@ -1,14 +1,10 @@
-import React, { useState, useEffect, useCallback, createContext } from 'react';
-import DOMPurify from 'dompurify';
-
+import { useState, useEffect, useCallback, createContext } from 'react';
+import { Route, Routes, useNavigate, Navigate } from 'react-router';
 import Navigation from './components/Navigation/Navigation.js';
-import ImageForm from './components/ImageForm/ImageForm.js';
 import Signin from './components/Signin/Signin.js';
 import Register from './components/Register/Register.js';
-import Rank from './components/Rank/Rank.js';
-import FindFace from './components/FindFace/FindFace.js';
 import Background from './components/Background/Background.js';
-import Spinner from './components/Spinner/Spinner.js';
+import Home from './pages/Home.js';
 
 const initialUserState = {
   id: 0,
@@ -23,12 +19,10 @@ const initialUserState = {
 export const UserContext = createContext(null);
 
 const App = () => {
-  const [input, setInput] = useState('');
   const [imageUrl, setImageUrl] = useState('');
-  const [route, setRoute] = useState('signin');
   const [isSignedIn, setIsSignedIn] = useState(false);
-  const [isAuthChecking, setIsAuthChecking] = useState(true);
   const [user, setUser] = useState(initialUserState);
+  const navigate = useNavigate();
 
   const loadUser = useCallback((userProfile) => {
     setImageUrl('');
@@ -43,46 +37,25 @@ const App = () => {
     });
   }, []);
 
-  const onInputChange = (e) => {
-    setInput(e.target.value);
-  };
-
-  const onImageSubmit = async (e) => {
-    e.preventDefault();
-    const sanitizedUrl = DOMPurify.sanitize(input).trim();
-    (await isImageUrl(sanitizedUrl)) && setImageUrl(sanitizedUrl);
-  };
-
-  function isImageUrl(url) {
-    return new Promise((resolve) => {
-      const img = new Image();
-      img.onload = () => resolve(true);
-      img.onerror = () => {
-        alert('Url is not an image');
-        resolve(false);
-      };
-      img.src = url;
-    });
-  }
-
-  const onRouteChange = useCallback((newRoute) => {
-    if (newRoute === 'signout') {
-      setIsSignedIn(false);
-      setUser(initialUserState);
-      window.localStorage.removeItem('token');
-      window.localStorage.removeItem('rankBadge');
-    } else if (newRoute === 'home') {
-      setIsSignedIn(true);
-    }
-    setRoute(newRoute);
-  }, []);
+  const onRouteChange = useCallback(
+    (newRoute) => {
+      if (newRoute === 'signout') {
+        setIsSignedIn(false);
+        setUser(initialUserState);
+        window.localStorage.removeItem('token');
+        window.localStorage.removeItem('rankBadge');
+        navigate('signin');
+      } else if (newRoute === 'home') {
+        setIsSignedIn(true);
+        navigate('home');
+      }
+    },
+    [navigate]
+  );
 
   useEffect(() => {
     const token = window.localStorage.getItem('token');
-    if (!token) {
-      setIsAuthChecking(false);
-      return;
-    }
+    if (!token) return;
 
     const fetchUser = async () => {
       try {
@@ -115,8 +88,6 @@ const App = () => {
         }
       } catch (error) {
         console.error('Error fetching user:', error);
-      } finally {
-        setIsAuthChecking(false);
       }
     };
 
@@ -127,41 +98,55 @@ const App = () => {
     setUser(updatedUser);
   }, []);
 
-  const renderRoute = () => {
-    switch (route) {
-      case 'home':
-        return (
-          <div className="text-center">
-            <Rank userName={user.name} userEntries={user.entries} />
-            <ImageForm
-              onInputChange={onInputChange}
-              onImageSubmit={onImageSubmit}
-            />
-            {imageUrl && (
-              <FindFace
-                imageUrl={imageUrl}
-                onUserDataChange={onUserDataChange}
-                user={user}
-              />
-            )}
-          </div>
-        );
-      case 'signin':
-      case 'signout':
-        return <Signin loadUser={loadUser} onRouteChange={onRouteChange} />;
-      case 'register':
-      default:
-        return <Register loadUser={loadUser} onRouteChange={onRouteChange} />;
-    }
-  };
-
   return (
     <div className="App">
       <Background />
       <UserContext.Provider value={{ user, loadUser }}>
         <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange} />
       </UserContext.Provider>
-      {isAuthChecking ? <Spinner /> : renderRoute()}
+
+      <Routes>
+        <Route
+          path="/"
+          element={
+            isSignedIn ? (
+              <Home
+                user={user}
+                imageUrl={imageUrl}
+                onUserDataChange={onUserDataChange}
+                setImageUrl={setImageUrl}
+              />
+            ) : (
+              <Signin loadUser={loadUser} onRouteChange={onRouteChange} />
+            )
+          }
+        />
+        <Route
+          path="signin"
+          element={<Signin loadUser={loadUser} onRouteChange={onRouteChange} />}
+        />
+        <Route
+          path="register"
+          element={
+            <Register loadUser={loadUser} onRouteChange={onRouteChange} />
+          }
+        />
+        <Route
+          path="home"
+          element={
+            isSignedIn ? (
+              <Home
+                user={user}
+                imageUrl={imageUrl}
+                onUserDataChange={onUserDataChange}
+                setImageUrl={setImageUrl}
+              />
+            ) : (
+              <Navigate to="/signin" replace />
+            )
+          }
+        />
+      </Routes>
     </div>
   );
 };
