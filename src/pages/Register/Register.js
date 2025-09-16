@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import DOMPurify from 'dompurify';
-import { NavLink } from 'react-router';
+import { NavLink } from 'react-router-dom';
 import Spinner from '../../components/Spinner/Spinner.js';
 import Alert from '../../components/Alert/Alert.js';
 import AuthButton from '../../components/AuthButton/AuthButton.js';

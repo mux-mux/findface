@@ -1,4 +1,5 @@
 import '@testing-library/jest-dom';
+import { MemoryRouter } from 'react-router-dom';
 import { screen, render, fireEvent, waitFor } from '@testing-library/react';
 import Signin from './Signin';
 
@@ -27,7 +28,13 @@ const mockOnRouteChange = jest.fn();
 const mockLoadUser = jest.fn();
 
 const renderSignin = () =>
-  render(<Signin onRouteChange={mockOnRouteChange} loadUser={mockLoadUser} />);
+  render(
+    <MemoryRouter
+      future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+    >
+      <Signin onRouteChange={mockOnRouteChange} loadUser={mockLoadUser} />
+    </MemoryRouter>
+  );
 
 describe('Signin component', () => {
   test('renders the Sing in form', () => {
