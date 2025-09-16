@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import { screen, render, fireEvent, waitFor } from '@testing-library/react';
-import Register from './Register';
+import Register from './Register.js';
 
 let mockStatus = 'idle';
 const mockSetStatus = jest.fn();

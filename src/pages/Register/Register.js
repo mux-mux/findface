@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import DOMPurify from 'dompurify';
 import { NavLink } from 'react-router';
-import Spinner from '../Spinner/Spinner.js';
-import Alert from '../Alert/Alert.js';
-import AuthButton from '../AuthButton/AuthButton.js';
-import FormInput from '../FormInput/FormInput.js';
+import Spinner from '../../components/Spinner/Spinner.js';
+import Alert from '../../components/Alert/Alert.js';
+import AuthButton from '../../components/AuthButton/AuthButton.js';
+import FormInput from '../../components/FormInput/FormInput.js';
 import useStatus from '../../hooks/useStatus.js';
 import useValidation from '../../hooks/useValidation.js';
 import VALIDATIONS from '../../constants.js';

@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback, createContext } from 'react';
 import { Route, Routes, useNavigate, Navigate } from 'react-router';
 import Navigation from './components/Navigation/Navigation.js';
-import Signin from './components/Signin/Signin.js';
-import Register from './components/Register/Register.js';
+import Signin from './pages/Signin/Signin.js';
+import Register from './pages/Register/Register.js';
 import Background from './components/Background/Background.js';
 import Home from './pages/Home.js';
 
