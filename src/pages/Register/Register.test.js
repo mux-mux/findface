@@ -1,4 +1,5 @@
 import '@testing-library/jest-dom';
+import { MemoryRouter } from 'react-router-dom';
 import { screen, render, fireEvent, waitFor } from '@testing-library/react';
 import Register from './Register.js';
 
@@ -31,7 +32,11 @@ const mockLoadUser = jest.fn();
 
 const renderRegister = () =>
   render(
-    <Register onRouteChange={mockOnRouteChange} loadUser={mockLoadUser} />
+    <MemoryRouter
+      future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+    >
+      <Register onRouteChange={mockOnRouteChange} loadUser={mockLoadUser} />
+    </MemoryRouter>
   );
 
 describe('Register component', () => {

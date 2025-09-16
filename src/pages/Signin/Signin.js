@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { NavLink } from 'react-router';
+import { NavLink } from 'react-router-dom';
 import DOMPurify from 'dompurify';
 import Spinner from '../../components/Spinner/Spinner.js';
 import Alert from '../../components/Alert/Alert.js';
