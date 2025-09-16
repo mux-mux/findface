@@ -6,7 +6,9 @@ orbs:
 jobs:
   test-node:
     # Install node dependencies and run tests
-    executor: node/default
+    executor:
+      name: node/default
+      tag: '20.10'
     steps:
       - checkout
       - node/install-packages:
@@ -16,7 +18,9 @@ jobs:
           command: npm test --passWithNoTests
   build-node:
     # Build node project
-    executor: node/default
+    executor:
+      name: node/default
+      tag: '20.10'
     steps:
       - checkout
       - node/install-packages:
