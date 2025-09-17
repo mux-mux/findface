@@ -110,14 +110,9 @@ const App = () => {
           path="/"
           element={
             isSignedIn ? (
-              <Home
-                user={user}
-                imageUrl={imageUrl}
-                onUserDataChange={onUserDataChange}
-                setImageUrl={setImageUrl}
-              />
+              <Navigate to="/home" replace />
             ) : (
-              <Signin loadUser={loadUser} onRouteChange={onRouteChange} />
+              <Navigate to="/signin" replace />
             )
           }
         />
