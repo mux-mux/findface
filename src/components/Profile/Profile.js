@@ -1,4 +1,5 @@
-import { useState, useContext, useCallback, Fragment } from 'react';
+import { useContext, useCallback, Fragment } from 'react';
+import useToggle from '../../hooks/useToggle.js';
 import { UserContext } from '../../App.js';
 import { createPortal } from 'react-dom';
 import { Menu, Transition } from '@headlessui/react';
@@ -7,11 +8,9 @@ import Modal from '../Modal/Modal.js';
 import ProfileImage from '../ProfileImage/ProfileImage.js';
 
 const Profile = ({ onRouteChange }) => {
-  const [showModal, setShowModal] = useState(false);
+  const [isToggled, toggle] = useToggle(false);
   const { user } = useContext(UserContext);
 
-  const handleOpenModal = useCallback(() => setShowModal(true), []);
-  const handleCloseModal = useCallback(() => setShowModal(false), []);
   const handleSignOut = useCallback(
     () => onRouteChange('signout'),
     [onRouteChange]
@@ -19,8 +18,7 @@ const Profile = ({ onRouteChange }) => {
 
   return (
     <div className="flex justify-end flex-1">
-      {showModal &&
-        createPortal(<Modal onClose={handleCloseModal} />, document.body)}
+      {isToggled && createPortal(<Modal onClose={toggle} />, document.body)}
 
       <Menu as="div" className="relative inline-block text-left">
         <div>
@@ -55,7 +53,7 @@ const Profile = ({ onRouteChange }) => {
                     className={`block w-full px-4 py-2 text-left text-sm ${
                       active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
                     }`}
-                    onClick={handleOpenModal}
+                    onClick={toggle}
                     aria-label="Open Account settings page"
                   >
                     Account settings
