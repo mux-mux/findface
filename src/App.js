@@ -5,6 +5,7 @@ import Signin from './pages/Signin/Signin.js';
 import Register from './pages/Register/Register.js';
 import Background from './components/Background/Background.js';
 import Home from './pages/Home.js';
+import NotFound from './pages/NotFound.js';
 import { initialUserState, useUser } from './hooks/useUser.js';
 
 const App = () => {
@@ -70,6 +71,7 @@ const App = () => {
             )
           }
         />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );
