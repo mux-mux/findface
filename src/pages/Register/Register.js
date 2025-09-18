@@ -8,15 +8,17 @@ import FormInput from '../../components/FormInput/FormInput.js';
 import useStatus from '../../hooks/useStatus.js';
 import useValidation from '../../hooks/useValidation.js';
 import VALIDATIONS from '../../constants.js';
+import { useUser } from '../../hooks/useUser.js';
 
 const { MAX_EMAIL_LENGTH, MAX_NAME_LENGTH, MAX_PASS_LENGTH } = VALIDATIONS;
 
-const Register = ({ onRouteChange, loadUser }) => {
+const Register = ({ onRouteChange }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [message, setMessage] = useState('');
   const [errors, setErrors] = useState({ name: '', email: '', password: '' });
+  const { loadUser } = useUser();
   const { status, setStatus } = useStatus('idle');
   const { validateInput } = useValidation();
 

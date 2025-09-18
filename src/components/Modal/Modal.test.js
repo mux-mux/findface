@@ -1,9 +1,29 @@
 import '@testing-library/jest-dom';
 import { screen, render, fireEvent, waitFor } from '@testing-library/react';
-import { UserContext } from '../../App';
 import useStatus from '../../hooks/useStatus';
 import Modal from './Modal';
 
+const mockOnClose = jest.fn();
+const mockSetStatus = jest.fn();
+
+const mockUser = {
+  id: 1,
+  name: 'user',
+  email: 'user@example.com',
+  age: 30,
+  profileImage: 'profile.jpg',
+  entries: 5,
+  joined: '2025-04-04',
+};
+
+jest.mock('../../hooks/useUser.js', () => ({
+  useUser: () => ({
+    user: mockUser,
+    setUser: jest.fn(),
+    loadUser: jest.fn(),
+    onUserDataChange: jest.fn(),
+  }),
+}));
 jest.mock('../../hooks/useStatus', () => jest.fn());
 jest.mock('../ProfileImage/ProfileImage.js', () => ({ src, alt, size }) => (
   <img src={src} alt={alt} size={size} />
@@ -18,28 +38,11 @@ jest.mock('../Alert/Alert.js', () => ({ message, onClose }) => (
   </div>
 ));
 
-const mockUser = {
-  id: 1,
-  name: 'user',
-  email: 'user@example.com',
-  age: 30,
-  profileImage: 'profile.jpg',
-  entries: 5,
-  joined: '2025-04-04',
-};
-const mockOnClose = jest.fn();
-const mockSetStatus = jest.fn();
-
 beforeEach(() => {
   useStatus.mockReturnValue({ status: 'idle', setStatus: mockSetStatus });
 });
 
-const renderModal = () =>
-  render(
-    <UserContext.Provider value={{ user: mockUser, loadUser: jest.fn() }}>
-      <Modal onClose={mockOnClose} />
-    </UserContext.Provider>
-  );
+const renderModal = () => render(<Modal onClose={mockOnClose} />);
 
 describe('Modal component', () => {
   test('renders the Modal with initial state', () => {

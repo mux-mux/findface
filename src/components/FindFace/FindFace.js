@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Spinner from '../Spinner/Spinner.js';
 import './FindFace.css';
+import { useUser } from '../../hooks/useUser.js';
 
-const FindFace = ({ imageUrl, onUserDataChange, user }) => {
+const FindFace = ({ imageUrl }) => {
   const [faceAreas, setFaceAreas] = useState([]);
   const [filterType, setFilterType] = useState('none');
   const [isDownloading, setIsDownloading] = useState(false);
+  const { user, onUserDataChange } = useUser();
 
   const getFaceAreas = useCallback((data) => {
     if (!data.outputs[0].data.regions) {

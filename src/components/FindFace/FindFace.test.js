@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom';
 import { screen, render, fireEvent, waitFor } from '@testing-library/react';
+import { UserProvider } from '../../hooks/useUser.js';
 import FindFace from './FindFace';
 
 jest.mock('../Spinner/Spinner.js', () => () => (
@@ -7,13 +8,16 @@ jest.mock('../Spinner/Spinner.js', () => () => (
 ));
 const mockUser = { id: '123' };
 const mockSetUser = jest.fn();
+
 const renderFindFace = () =>
   render(
-    <FindFace
-      imageUrl="http://example.com/image.jpg"
-      user={mockUser}
-      onUserDataChange={mockSetUser}
-    />
+    <UserProvider>
+      <FindFace
+        imageUrl="http://example.com/image.jpg"
+        user={mockUser}
+        onUserDataChange={mockSetUser}
+      />
+    </UserProvider>
   );
 
 describe('FindFace component', () => {

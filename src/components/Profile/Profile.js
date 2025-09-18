@@ -1,15 +1,15 @@
-import { useContext, useCallback, Fragment } from 'react';
+import { useCallback, Fragment } from 'react';
 import useToggle from '../../hooks/useToggle.js';
-import { UserContext } from '../../App.js';
 import { createPortal } from 'react-dom';
 import { Menu, Transition } from '@headlessui/react';
 
 import Modal from '../Modal/Modal.js';
 import ProfileImage from '../ProfileImage/ProfileImage.js';
+import { useUser } from '../../hooks/useUser.js';
 
 const Profile = ({ onRouteChange }) => {
   const [isToggled, toggle] = useToggle(false);
-  const { user } = useContext(UserContext);
+  const { user } = useUser();
 
   const handleSignOut = useCallback(
     () => onRouteChange('signout'),

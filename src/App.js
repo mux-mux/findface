@@ -1,41 +1,19 @@
-import { useState, useEffect, useCallback, createContext } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Route, Routes, useNavigate, Navigate } from 'react-router-dom';
 import Navigation from './components/Navigation/Navigation.js';
 import Signin from './pages/Signin/Signin.js';
 import Register from './pages/Register/Register.js';
 import Background from './components/Background/Background.js';
 import Home from './pages/Home.js';
-
-const initialUserState = {
-  id: 0,
-  name: '',
-  email: '',
-  profileImage: 'http://localhost:3001/uploads/default-profile-image.png',
-  age: 0,
-  entries: 0,
-  joined: '',
-};
-
-export const UserContext = createContext(null);
+import NotFound from './pages/NotFound.js';
+import { initialUserState, useUser } from './hooks/useUser.js';
 
 const App = () => {
   const [imageUrl, setImageUrl] = useState('');
   const [isSignedIn, setIsSignedIn] = useState(false);
-  const [user, setUser] = useState(initialUserState);
-  const navigate = useNavigate();
+  const { user, setUser } = useUser();
 
-  const loadUser = useCallback((userProfile) => {
-    setImageUrl('');
-    setUser({
-      id: userProfile.id,
-      name: userProfile.name,
-      email: userProfile.email,
-      profileImage: userProfile.profileImage,
-      age: userProfile.age,
-      entries: userProfile.entries,
-      joined: userProfile.joined,
-    });
-  }, []);
+  const navigate = useNavigate();
 
   const onRouteChange = useCallback(
     (newRoute) => {
@@ -50,60 +28,19 @@ const App = () => {
         navigate('home');
       }
     },
-    [navigate]
+    [navigate, setUser]
   );
 
   useEffect(() => {
-    const token = window.localStorage.getItem('token');
-    if (!token) return;
-
-    const fetchUser = async () => {
-      try {
-        const response = await fetch('http://localhost:3001/signin', {
-          method: 'post',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: token,
-          },
-        });
-        const data = await response.json();
-
-        if (data?.id) {
-          const profile = await fetch(
-            `http://localhost:3001/profile/${data.id}`,
-            {
-              method: 'get',
-              headers: {
-                'Content-Type': 'application/json',
-                Authorization: token,
-              },
-            }
-          );
-          const profileData = await profile.json();
-
-          if (profileData?.email) {
-            loadUser(profileData);
-            onRouteChange('home');
-          }
-        }
-      } catch (error) {
-        console.error('Error fetching user:', error);
-      }
-    };
-
-    fetchUser();
-  }, [loadUser, onRouteChange]);
-
-  const onUserDataChange = useCallback((updatedUser) => {
-    setUser(updatedUser);
-  }, []);
+    if (user?.id) {
+      onRouteChange('home');
+    }
+  }, [user, onRouteChange]);
 
   return (
     <div className="App">
       <Background />
-      <UserContext.Provider value={{ user, loadUser }}>
-        <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange} />
-      </UserContext.Provider>
+      <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange} />
 
       <Routes>
         <Route
@@ -118,29 +55,23 @@ const App = () => {
         />
         <Route
           path="signin"
-          element={<Signin loadUser={loadUser} onRouteChange={onRouteChange} />}
+          element={<Signin onRouteChange={onRouteChange} />}
         />
         <Route
           path="register"
-          element={
-            <Register loadUser={loadUser} onRouteChange={onRouteChange} />
-          }
+          element={<Register onRouteChange={onRouteChange} />}
         />
         <Route
           path="home"
           element={
             isSignedIn ? (
-              <Home
-                user={user}
-                imageUrl={imageUrl}
-                onUserDataChange={onUserDataChange}
-                setImageUrl={setImageUrl}
-              />
+              <Home imageUrl={imageUrl} setImageUrl={setImageUrl} />
             ) : (
               <Navigate to="/signin" replace />
             )
           }
         />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );

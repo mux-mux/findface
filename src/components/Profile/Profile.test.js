@@ -1,9 +1,23 @@
 import '@testing-library/jest-dom';
 import { screen, render, fireEvent, waitFor } from '@testing-library/react';
-import { UserContext } from '../../App';
+
 import Profile from './Profile';
 
 const mockOnRouteChange = jest.fn();
+const mockLoadUser = jest.fn();
+
+jest.mock('../../hooks/useUser.js', () => ({
+  useUser: () => ({
+    user: {
+      id: 0,
+      name: 'user',
+      profileImage: 'https://example.com/profile.jpg',
+    },
+    setUser: jest.fn(),
+    loadUser: mockLoadUser,
+    onUserDataChange: jest.fn(),
+  }),
+}));
 
 const mockUser = {
   name: 'user',
@@ -11,11 +25,7 @@ const mockUser = {
 };
 
 const renderProfile = () =>
-  render(
-    <UserContext.Provider value={{ user: mockUser }}>
-      <Profile onRouteChange={mockOnRouteChange} />
-    </UserContext.Provider>
-  );
+  render(<Profile onRouteChange={mockOnRouteChange} />);
 
 describe('Profile component', () => {
   test('render profile image correctly', () => {

@@ -3,9 +3,11 @@ import { useState } from 'react';
 import ImageForm from '../components/ImageForm/ImageForm.js';
 import Rank from '../components/Rank/Rank.js';
 import FindFace from '../components/FindFace/FindFace.js';
+import { useUser } from '../hooks/useUser.js';
 
-const Home = ({ user, imageUrl, onUserDataChange, setImageUrl }) => {
+const Home = ({ imageUrl, setImageUrl }) => {
   const [input, setInput] = useState('');
+  const { user } = useUser();
 
   const onInputChange = (e) => {
     setInput(e.target.value);
@@ -33,13 +35,7 @@ const Home = ({ user, imageUrl, onUserDataChange, setImageUrl }) => {
     <div className="text-center">
       <Rank userName={user.name} userEntries={user.entries} />
       <ImageForm onInputChange={onInputChange} onImageSubmit={onImageSubmit} />
-      {imageUrl && (
-        <FindFace
-          imageUrl={imageUrl}
-          onUserDataChange={onUserDataChange}
-          user={user}
-        />
-      )}
+      {imageUrl && <FindFace imageUrl={imageUrl} />}
     </div>
   );
 };

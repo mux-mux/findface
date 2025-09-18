@@ -1,11 +1,22 @@
 import '@testing-library/jest-dom';
 import { MemoryRouter } from 'react-router-dom';
 import { screen, render, fireEvent, waitFor } from '@testing-library/react';
+
 import Register from './Register.js';
 
 let mockStatus = 'idle';
 const mockSetStatus = jest.fn();
+const mockOnRouteChange = jest.fn();
+const mockLoadUser = jest.fn();
 
+jest.mock('../../hooks/useUser.js', () => ({
+  useUser: () => ({
+    user: { id: 0, name: '' },
+    setUser: jest.fn(),
+    loadUser: mockLoadUser,
+    onUserDataChange: jest.fn(),
+  }),
+}));
 jest.mock('../../hooks/useStatus', () => () => ({
   status: mockStatus,
   setStatus: mockSetStatus,
@@ -27,15 +38,12 @@ jest.mock('../../hooks/useValidation.js', () => {
   });
 });
 
-const mockOnRouteChange = jest.fn();
-const mockLoadUser = jest.fn();
-
 const renderRegister = () =>
   render(
     <MemoryRouter
       future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
     >
-      <Register onRouteChange={mockOnRouteChange} loadUser={mockLoadUser} />
+      <Register onRouteChange={mockOnRouteChange} />
     </MemoryRouter>
   );
 
