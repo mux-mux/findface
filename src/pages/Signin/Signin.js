@@ -8,13 +8,15 @@ import FormInput from '../../components/FormInput/FormInput.js';
 import useStatus from '../../hooks/useStatus.js';
 import useValidation from '../../hooks/useValidation.js';
 import VALIDATIONS from '../../constants.js';
+import { useUser } from '../../hooks/useUser.js';
 
 const { MAX_EMAIL_LENGTH, MAX_PASS_LENGTH } = VALIDATIONS;
 
-const Signin = ({ onRouteChange, loadUser }) => {
+const Signin = ({ onRouteChange }) => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [errors, setErrors] = useState({ email: '', password: '' });
   const [message, setMessage] = useState('');
+  const { loadUser } = useUser();
   const { status, setStatus } = useStatus('idle');
   const { validateInput } = useValidation();
 

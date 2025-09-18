@@ -1,14 +1,14 @@
-import { useState, useCallback, useContext } from 'react';
+import { useState, useCallback } from 'react';
 import FocusLock from 'react-focus-lock';
-import { UserContext } from '../../App.js';
 import Alert from '../Alert/Alert.js';
 import Spinner from '../Spinner/Spinner.js';
 import ProfileImage from '../ProfileImage/ProfileImage.js';
 import useStatus from '../../hooks/useStatus.js';
 import './Modal.css';
+import { useUser } from '../../hooks/useUser.js';
 
 const Modal = ({ onClose }) => {
-  const { user, loadUser } = useContext(UserContext);
+  const { user, loadUser } = useUser();
   const [newEmail, setNewEmail] = useState(user.email);
   const [newAge, setNewAge] = useState(user.age || 20);
   const [message, setMessage] = useState('');

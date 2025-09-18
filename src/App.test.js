@@ -3,6 +3,14 @@ import { MemoryRouter } from 'react-router-dom';
 import { screen, render, fireEvent, waitFor } from '@testing-library/react';
 import App from './App';
 
+jest.mock('./hooks/useUser.js', () => ({
+  useUser: () => ({
+    user: { id: 0, name: '' },
+    setUser: jest.fn(),
+    loadUser: jest.fn(),
+    onUserDataChange: jest.fn(),
+  }),
+}));
 jest.mock('./pages/Signin/Signin.js', () => (props) => (
   <div data-testid="signin">
     <button onClick={() => props.onRouteChange('register')}>Register</button>

@@ -5,7 +5,17 @@ import Signin from './Signin';
 
 let mockStatus = 'idle';
 const mockSetStatus = jest.fn();
+const mockLoadUser = jest.fn();
+const mockOnRouteChange = jest.fn();
 
+jest.mock('../../hooks/useUser.js', () => ({
+  useUser: () => ({
+    user: { id: 0, name: '' },
+    setUser: jest.fn(),
+    loadUser: mockLoadUser,
+    onUserDataChange: jest.fn(),
+  }),
+}));
 jest.mock('../../hooks/useStatus', () => () => ({
   status: mockStatus,
   setStatus: mockSetStatus,
@@ -24,15 +34,12 @@ jest.mock('../../hooks/useValidation', () => {
   });
 });
 
-const mockOnRouteChange = jest.fn();
-const mockLoadUser = jest.fn();
-
 const renderSignin = () =>
   render(
     <MemoryRouter
       future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
     >
-      <Signin onRouteChange={mockOnRouteChange} loadUser={mockLoadUser} />
+      <Signin onRouteChange={mockOnRouteChange} />
     </MemoryRouter>
   );
 
