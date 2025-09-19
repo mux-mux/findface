@@ -1,4 +1,3 @@
-import React from 'react';
 import Logo from '../Logo/Logo.js';
 import Profile from '../Profile/Profile.js';
 import Themes from '../Themes/Themes.js';
