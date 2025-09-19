@@ -1,4 +1,3 @@
-import React from 'react';
 import './ImageForm.css';
 
 const ImageForm = ({ onInputChange, onImageSubmit }) => {

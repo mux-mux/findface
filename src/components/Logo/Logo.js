@@ -1,9 +1,9 @@
-import React from 'react';
+import { NavLink } from 'react-router-dom';
 
 const Logo = () => {
   return (
     <div className="ma3">
-      <a href="/findface/" tabIndex="-1" aria-label="Go back to homepage">
+      <NavLink href="/" tabIndex="-1" aria-label="Go back to homepage">
         <img
           src={process.env.PUBLIC_URL + '/logo192.png'}
           alt="find face logo"
@@ -11,7 +11,7 @@ const Logo = () => {
           width={100}
           fetchpriority="high"
         />
-      </a>
+      </NavLink>
     </div>
   );
 };

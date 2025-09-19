@@ -1,11 +1,21 @@
 import '@testing-library/jest-dom';
 import { screen, render } from '@testing-library/react';
-
+import { MemoryRouter } from 'react-router-dom';
 import Logo from './Logo';
+
+const renderLogo = () => {
+  render(
+    <MemoryRouter
+      future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+    >
+      <Logo />
+    </MemoryRouter>
+  );
+};
 
 describe('Logo component', () => {
   test('renders the logo image with correct attributes', () => {
-    render(<Logo />);
+    renderLogo();
 
     const logoImg = screen.getByAltText(/find face logo/i);
 
@@ -18,11 +28,11 @@ describe('Logo component', () => {
   });
 
   test('renders a link that navigates to homepage', () => {
-    render(<Logo />);
+    renderLogo();
 
     const homeLink = screen.getByRole('link', { name: /go back to homepage/i });
 
     expect(homeLink).toBeInTheDocument();
-    expect(homeLink).toHaveAttribute('href', '/findface/');
+    expect(homeLink).toHaveAttribute('href', '/');
   });
 });

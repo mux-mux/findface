@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Spinner from '../Spinner/Spinner.js';
 import './FindFace.css';
 import { useUser } from '../../hooks/useUser.js';

@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Route, Routes, useNavigate, Navigate } from 'react-router-dom';
-import Navigation from './components/Navigation/Navigation.js';
+import Layout from './components/Layout/Layout.js';
 import Signin from './pages/Signin/Signin.js';
 import Register from './pages/Register/Register.js';
-import Background from './components/Background/Background.js';
+
 import Home from './pages/Home.js';
 import NotFound from './pages/NotFound.js';
 import { initialUserState, useUser } from './hooks/useUser.js';
@@ -39,39 +39,33 @@ const App = () => {
 
   return (
     <div className="App">
-      <Background />
-      <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange} />
-
       <Routes>
         <Route
-          path="/"
           element={
-            isSignedIn ? (
-              <Navigate to="/home" replace />
-            ) : (
-              <Navigate to="/signin" replace />
-            )
+            <Layout isSignedIn={isSignedIn} onRouteChange={onRouteChange} />
           }
-        />
-        <Route
-          path="signin"
-          element={<Signin onRouteChange={onRouteChange} />}
-        />
-        <Route
-          path="register"
-          element={<Register onRouteChange={onRouteChange} />}
-        />
-        <Route
-          path="home"
-          element={
-            isSignedIn ? (
-              <Home imageUrl={imageUrl} setImageUrl={setImageUrl} />
-            ) : (
-              <Navigate to="/signin" replace />
-            )
-          }
-        />
-        <Route path="*" element={<NotFound />} />
+        >
+          <Route
+            path="/home"
+            element={
+              isSignedIn ? (
+                <Home imageUrl={imageUrl} setImageUrl={setImageUrl} />
+              ) : (
+                <Navigate to="/signin" replace />
+              )
+            }
+          />
+          <Route
+            path="signin"
+            element={<Signin onRouteChange={onRouteChange} />}
+          />
+          <Route
+            path="register"
+            element={<Register onRouteChange={onRouteChange} />}
+          />
+          <Route path="/" element={<Navigate to="/home" replace />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
       </Routes>
     </div>
   );
