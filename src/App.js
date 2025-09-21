@@ -46,24 +46,24 @@ const App = () => {
           }
         >
           <Route
-            path="home"
+            path="/home"
             element={
               isSignedIn ? (
                 <Home imageUrl={imageUrl} setImageUrl={setImageUrl} />
               ) : (
-                <Navigate to="signin" replace />
+                <Navigate to="/signin" replace />
               )
             }
           />
           <Route
-            path="signin"
+            path="/signin"
             element={<Signin onRouteChange={onRouteChange} />}
           />
           <Route
-            path="register"
+            path="/register"
             element={<Register onRouteChange={onRouteChange} />}
           />
-          <Route path="/" element={<Navigate to="home" replace />} />
+          <Route path="/" element={<Navigate to="/home" replace />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
