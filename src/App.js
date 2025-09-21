@@ -56,11 +56,11 @@ const App = () => {
             }
           />
           <Route
-            path="signin"
+            path="/signin"
             element={<Signin onRouteChange={onRouteChange} />}
           />
           <Route
-            path="register"
+            path="/register"
             element={<Register onRouteChange={onRouteChange} />}
           />
           <Route path="/" element={<Navigate to="/home" replace />} />
