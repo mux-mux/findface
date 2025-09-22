@@ -39,9 +39,9 @@ const UserProvider = ({ children }) => {
     });
   }, []);
 
-  const onUserDataChange = useCallback((updatedUser) => {
+  const onUserDataChange = (updatedUser) => {
     setUser(updatedUser);
-  }, []);
+  };
 
   useEffect(() => {
     const token = window.localStorage.getItem('token');
