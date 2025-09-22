@@ -3,35 +3,35 @@ import Spinner from '../Spinner/Spinner.js';
 import './FindFace.css';
 import { useUser } from '../../hooks/useUser.js';
 
+const getFaceAreas = (data) => {
+  if (!data.outputs[0].data.regions) {
+    alert('No faces detected!');
+    return [];
+  }
+
+  const image = document.getElementById('inputImage');
+  if (!image) return [];
+
+  const width = image.width;
+  const height = image.height;
+
+  return data.outputs[0].data.regions.map(({ region_info }) => {
+    const { top_row, right_col, bottom_row, left_col } =
+      region_info.bounding_box;
+    return {
+      topRow: top_row * height,
+      rightCol: width - right_col * width,
+      bottomRow: height - bottom_row * height,
+      leftCol: left_col * width,
+    };
+  });
+};
+
 const FindFace = ({ imageUrl }) => {
   const [faceAreas, setFaceAreas] = useState([]);
   const [filterType, setFilterType] = useState('none');
   const [isDownloading, setIsDownloading] = useState(false);
   const { user, onUserDataChange } = useUser();
-
-  const getFaceAreas = useCallback((data) => {
-    if (!data.outputs[0].data.regions) {
-      alert('No faces detected!');
-      return [];
-    }
-
-    const image = document.getElementById('inputImage');
-    if (!image) return [];
-
-    const width = image.width;
-    const height = image.height;
-
-    return data.outputs[0].data.regions.map(({ region_info }) => {
-      const { top_row, right_col, bottom_row, left_col } =
-        region_info.bounding_box;
-      return {
-        topRow: top_row * height,
-        rightCol: width - right_col * width,
-        bottomRow: height - bottom_row * height,
-        leftCol: left_col * width,
-      };
-    });
-  }, []);
 
   const fetchFaceData = useCallback(async () => {
     setFaceAreas([]);
@@ -66,9 +66,9 @@ const FindFace = ({ imageUrl }) => {
     } catch (error) {
       console.error('Error fetching face data:', error);
     }
-  }, [imageUrl, user.id, onUserDataChange, getFaceAreas]);
+  }, [imageUrl, user.id, onUserDataChange]);
 
-  const getAreaSize = useCallback((image, faceArea) => {
+  const getAreaSize = (image, faceArea) => {
     const width = image.width - (faceArea.leftCol + faceArea.rightCol);
     const height = image.height - (faceArea.bottomRow + faceArea.topRow);
     const fontSize = Math.max(width, height) * 1.1;
@@ -78,7 +78,7 @@ const FindFace = ({ imageUrl }) => {
       height,
       fontSize,
     };
-  }, []);
+  };
 
   useEffect(() => {
     fetchFaceData();

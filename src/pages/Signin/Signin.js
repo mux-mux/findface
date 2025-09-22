@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import DOMPurify from 'dompurify';
 import Spinner from '../../components/Spinner/Spinner.js';
@@ -20,22 +20,19 @@ const Signin = ({ onRouteChange }) => {
   const { status, setStatus } = useStatus('idle');
   const { validateInput } = useValidation();
 
-  const handleChange = useCallback(
-    (e) => {
-      const { name, value } = e.target;
+  const handleChange = (e) => {
+    const { name, value } = e.target;
 
-      setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
 
-      setErrors((prev) => ({
-        ...prev,
-        [name]:
-          name === 'email'
-            ? validateInput.email(value)
-            : validateInput.password(value),
-      }));
-    },
-    [setFormData, validateInput]
-  );
+    setErrors((prev) => ({
+      ...prev,
+      [name]:
+        name === 'email'
+          ? validateInput.email(value)
+          : validateInput.password(value),
+    }));
+  };
 
   const saveSessionToken = (token) => {
     window.localStorage.setItem('token', token);
@@ -61,48 +58,45 @@ const Signin = ({ onRouteChange }) => {
     return response.json();
   };
 
-  const handleSubmit = useCallback(
-    async (e) => {
-      e.preventDefault();
-      setStatus('loading');
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus('loading');
 
-      const { email, password } = formData;
+    const { email, password } = formData;
 
-      const sanitizedEmail = DOMPurify.sanitize(email.trim());
+    const sanitizedEmail = DOMPurify.sanitize(email.trim());
 
-      const emailError = validateInput.email(sanitizedEmail);
-      const passwordError = validateInput.password(password);
+    const emailError = validateInput.email(sanitizedEmail);
+    const passwordError = validateInput.password(password);
 
-      if (emailError || passwordError) {
-        setErrors({ email: emailError, password: passwordError });
-        setStatus('error');
-        return;
+    if (emailError || passwordError) {
+      setErrors({ email: emailError, password: passwordError });
+      setStatus('error');
+      return;
+    }
+
+    try {
+      const data = await signinUser(sanitizedEmail, password);
+
+      if (!data.userId || data.success !== 'true') {
+        throw new Error(data || 'Invalid credentials');
       }
 
-      try {
-        const data = await signinUser(sanitizedEmail, password);
+      saveSessionToken(data.token);
 
-        if (!data.userId || data.success !== 'true') {
-          throw new Error(data || 'Invalid credentials');
-        }
-
-        saveSessionToken(data.token);
-
-        const userData = await fetchUserProfile(data.userId, data.token);
-        if (!userData || !userData.email) {
-          throw new Error('Failed to fetch user profile');
-        }
-
-        loadUser(userData);
-        onRouteChange('home');
-        setStatus('success');
-      } catch (error) {
-        setMessage(error.message);
-        setStatus('error');
+      const userData = await fetchUserProfile(data.userId, data.token);
+      if (!userData || !userData.email) {
+        throw new Error('Failed to fetch user profile');
       }
-    },
-    [formData, loadUser, onRouteChange, setStatus, validateInput]
-  );
+
+      loadUser(userData);
+      onRouteChange('home');
+      setStatus('success');
+    } catch (error) {
+      setMessage(error.message);
+      setStatus('error');
+    }
+  };
 
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">

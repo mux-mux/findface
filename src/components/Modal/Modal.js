@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import FocusLock from 'react-focus-lock';
 import Alert from '../Alert/Alert.js';
 import Spinner from '../Spinner/Spinner.js';
@@ -28,7 +28,7 @@ const Modal = ({ onClose }) => {
     setImage(file);
   };
 
-  const onProfileUpdate = useCallback(async () => {
+  const onProfileUpdate = async () => {
     if (newEmail === user.email && newAge === user.age && preview === image)
       return;
 
@@ -85,7 +85,7 @@ const Modal = ({ onClose }) => {
       setStatus('error');
       setMessage(error.message);
     }
-  }, [newEmail, newAge, preview, image, user, loadUser, setStatus]);
+  };
 
   const enableEditing = (e) => {
     const input = e.currentTarget.previousElementSibling;

@@ -1,4 +1,4 @@
-import { useCallback, Fragment } from 'react';
+import { Fragment } from 'react';
 import useToggle from '../../hooks/useToggle.js';
 import { createPortal } from 'react-dom';
 import { Menu, Transition } from '@headlessui/react';
@@ -11,10 +11,7 @@ const Profile = ({ onRouteChange }) => {
   const [isToggled, toggle] = useToggle(false);
   const { user } = useUser();
 
-  const handleSignOut = useCallback(
-    () => onRouteChange('signout'),
-    [onRouteChange]
-  );
+  const handleSignOut = () => onRouteChange('signout');
 
   return (
     <div className="flex justify-end flex-1">
